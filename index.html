@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TatlTael</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almendra:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#03000a]">
+    
+    <!-- Background Audio Player -->
+    <div id="background-audio-player" class="hidden"></div>
+
+    <!-- CSS Animated Background -->
+    <div class="background-effects">
+        <div id="stars1"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+        <img src="moon.png" alt="The Moon" id="moon-image">
+        <img src="clocktown.png" alt="Clock Town" id="clocktown-image">
+    </div>
+
+    <!-- Tingle! -->
+    <div id="tingle-container">
+        <img src="tinglemyboy.png" alt="Tingle" id="tingle-image">
+    </div>
+
+
+    <!-- Main Application Wrapper -->
+    <div id="app-wrapper" class="relative w-full min-h-screen flex items-center justify-center p-4">
+
+        <!-- Main Song Selection Screen -->
+        <div id="song-selection" class="view-container is-active">
+            <header class="mb-8">
+                <!-- Animated Fairy Container -->
+                <div id="fairy-container" class="w-28 h-28 mx-auto mb-4">
+                    <div class="fairy" id="light-fairy"></div>
+                    <div class="fairy" id="dark-fairy"></div>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-zelda text-purple-200 title-reveal">TatlTael</h1>
+            </header>
+            <main id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                <!-- Song buttons will be dynamically injected here -->
+            </main>
+        </div>
+
+        <!-- Song Detail View -->
+        <div id="song-detail-view" class="view-container">
+            <!-- This inner container is for content, the parent handles animation -->
+            <div class="w-full h-full max-w-6xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
+                <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
+                    <div class="flex items-center gap-4">
+                        <h2 id="song-title" class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow"></h2>
+                        <!-- Clickable instrument image -->
+                        <img id="instrument-image" src="linkOcarina.webp" alt="Instrument" class="h-16 object-contain">
+                    </div>
+                    <button id="back-button" class="btn-back">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+                        Song Select
+                    </button>
+                </header>
+                <div class="flex flex-col lg:flex-row gap-8 flex-grow min-h-0">
+                    <div class="lg:w-7/12 w-full">
+                         <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-2xl border-4 border-black/50 video-container">
+                            <iframe id="youtube-player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div id="notes-container" class="lg:w-5/12 w-full space-y-5 overflow-y-auto">
+                        <!-- Note sections will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Maps View -->
+        <div id="maps-view" class="view-container">
+             <div class="w-full h-full max-w-screen-xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
+                <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
+                    <h2 class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow">Termina Maps</h2>
+                    <button id="maps-back-button" class="btn-back">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+                        Song Select
+                    </button>
+                </header>
+                <main id="map-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto p-2">
+                    <!-- Map items will be injected here -->
+                </main>
+             </div>
+        </div>
+
+    </div>
+    <!-- Map Modal/Lightbox -->
+    <div id="map-modal" class="map-modal-overlay">
+        <button id="map-modal-close" class="map-modal-close-btn">&times;</button>
+        <img id="map-modal-image" src="" alt="Full size map">
+    </div>
+    
+    <!-- YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js" defer></script>
+</body>
+</html>

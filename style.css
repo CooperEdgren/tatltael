@@ -1,0 +1,431 @@
+/* --- Base and Thematic Styling --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Prevent scrolling on the body */
+    font-family: 'Inter', sans-serif;
+    color: white;
+}
+
+.font-zelda {
+    font-family: 'Almendra', serif;
+}
+
+/* --- Animated Fairy Icon with Wings --- */
+#fairy-container {
+    position: relative;
+}
+.fairy {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+
+#light-fairy {
+    background-color: #fef08a; /* Bright yellow core */
+    box-shadow: 0 0 8px #fef08a, 0 0 16px #fde047, 0 0 24px #facc15;
+    animation: dance-light 5s infinite ease-in-out;
+}
+
+
+#dark-fairy {
+    background-color: #c084fc; /* Bright purple core */
+    box-shadow: 0 0 8px #c084fc, 0 0 16px #a855f7, 0 0 24px #ec4899;
+    animation: dance-dark 5s infinite ease-in-out;
+}
+
+
+@keyframes dance-light {
+    0%, 100% { transform: translate(-35px, 0) scale(1); }
+    25% { transform: translate(0, 30px) scale(0.8); }
+    50% { transform: translate(35px, 0) scale(1); }
+    75% { transform: translate(0, -30px) scale(1.2); }
+}
+
+@keyframes dance-dark {
+    0%, 100% { transform: translate(35px, 0) scale(1); }
+    25% { transform: translate(0, -30px) scale(1.2); }
+    50% { transform: translate(-35px, 0) scale(1); }
+    75% { transform: translate(0, 30px) scale(0.8); }
+}
+
+
+/* --- Animated Background Elements --- */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+}
+
+#moon-image {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    width: 15%;
+    max-width: 150px;
+    z-index: 2;
+    animation: pulse-shiver 8s infinite ease-in-out;
+}
+
+@keyframes pulse-shiver {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.08) rotate(1deg); }
+    70% { transform: scale(1.08) rotate(-1deg); }
+    80% { transform: scale(1.08) rotate(1deg); }
+}
+
+#clocktown-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+
+@keyframes animStar {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-2000px); }
+}
+
+#stars1, #stars2, #stars3 {
+    position: absolute;
+    top: 0; left: 0; width: 1px; height: 1px;
+    background: transparent;
+}
+#stars1 {
+  box-shadow: 797px 432px #FFF, 1572px 1420px #FFF, 1548px 1419px #FFF, 1729px 1270px #FFF, 1918px 1073px #FFF, 183px 1318px #FFF, 1119px 1653px #FFF, 911px 1974px #FFF, 1269px 1025px #FFF, 108px 608px #FFF, 1243px 1460px #FFF, 1528px 233px #FFF, 1178px 1944px #FFF, 706px 1466px #FFF, 1582px 1195px #FFF, 249px 1930px #FFF, 1698px 1868px #FFF, 179px 1686px #FFF, 1856px 1109px #FFF, 1184px 175px #FFF, 1310px 1017px #FFF, 1374px 1852px #FFF, 95px 1083px #FFF, 386px 819px #FFF, 1391px 1946px #FFF, 165px 1297px #FFF, 483px 1182px #FFF, 1471px 1133px #FFF, 1402px 1773px #FFF, 946px 1163px #FFF, 1285px 109px #FFF, 1334px 1121px #FFF, 1500px 1205px #FFF, 1139px 1884px #FFF, 1791px 192px #FFF, 549px 899px #FFF, 684px 1060px #FFF, 1495px 1735px #FFF, 1146px 1603px #FFF, 1215px 1314px #FFF;
+  animation: animStar 150s linear infinite;
+}
+#stars2 {
+  box-shadow: 104px 1066px #FFF, 1949px 1332px #FFF, 1740px 1399px #FFF, 1406px 132px #FFF, 1913px 1948px #FFF, 1251px 731px #FFF, 1030px 1301px #FFF, 323px 1496px #FFF, 1396px 1196px #FFF, 144px 1279px #FFF, 1459px 198px #FFF, 1108px 1713px #FFF, 219px 1018px #FFF, 1198px 1683px #FFF, 1826px 1222px #FFF, 452px 1373px #FFF, 1609px 1982px #FFF, 1052px 938px #FFF, 1210px 1530px #FFF, 423px 1088px #FFF, 1293px 1014px #FFF, 1008px 1815px #FFF, 1934px 1865px #FFF, 1136px 1475px #FFF, 1622px 1492px #FFF, 1731px 635px #FFF, 442px 1031px #FFF, 1259px 135px #FFF, 1455px 1007px #FFF, 764px 1358px #FFF, 1197px 177px #FFF, 915px 472px #FFF, 1184px 135px #FFF, 1658px 1059px #FFF, 413px 1621px #FFF, 188px 1222px #FFF, 1019px 1136px #FFF, 139px 1836px #FFF, 1421px 1883px #FFF, 281px 1395px #FFF;
+  animation: animStar 100s linear infinite;
+}
+#stars3 {
+    width: 2px; height: 2px;
+    box-shadow: 1965px 78px #FFF, 1138px 129px #FFF, 170px 1192px #FFF, 467px 117px #FFF, 1330px 1024px #FFF, 1934px 1972px #FFF, 1485px 1338px #FFF, 1735px 1878px #FFF, 1813px 1226px #FFF, 1271px 175px #FFF, 1139px 406px #FFF, 109px 1594px #FFF, 1351px 1186px #FFF, 1319px 1381px #FFF, 1334px 1563px #FFF, 1214px 1011px #FFF, 1485px 635px #FFF, 1566px 1238px #FFF, 1410px 1803px #FFF, 137px 552px #FFF, 449px 181px #FFF, 1800px 1334px #FFF, 1234px 1023px #FFF, 1210px 395px #FFF, 1317px 728px #FFF, 290px 1988px #FFF, 794px 921px #FFF, 988px 1162px #FFF, 484px 195px #FFF, 74px 1331px #FFF;
+    animation: animStar 50s linear infinite;
+}
+
+
+/* --- Tingle --- */
+#tingle-container {
+    position: fixed;
+    top: 2%;
+    left: 2%;
+    z-index: 50;
+    cursor: pointer;
+    animation: float 6s ease-in-out infinite;
+}
+#tingle-image {
+    width: 120px;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+#tingle-image:hover {
+    transform: scale(1.15);
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0px); }
+    50% { transform: translate(5px, 15px); }
+    100% { transform: translate(0, 0px); }
+}
+
+
+/* --- Title and Header Styling --- */
+.title-glow {
+    text-shadow: 0 0 8px rgba(253, 224, 71, 0.5), 0 0 20px rgba(233, 139, 255, 0.4);
+    animation: pulse-glow 3s infinite ease-in-out;
+}
+@keyframes pulse-glow {
+    0%, 100% { text-shadow: 0 0 8px rgba(253, 224, 71, 0.5), 0 0 20px rgba(233, 139, 255, 0.4); }
+    50% { text-shadow: 0 0 16px rgba(253, 224, 71, 0.8), 0 0 40px rgba(233, 139, 255, 0.6); }
+}
+
+.title-reveal {
+    background: linear-gradient(90deg, #e98bff, #fde047, #93c5fd, #e98bff);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: mask-reveal 2s ease-out forwards, gradient-flow 10s linear infinite;
+}
+@keyframes mask-reveal {
+    from { background-position: 100% 50%; }
+    to { background-position: 50% 50%; }
+}
+@keyframes gradient-flow {
+	0% { background-position: 0% 50%; }
+	100% { background-position: 300% 50%; }
+}
+
+/* --- Instrument Image --- */
+#instrument-image {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0));
+}
+#instrument-image:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 12px rgba(253, 224, 71, 0.6));
+}
+#instrument-image:active {
+    transform: scale(1.05);
+    transition-duration: 0.1s;
+}
+
+
+/* --- View Container & Transitions --- */
+#app-wrapper {
+    z-index: 10;
+}
+.view-container {
+    position: fixed; /* Use fixed for viewport-relative positioning */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    /* Transition for opacity (fade) and transform (zoom/move) */
+    transition: opacity 0.4s ease-in-out, transform 0.4s cubic-bezier(0.45, 0, 0.55, 1);
+    transform: scale(1.05);
+}
+.view-container.is-active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+/* Ensure the detail view is on top during transition */
+#song-detail-view, #maps-view {
+    z-index: 100;
+}
+/* Specific animation for detail view, maps view will use the default zoom/fade */
+#song-detail-view {
+     transform: scale(1.05);
+}
+
+
+/* --- Main Content Container Styling --- */
+.main-container {
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    background: rgba(12, 10, 24, 0.75);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    box-shadow: 0 0 80px rgba(76, 29, 149, 0.5);
+    border-radius: 24px;
+}
+
+/* --- Button Styles --- */
+.btn-song {
+    background: rgba(10, 5, 20, 0.6);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    border-radius: 16px;
+    color: #e9d5ff;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.05);
+    text-shadow: 1px 1px 3px #000;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+.btn-song:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(124, 58, 237, 0.4);
+    background: rgba(20, 10, 40, 0.8);
+    color: #fff;
+    border-color: rgba(216, 180, 254, 0.6);
+}
+.btn-song:active {
+    transform: translateY(-2px) scale(1);
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-back {
+    background-color: transparent;
+    border: 2px solid #a78bfa;
+    color: #a78bfa;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(167, 139, 250, 0.5);
+}
+.btn-back:hover {
+    background-color: #a78bfa;
+    color: #1e1b4b;
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.7);
+    transform: scale(1.05);
+}
+
+/* --- Note Icon Styling --- */
+.note-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    margin: 4px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -3px 3px rgba(0,0,0,0.4);
+    font-size: 1.4rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid rgba(0,0,0,0.3);
+}
+.note-icon:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2), inset 0 -3px 3px rgba(0,0,0,0.4);
+}
+
+/* --- Map Item Styling --- */
+.map-item {
+    background: rgba(10, 5, 20, 0.6);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.map-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+    border-color: rgba(216, 180, 254, 0.5);
+}
+.map-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    background-color: rgba(0,0,0,0.3);
+}
+.map-item h3 {
+    font-family: 'Almendra', serif;
+    font-size: 1.25rem;
+    color: #e9d5ff;
+}
+
+/* --- Map Modal/Lightbox --- */
+.map-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+.map-modal-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+#map-modal-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 16px;
+    box-shadow: 0 0 50px rgba(167, 139, 250, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+}
+.map-modal-overlay.is-visible #map-modal-image {
+    transform: scale(1);
+}
+
+.map-modal-close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 3rem;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    text-shadow: 0 0 10px black;
+    transition: transform 0.2s ease;
+}
+.map-modal-close-btn:hover {
+    transform: scale(1.2);
+    color: #fde047;
+}
+
+
+/* N64 Colors */
+.n64-c { background: #facc15; color: #422006; border-color: #ca8a04; }
+.n64-c svg { stroke: #422006; }
+.n64-a { background: #3b82f6; border-color: #1d4ed8; }
+.n64-b { background: #4ade80; color: #14532d; border-color: #16a34a; }
+
+/* 3DS Colors */
+.ds-y { background: #facc15; color: #333; border-color: #ca8a04; }
+.ds-x { background: #3b82f6; border-color: #1d4ed8; }
+.ds-a { background: #ef4444; border-color: #b91c1c; }
+.ds-b { background: #fbbf24; color: #333; border-color: #d97706; }
+.ds-l, .ds-r { background: #a8a29e; color: #1c1917; font-size:1.1rem; border-color: #78716c; }
+
+/* PS5 Colors */
+.ps5-svg { width: 28px; height: 28px; }
+.ps5-triangle { background: #1a2e24; border-color: #4ade80; } .ps5-triangle svg { fill: #4ade80; }
+.ps5-circle { background: #301c24; border-color: #f43f5e; } .ps5-circle svg { fill: #f43f5e; }
+.ps5-x { background: #1e293b; border-color: #60a5fa; } .ps5-x svg { stroke: #60a5fa; }
+.ps5-square { background: #2f1d2e; border-color: #f472b6; } .ps5-square svg { fill: #f472b6; }
+.ps5-r1, .ps5-r3 { background: #374151; border-color: #9ca3af; font-size: 1.1rem; }
+
+/* --- Video Player Styling --- */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    border-radius: 12px;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
