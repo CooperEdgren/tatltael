@@ -6,6 +6,7 @@ html, body {
     width: 100%;
     overflow: hidden; /* Prevent scrolling on the body */
     font-family: 'Inter', sans-serif;
+    background-color: #03000a;
     color: white;
 }
 
@@ -288,6 +289,36 @@ html, body {
     transform: scale(1.05);
 }
 
+/* --- Toggle UI Button --- */
+.btn-toggle-ui {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 150;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: rgba(12, 10, 24, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(167, 139, 250, 0.5);
+    color: #e9d5ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease;
+}
+.btn-toggle-ui:hover {
+    transform: scale(1.1);
+    border-color: rgba(216, 180, 254, 1);
+}
+.btn-toggle-ui.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* --- Note Icon Styling --- */
 .note-icon {
     display: inline-flex;
@@ -307,6 +338,17 @@ html, body {
     transform: translateY(-2px) scale(1.1);
     box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2), inset 0 -3px 3px rgba(0,0,0,0.4);
 }
+
+/* --- Hidden Controls Styling --- */
+#main-header, #song-grid {
+    transition: opacity 0.5s ease-in-out;
+}
+.controls-hidden #main-header,
+.controls-hidden #song-grid {
+    opacity: 0;
+    pointer-events: none;
+}
+
 
 /* --- Map Item Styling --- */
 .map-item {

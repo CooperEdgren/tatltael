@@ -1,12 +1,3 @@
-// --- GLOBAL YOUTUBE API READY FUNCTION ---
-// This function is called by the YouTube Iframe API script once it's loaded.
-function onYouTubeIframeAPIReady() {
-    // We create a custom event to signal that the API is ready.
-    // This is better than relying on a global function, making the script more modular.
-    const event = new Event('youtubeApiReady');
-    document.dispatchEvent(event);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     // --- DATA STORE ---
     const songs = {
@@ -25,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- MAPS DATA ---
-    // NOTE: Make sure you have a 'maps' folder with these image files.
     const maps = [
         { name: "Ancient Castle of Ikana", src: "maps/Ancient_Castle_of_Ikana.png" },
         { name: "Beneath the Well", src: "maps/Beneath-the-Well-350x300.png" },
@@ -60,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
     // --- INSTRUMENT IMAGES ---
-    // Make sure these images are in the same folder as your index.html
     const instrumentImages = [
         'linkOcarina.webp',
         'goronDrums.png',
@@ -71,23 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- ICON & NOTE MAPPINGS ---
-    const ps5_icons = {
-        triangle: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z"></path></svg>',
-        circle: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z"></path></svg>',
-        x: '<svg class="ps5-svg" fill="none" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>',
-        square: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M3,3V21H21V3H3z M19,19H5V5H19V19z"></path></svg>',
-    };
-    const n64_icons = {
-        up: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>',
-        down: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>',
-        left: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>',
-        right: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>',
-    };
-    const noteMappings = {
-        'n64': { 'CU': { html: n64_icons.up, class: 'n64-c' }, 'CD': { html: n64_icons.down, class: 'n64-c' }, 'CL': { html: n64_icons.left, class: 'n64-c' }, 'CR': { html: n64_icons.right, class: 'n64-c' }, 'A': { html: 'A', class: 'n64-a' }, 'B': { html: 'B', class: 'n64-b' }, },
-        'ds': { 'CU': { html: 'Y', class: 'ds-y' }, 'CD': { html: 'A', class: 'ds-a' }, 'CL': { html: 'L', class: 'ds-l' }, 'CR': { html: 'R', class: 'ds-r' }, 'A': { html: 'X', class: 'ds-x' }, 'B': { html: 'B', class: 'ds-b' }, },
-        'ps5': { 'CU': { html: 'R3', class: 'ps5-r3' }, 'CD': { html: 'R1', class: 'ps5-r1' }, 'CL': { html: ps5_icons.triangle, class: 'ps5-triangle' }, 'CR': { html: ps5_icons.circle, class: 'ps5-circle' }, 'A': { html: ps5_icons.x, class: 'ps5-x' }, 'B': { html: ps5_icons.square, class: 'ps5-square' }, }
-    };
+    const ps5_icons = { triangle: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z"></path></svg>', circle: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z"></path></svg>', x: '<svg class="ps5-svg" fill="none" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>', square: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M3,3V21H21V3H3z M19,19H5V5H19V19z"></path></svg>', };
+    const n64_icons = { up: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>', down: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>', left: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>', right: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>', };
+    const noteMappings = { 'n64': { 'CU': { html: n64_icons.up, class: 'n64-c' }, 'CD': { html: n64_icons.down, class: 'n64-c' }, 'CL': { html: n64_icons.left, class: 'n64-c' }, 'CR': { html: n64_icons.right, class: 'n64-c' }, 'A': { html: 'A', class: 'n64-a' }, 'B': { html: 'B', class: 'n64-b' }, }, 'ds': { 'CU': { html: 'Y', class: 'ds-y' }, 'CD': { html: 'A', class: 'ds-a' }, 'CL': { html: 'L', class: 'ds-l' }, 'CR': { html: 'R', class: 'ds-r' }, 'A': { html: 'X', class: 'ds-x' }, 'B': { html: 'B', class: 'ds-b' }, }, 'ps5': { 'CU': { html: 'R3', class: 'ps5-r3' }, 'CD': { html: 'R1', class: 'ps5-r1' }, 'CL': { html: ps5_icons.triangle, class: 'ps5-triangle' }, 'CR': { html: ps5_icons.circle, class: 'ps5-circle' }, 'A': { html: ps5_icons.x, class: 'ps5-x' }, 'B': { html: ps5_icons.square, class: 'ps5-square' }, } };
 
     // --- DOM Elements ---
     const songSelectionView = document.getElementById('song-selection');
@@ -108,92 +83,105 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapModal = document.getElementById('map-modal');
     const mapModalImage = document.getElementById('map-modal-image');
     const mapModalClose = document.getElementById('map-modal-close');
+    const backgroundAudio = document.getElementById('background-audio');
+
+    const toggleUiButton = document.getElementById('toggle-ui-button');
+    const iconEyeOpen = document.getElementById('icon-eye-open');
+    const iconEyeClosed = document.getElementById('icon-eye-closed');
 
     // --- STATE ---
     let lastClickedButtonRect = null;
+    let audioFadeInterval;
+    let hideUiTimeout;
+
+    // --- AUDIO CONTROL ---
+    function fadeAudio(targetVolume) {
+        if (!backgroundAudio) return;
+
+        clearInterval(audioFadeInterval);
+        const startVolume = backgroundAudio.volume;
+        const difference = targetVolume - startVolume;
+        const duration = 1000; // 1 second fade duration
+        const stepTime = 50;
+        const steps = duration / stepTime;
+        const volumeStep = difference / steps;
+
+        if (difference === 0) return;
+
+        audioFadeInterval = setInterval(() => {
+            const currentVolume = backgroundAudio.volume;
+            let newVolume = currentVolume + volumeStep;
+
+            // Ensure we don't go past the target volume
+            if ((volumeStep > 0 && newVolume >= targetVolume) || (volumeStep < 0 && newVolume <= targetVolume)) {
+                newVolume = targetVolume;
+                clearInterval(audioFadeInterval);
+            }
+            
+            backgroundAudio.volume = newVolume;
+
+        }, stepTime);
+    }
+
+    // Function to start background audio on the first user interaction
+    function startBackgroundMusic() {
+        if (backgroundAudio.paused) {
+            backgroundAudio.volume = 0.5; // Start at 50% volume
+            backgroundAudio.play().catch(e => console.error("Audio autoplay was prevented. Needs user interaction.", e));
+        }
+        // This listener only needs to run once.
+        document.body.removeEventListener('click', startBackgroundMusic);
+        document.body.removeEventListener('keydown', startBackgroundMusic);
+    }
+    // Listen for the first click or keydown anywhere on the page to start music.
+    document.body.addEventListener('click', startBackgroundMusic, { once: true });
+    document.body.addEventListener('keydown', startBackgroundMusic, { once: true });
+
 
     // --- VIEW SWITCHING LOGIC ---
     function switchView(viewToShow) {
-        // Hide all views first
         document.querySelectorAll('.view-container').forEach(v => v.classList.remove('is-active'));
-        // Show the requested view
         if (viewToShow) {
             viewToShow.classList.add('is-active');
         }
-        // Toggle Tingle's visibility. He should only be on the main menu.
-        tingleContainer.style.display = (viewToShow === songSelectionView) ? 'block' : 'none';
+        const isSongSelection = viewToShow === songSelectionView;
+        tingleContainer.style.display = isSongSelection ? 'block' : 'none';
+        toggleUiButton.style.display = isSongSelection ? 'flex' : 'none';
+        if (isSongSelection) {
+            resetHideUiTimeout();
+        } else {
+            clearTimeout(hideUiTimeout);
+        }
     }
 
     // --- Utility Functions ---
-    const getYouTubeID = (url) => {
-        try {
-            const urlObj = new URL(url);
-            return urlObj.searchParams.get('v');
-        } catch (e) {
-            console.error('Invalid YouTube URL:', url);
-            return null;
-        }
-    };
-    
-    const createNoteHTML = (note, platform) => {
-        const mapping = noteMappings[platform]?.[note];
-        return mapping ? `<div class="note-icon ${mapping.class}">${mapping.html}</div>` : '';
-    };
+    const getYouTubeID = (url) => { try { return new URL(url).searchParams.get('v'); } catch (e) { console.error('Invalid YouTube URL:', url); return null; } };
+    const createNoteHTML = (note, platform) => { const mapping = noteMappings[platform]?.[note]; return mapping ? `<div class="note-icon ${mapping.class}">${mapping.html}</div>` : ''; };
+    const generateNotesSection = (title, platform, songNotes) => { const notesHTML = songNotes.map(note => createNoteHTML(note, platform)).join(''); return `<div><h3 class="text-2xl font-bold mb-3 text-purple-200 tracking-wide font-zelda">${title}</h3><div class="flex flex-wrap items-center bg-black/40 p-3 rounded-lg min-h-[72px] shadow-inner">${notesHTML}</div></div>`; };
+    const getAnimationTransforms = (elementRect) => { const viewportWidth = window.innerWidth; const viewportHeight = window.innerHeight; const scaleX = elementRect.width / viewportWidth; const scaleY = elementRect.height / viewportHeight; const translateX = elementRect.left + elementRect.width / 2 - viewportWidth / 2; const translateY = elementRect.top + elementRect.height / 2 - viewportHeight / 2; return `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`; }
 
-    const generateNotesSection = (title, platform, songNotes) => {
-        const notesHTML = songNotes.map(note => createNoteHTML(note, platform)).join('');
-        return `
-            <div>
-                <h3 class="text-2xl font-bold mb-3 text-purple-200 tracking-wide font-zelda">${title}</h3>
-                <div class="flex flex-wrap items-center bg-black/40 p-3 rounded-lg min-h-[72px] shadow-inner">
-                    ${notesHTML}
-                </div>
-            </div>`;
-    };
-
-    const getAnimationTransforms = (elementRect) => {
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-
-        const scaleX = elementRect.width / viewportWidth;
-        const scaleY = elementRect.height / viewportHeight;
-
-        const translateX = elementRect.left + elementRect.width / 2 - viewportWidth / 2;
-        const translateY = elementRect.top + elementRect.height / 2 - viewportHeight / 2;
-        
-        return `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
-    }
-
+    // --- SONG VIEW LOGIC ---
     const showSongDetails = (songKey) => {
         const song = songs[songKey];
         if (!song || !lastClickedButtonRect) return;
 
-        // 1. Populate content first
+        // Fade out background audio
+        fadeAudio(0);
+
         songTitleEl.textContent = song.name;
         const videoId = getYouTubeID(song.url);
         youtubePlayer.src = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&iv_load_policy=3&modestbranding=1&loop=1&playlist=${videoId}` : '';
         
-        notesContainer.innerHTML = `
-            ${generateNotesSection('PlayStation', 'ps5', song.n64)}
-            ${generateNotesSection('Nintendo 64', 'n64', song.n64)}
-            ${generateNotesSection('Nintendo 3DS', 'ds', song.n64)}
-        `;
-
-        // Reset instrument image to default when a new song is selected
+        notesContainer.innerHTML = `${generateNotesSection('PlayStation', 'ps5', song.n64)}${generateNotesSection('Nintendo 64', 'n64', song.n64)}${generateNotesSection('Nintendo 3DS', 'ds', song.n64)}`;
         currentImageIndex = 0;
         instrumentImage.src = instrumentImages[currentImageIndex];
 
-
-        // 2. Prepare animation (set initial state)
         const startTransform = getAnimationTransforms(lastClickedButtonRect);
         songDetailView.style.transform = startTransform;
         songDetailView.style.transformOrigin = 'center';
         
-        // 3. Make views switch
-        songSelectionView.classList.remove('is-active');
-        songDetailView.classList.add('is-active');
+        switchView(songDetailView);
 
-        // 4. Trigger the animation to the final state
         requestAnimationFrame(() => {
             songDetailView.style.transform = 'translate(0, 0) scale(1)';
         });
@@ -202,15 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const showSongSelection = () => {
         if (!lastClickedButtonRect) return;
 
+        // Fade in background audio
+        fadeAudio(0.5);
+
+        youtubePlayer.src = 'about:blank';
+        
         const endTransform = getAnimationTransforms(lastClickedButtonRect);
         songDetailView.style.transform = endTransform;
-
-        songSelectionView.classList.add('is-active');
-        songDetailView.classList.remove('is-active');
-
-        songDetailView.addEventListener('transitionend', () => {
-            youtubePlayer.src = 'about:blank';
-        }, { once: true });
+        switchView(songSelectionView);
     };
 
     const populateSongGrid = () => {
@@ -221,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.className = 'btn-song text-xl p-6 font-zelda';
             button.textContent = song.name;
             button.style.animationDelay = `${index * 60}ms`;
-            
             button.addEventListener('click', (event) => {
                 lastClickedButtonRect = event.currentTarget.getBoundingClientRect();
                 showSongDetails(key);
@@ -230,62 +216,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const handleInstrumentClick = () => {
-        currentImageIndex = (currentImageIndex + 1) % instrumentImages.length;
-        instrumentImage.src = instrumentImages[currentImageIndex];
-    };
+    const handleInstrumentClick = () => { currentImageIndex = (currentImageIndex + 1) % instrumentImages.length; instrumentImage.src = instrumentImages[currentImageIndex]; };
 
     // --- MAPS LOGIC ---
-    const openMapModal = (src) => {
-        mapModalImage.src = src;
-        mapModal.classList.add('is-visible');
-    };
-
-    const closeMapModal = () => {
-        mapModal.classList.remove('is-visible');
-    };
-
+    const openMapModal = (src) => { mapModalImage.src = src; mapModal.classList.add('is-visible'); };
+    const closeMapModal = () => { mapModal.classList.remove('is-visible'); };
     const populateMapsGrid = () => {
         mapGrid.innerHTML = '';
         maps.forEach(map => {
             const mapItem = document.createElement('div');
             mapItem.className = 'map-item';
-            mapItem.innerHTML = `
-                <img src="${map.src}" alt="${map.name}" loading="lazy" onerror="this.src='https://placehold.co/400x300/0d0818/a78bfa?text=Map+Not+Found'">
-                <h3>${map.name}</h3>
-            `;
-            // Add click listener to each map item
+            // **FIX**: Added 'https://' to the placeholder URL to make it absolute.
+            mapItem.innerHTML = `<img src="${map.src}" alt="${map.name}" loading="lazy" onerror="this.src='https://placehold.co/400x300/0d0818/a78bfa?text=Map+Not+Found'"><h3>${map.name}</h3>`;
             mapItem.addEventListener('click', () => openMapModal(map.src));
             mapGrid.appendChild(mapItem);
         });
     };
-    
-    const showMapsView = () => {
-        switchView(mapsView);
+    const showMapsView = () => { switchView(mapsView); };
+    const showSongSelectionFromMaps = () => { switchView(songSelectionView); };
+
+
+    // --- UI Toggle Logic ---
+    const resetHideUiTimeout = () => {
+        clearTimeout(hideUiTimeout);
+        toggleUiButton.classList.remove('fade-out');
+        hideUiTimeout = setTimeout(() => {
+            toggleUiButton.classList.add('fade-out');
+        }, 15000); // 15 seconds
     };
 
-    const showSongSelectionFromMaps = () => {
-        switchView(songSelectionView);
+    const toggleControlsVisibility = () => {
+        songSelectionView.classList.toggle('controls-hidden');
+        const isHidden = songSelectionView.classList.contains('controls-hidden');
+        iconEyeOpen.classList.toggle('hidden', isHidden);
+        iconEyeClosed.classList.toggle('hidden', !isHidden);
+        resetHideUiTimeout();
     };
-
-
-    // --- Initialisation ---
+    // --- EVENT LISTENERS ---
     populateSongGrid();
-    populateMapsGrid(); 
+    populateMapsGrid();
     backButton.addEventListener('click', showSongSelection);
     instrumentImage.addEventListener('click', handleInstrumentClick);
     tingleContainer.addEventListener('click', showMapsView);
     mapsBackButton.addEventListener('click', showSongSelectionFromMaps);
-    
-    // Map Modal Listeners
     mapModalClose.addEventListener('click', closeMapModal);
-    mapModal.addEventListener('click', (e) => {
-        // Close if the user clicks on the dark background overlay, but not the image itself
-        if (e.target === mapModal) {
-            closeMapModal();
-        }
-    });
+    mapModal.addEventListener('click', (e) => { if (e.target === mapModal) { closeMapModal(); } });
+    toggleUiButton.addEventListener('click', toggleControlsVisibility);
+
+    // Inactivity Listeners
+    document.addEventListener('mousemove', resetHideUiTimeout);
+    document.addEventListener('keydown', resetHideUiTimeout);
+    document.addEventListener('click', resetHideUiTimeout);
     
-    // Set initial view state
     switchView(songSelectionView);
 });
