@@ -1,8 +1,81 @@
-// --- ICON DATA ---
-const ps5_icons = { triangle: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z"></path></svg>', circle: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z"></path></svg>', x: '<svg class="ps5-svg" fill="none" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>', square: '<svg class="ps5-svg" viewBox="0 0 24 24"><path d="M3,3V21H21V3H3z M19,19H5V5H19V19z"></path></svg>', };
-const n64_icons = { up: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>', down: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>', left: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>', right: '<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>', };
+// --- PLATFORM CONFIGURATIONS ---
+// This object holds the display name, logo, and controller image for each platform.
+export const platforms = {
+    'n64': {
+        name: 'Nintendo 64',
+        logo: 'logos/n64/Nintendo_64_wordmark.svg.png',
+        controller: 'logos/n64/controller.png'
+    },
+    'gamecube': {
+        name: 'GameCube (Wii VC)',
+        logo: 'logos/gamecube/Nintendo_GameCube_Official_Logo.svg.png',
+        controller: 'logos/gamecube/Control Screen Colored.svg'
+    },
+    'n3ds': {
+        name: 'Nintendo 3DS',
+        logo: 'logos/3ds/nintendo-3ds-logo-svg-vector.svg',
+        controller: 'logos/nintendo-3ds/controller.png'
+    },
+    'ps': {
+        name: 'PlayStation',
+        logo: 'logos/ps5/PlayStation_Wordmark.svg.png',
+        controller: 'logos/ps5/ControlSolid.svg'
+    },
+    'xbox': {
+        name: 'Xbox',
+        logo: 'logos/xbox/Xbox_wordmark.svg.png',
+        controller: 'logos/xbox/Control Solid SVG.svg'
+    }
+};
 
-// --- EXPORTED DATA ---
+// --- NOTE MAPPINGS ---
+// Maps the base N64 notes to the corresponding button icon and CSS class for each platform.
+export const noteMappings = {
+    'n64': {
+        'CU': { icon: 'buttons/N64/ButtonIcon-N64-C-Up.svg', class: 'n64-c' },
+        'CD': { icon: 'buttons/N64/ButtonIcon-N64-C-Down.svg', class: 'n64-c' },
+        'CL': { icon: 'buttons/N64/ButtonIcon-N64-C-Left.svg', class: 'n64-c' },
+        'CR': { icon: 'buttons/N64/ButtonIcon-N64-C-Right.svg', class: 'n64-c' },
+        'A': { icon: 'buttons/N64/ButtonIcon-N64-A.svg', class: 'n64-a' },
+        'B': { icon: 'buttons/N64/ButtonIcon-N64-B.svg', class: 'n64-b' },
+    },
+    'gamecube': { // Mapped from N64 for Wii Virtual Console
+        'CU': { icon: 'buttons/GAMECUBE/C Stick Up.svg', class: 'gc-c' },
+        'CD': { icon: 'buttons/GAMECUBE/C Stick Down.svg', class: 'gc-c' },
+        'CL': { icon: 'buttons/GAMECUBE/C Stick Left.svg', class: 'gc-c' },
+        'CR': { icon: 'buttons/GAMECUBE/C Stick Right.svg', class: 'gc-c' },
+        'A': { icon: 'buttons/GAMECUBE/A.svg', class: 'gc-a' },
+        'B': { icon: 'buttons/GAMECUBE/B.svg', class: 'gc-b' },
+    },
+    'n3ds': { // 3DS Remake controls
+        'CU': { icon: 'buttons/3DS/Y.svg', class: 'n3ds-y' },
+        'CD': { icon: 'buttons/3DS/A.svg', class: 'n3ds-a' },
+        'CL': { icon: 'buttons/3DS/L.svg', class: 'n3ds-l' },
+        'CR': { icon: 'buttons/3DS/R.svg', class: 'n3ds-r' },
+        'A': { icon: 'buttons/3DS/X.svg', class: 'n3ds-x' },
+        'B': { icon: 'buttons/3DS/B.svg', class: 'n3ds-b' },
+    },
+    'ps': { // A modern PlayStation mapping
+        'CU': { icon: 'buttons/PS5/Right Stick Click.svg', class: 'ps-r3' },
+        'CD': { icon: 'buttons/PS5/R1.svg', class: 'ps-r1' },
+        'CL': { icon: 'buttons/PS5/Triangle.svg', class: 'ps-triangle' },
+        'CR': { icon: 'buttons/PS5/Circle.svg', class: 'ps-circle' },
+        'A': { icon: 'buttons/PS5/Cross.svg', class: 'ps-x' },
+        'B': { icon: 'buttons/PS5/Square.svg', class: 'ps-square' },
+    },
+    'xbox': { // Mapped from PlayStation controls
+        'CU': { icon: 'buttons/XBOX/Right Stick Click.svg', class: 'xbox-rs' },
+        'CD': { icon: 'buttons/XBOX/Right Bumper.svg', class: 'xbox-rb' },
+        'CL': { icon: 'buttons/XBOX/Y.svg', class: 'xbox-y' },
+        'CR': { icon: 'buttons/XBOX/B.svg', class: 'xbox-b' },
+        'A': { icon: 'buttons/XBOX/A.svg', class: 'xbox-a' },
+        'B': { icon: 'buttons/XBOX/Y.svg', class: 'xbox-x' },
+    }
+};
+
+
+// --- SONG DATA ---
+// The base notes for all songs are the N64 version. They are converted for other platforms.
 export const songs = {
     'time': { name: "Song of Time", url: "https://www.youtube.com/watch?v=ei6GYtQYaFE", n64: ['CR', 'A', 'CD', 'CR', 'A', 'CD'] },
     'healing': { name: "Song of Healing", url: "https://www.youtube.com/watch?v=xPwxDfPs_RE", n64: ['CL', 'CR', 'CD', 'CL', 'CR', 'CD'] },
@@ -18,6 +91,7 @@ export const songs = {
     'storms': { name: "Song of Storms", url: "https://www.youtube.com/watch?v=YjGICZcOFBs", n64: ['A', 'CD', 'CU', 'A', 'CD', 'CU'] },
 };
 
+// --- MAPS DATA ---
 export const maps = [
     { name: "Ancient Castle of Ikana", src: "maps/Ancient_Castle_of_Ikana.png" },
     { name: "Beneath the Well", src: "maps/Beneath-the-Well-350x300.png" },
@@ -51,6 +125,7 @@ export const maps = [
     { name: "Zora Hall", src: "maps/Zora_Hall.jpg" }
 ];
 
+// --- BOMBER'S NOTEBOOK DATA ---
 export const bombersNotebookData = [
     {
         id: 'anju', name: 'Anju', description: 'The anxious innkeeper of the Stock Pot Inn.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Anju',
@@ -95,14 +170,13 @@ export const bombersNotebookData = [
     },
 ];
 
+// --- INSTRUMENT & EVENT ICONS ---
 export const instrumentImages = [
     'linkOcarina.webp',
     'goronDrums.png',
     'zoraGuitar.png',
     'pipesOfAwakening.png'
 ];
-
-export const noteMappings = { 'n64': { 'CU': { html: n64_icons.up, class: 'n64-c' }, 'CD': { html: n64_icons.down, class: 'n64-c' }, 'CL': { html: n64_icons.left, class: 'n64-c' }, 'CR': { html: n64_icons.right, class: 'n64-c' }, 'A': { html: 'A', class: 'n64-a' }, 'B': { html: 'B', class: 'n64-b' }, }, 'ds': { 'CU': { html: 'Y', class: 'ds-y' }, 'CD': { html: 'A', class: 'ds-a' }, 'CL': { html: 'L', class: 'ds-l' }, 'CR': { html: 'R', class: 'ds-r' }, 'A': { html: 'X', class: 'ds-x' }, 'B': { html: 'B', class: 'ds-b' }, }, 'ps5': { 'CU': { html: 'R3', class: 'ps5-r3' }, 'CD': { html: 'R1', class: 'ps5-r1' }, 'CL': { html: ps5_icons.triangle, class: 'ps5-triangle' }, 'CR': { html: ps5_icons.circle, class: 'ps5-circle' }, 'A': { html: ps5_icons.x, class: 'ps5-x' }, 'B': { html: ps5_icons.square, class: 'ps5-square' }, } };
 
 export const eventIcons = {
     event: `<svg class="event-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"></path></svg>`,

@@ -78,7 +78,7 @@
                             <iframe id="youtube-player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
-                    <div id="notes-container" class="lg:w-5/12 w-full space-y-5 overflow-y-auto">
+                    <div id="notes-container" class="lg:w-5/12 w-full space-y-5 overflow-y-auto pr-2">
                         <!-- Note sections will be injected here -->
                     </div>
                 </div>
@@ -159,6 +159,15 @@
         <button id="map-modal-close" class="map-modal-close-btn">&times;</button>
         <img id="map-modal-image" src="" alt="Full size map">
     </div>
+
+    <!-- Controller Image Modal -->
+    <div id="controller-modal" class="controller-modal-overlay">
+        <button id="controller-modal-close" class="controller-modal-close-btn">&times;</button>
+        <div id="controller-modal-content">
+            <img id="controller-modal-image" src="" alt="Controller Layout">
+        </div>
+    </div>
+
 
     <!-- Main Application Script (as a module) -->
     <script type="module" src="app.js" defer></script>

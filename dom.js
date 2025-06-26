@@ -36,5 +36,10 @@ export const detailsCharImg = document.getElementById('details-char-img');
 export const detailsCharName = document.getElementById('details-char-name');
 export const detailsCharDesc = document.getElementById('details-char-desc');
 
+// --- Controller Modal Elements ---
+export const controllerModal = document.getElementById('controller-modal');
+export const controllerModalImage = document.getElementById('controller-modal-image');
+export const controllerModalClose = document.getElementById('controller-modal-close');
+
 // --- Other ---
 export const backgroundAudio = document.getElementById('background-audio');

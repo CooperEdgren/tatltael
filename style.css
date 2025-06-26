@@ -334,17 +334,34 @@ html, body {
     width: 52px; height: 52px;
     border-radius: 50%;
     margin: 4px;
+    padding: 8px; /* Add padding for the image inside */
     font-weight: bold;
     color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -3px 3px rgba(0,0,0,0.4);
     font-size: 1.4rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 2px solid rgba(0,0,0,0.3);
+    cursor: pointer;
+    background-color: #333; /* A default background */
 }
 .note-icon:hover {
     transform: translateY(-2px) scale(1.1);
     box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2), inset 0 -3px 3px rgba(0,0,0,0.4);
 }
+.note-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/* --- Platform Logo --- */
+.platform-logo {
+    height: 40px;
+    margin-bottom: 0.75rem; /* Corresponds to mb-3 */
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
 
 /* --- Hidden Controls Styling --- */
 #main-title, #song-grid {
@@ -441,6 +458,61 @@ html, body {
     transform: scale(1.2);
     color: #fde047;
 }
+
+/* --- Controller Modal --- */
+.controller-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+.controller-modal-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+#controller-modal-content {
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+}
+.controller-modal-overlay.is-visible #controller-modal-content {
+    transform: scale(1);
+}
+#controller-modal-image {
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 25px rgba(167, 139, 250, 0.4));
+}
+.controller-modal-close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 3rem;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    text-shadow: 0 0 10px black;
+    transition: transform 0.2s ease;
+    z-index: 301;
+}
+.controller-modal-close-btn:hover {
+    transform: scale(1.2);
+    color: #fde047;
+}
+
 
 /* --- BOMBER'S NOTEBOOK STYLES --- */
 
@@ -556,26 +628,39 @@ html, body {
 }
 
 
+/* --- Button Color Schemes --- */
+
 /* N64 Colors */
-.n64-c { background: #facc15; color: #422006; border-color: #ca8a04; }
-.n64-c svg { stroke: #422006; }
-.n64-a { background: #3b82f6; border-color: #1d4ed8; }
-.n64-b { background: #4ade80; color: #14532d; border-color: #16a34a; }
+.n64-c { background: #facc15; }
+.n64-a { background: #3b82f6; }
+.n64-b { background: #4ade80; }
+
+/* GameCube Colors */
+.gc-a { background: #22c55e; } /* Green */
+.gc-b { background: #ef4444; } /* Red */
+.gc-c { background: #facc15; } /* Yellow */
 
 /* 3DS Colors */
-.ds-y { background: #facc15; color: #333; border-color: #ca8a04; }
-.ds-x { background: #3b82f6; border-color: #1d4ed8; }
-.ds-a { background: #ef4444; border-color: #b91c1c; }
-.ds-b { background: #fbbf24; color: #333; border-color: #d97706; }
-.ds-l, .ds-r { background: #a8a29e; color: #1c1917; font-size:1.1rem; border-color: #78716c; }
+.n3ds-y { background: #facc15; }
+.n3ds-x { background: #3b82f6; }
+.n3ds-a { background: #ef4444; }
+.n3ds-b { background: #fbbf24; }
+.n3ds-l, .n3ds-r { background: #a8a29e; }
 
-/* PS5 Colors */
-.ps5-svg { width: 28px; height: 28px; }
-.ps5-triangle { background: #1a2e24; border-color: #4ade80; } .ps5-triangle svg { fill: #4ade80; }
-.ps5-circle { background: #301c24; border-color: #f43f5e; } .ps5-circle svg { fill: #f43f5e; }
-.ps5-x { background: #1e293b; border-color: #60a5fa; } .ps5-x svg { stroke: #60a5fa; }
-.ps5-square { background: #2f1d2e; border-color: #f472b6; } .ps5-square svg { fill: #f472b6; }
-.ps5-r1, .ps5-r3 { background: #374151; border-color: #9ca3af; font-size: 1.1rem; }
+/* PlayStation Colors */
+.ps-triangle { background: #1a2e24; border-color: #4ade80; }
+.ps-circle { background: #301c24; border-color: #f43f5e; }
+.ps-x { background: #1e293b; border-color: #60a5fa; }
+.ps-square { background: #2f1d2e; border-color: #f472b6; }
+.ps-r1, .ps-r3 { background: #374151; border-color: #9ca3af; }
+
+/* Xbox Colors */
+.xbox-a { background: #10892a; }
+.xbox-b { background: #da2128; }
+.xbox-x { background: #0e78c8; }
+.xbox-y { background: #feca0b; }
+.xbox-rb, .xbox-rs { background: #6b7280; }
+
 
 /* --- Video Player Styling --- */
 .video-container {

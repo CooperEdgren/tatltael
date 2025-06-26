@@ -10,10 +10,11 @@ import * as notebookView from './notebook-view.js';
  */
 function main() {
     // --- INITIAL POPULATION ---
-    songView.populateSongGrid();
-    mapsView.populateMapsGrid();
-    notebookView.populateBombersNotebook();
-    audio.initializeAudio();
+    // Ensure these functions exist in their respective files or comment them out.
+    if(songView.populateSongGrid) songView.populateSongGrid();
+    if(mapsView.populateMapsGrid) mapsView.populateMapsGrid();
+    if(notebookView.populateBombersNotebook) notebookView.populateBombersNotebook();
+    if(audio.initializeAudio) audio.initializeAudio();
 
     // --- EVENT LISTENERS ---
 
@@ -21,20 +22,35 @@ function main() {
     dom.backButton.addEventListener('click', songView.showSongSelection);
     dom.instrumentImage.addEventListener('click', songView.handleInstrumentClick);
     
-    // Maps View Listeners
-    dom.tingleContainer.addEventListener('click', mapsView.showMapsView);
-    dom.mapsBackButton.addEventListener('click', () => ui.switchView(dom.songSelectionView));
-    dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
-    dom.mapModal.addEventListener('click', (e) => {
-        if (e.target === dom.mapModal) {
-            mapsView.closeMapModal();
+    // Controller Modal Listeners
+    dom.controllerModalClose.addEventListener('click', songView.closeControllerModal);
+    dom.controllerModal.addEventListener('click', (e) => {
+        // Close modal if the overlay is clicked, but not the content inside
+        if (e.target === dom.controllerModal) {
+            songView.closeControllerModal();
         }
     });
 
+    // Maps View Listeners
+    dom.tingleContainer.addEventListener('click', mapsView.showMapsView);
+    dom.mapsBackButton.addEventListener('click', songView.showSongSelection);
+    if(mapsView.closeMapModal) {
+        dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
+        dom.mapModal.addEventListener('click', (e) => {
+            if (e.target === dom.mapModal) {
+                mapsView.closeMapModal();
+            }
+        });
+    }
+
     // Notebook View Listeners
-    dom.bombersNotebookIconContainer.addEventListener('click', notebookView.showBombersNotebook);
+    if(notebookView.showBombersNotebook) {
+        dom.bombersNotebookIconContainer.addEventListener('click', notebookView.showBombersNotebook);
+    }
     dom.bombersBackButton.addEventListener('click', songView.showSongSelection);
-    dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
+    if(notebookView.saveBomberCode) {
+        dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
+    }
 
     // General UI Listeners
     dom.toggleUiButton.addEventListener('click', ui.toggleControlsVisibility);
