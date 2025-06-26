@@ -49,6 +49,51 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Zora Hall", src: "maps/Zora_Hall.jpg" }
     ];
     
+    // --- BOMBER'S NOTEBOOK DATA ---
+    const bombersNotebookData = [
+        {
+            id: 'anju', name: 'Anju', description: 'The anxious innkeeper of the Stock Pot Inn.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Anju',
+            events: [
+                { id: 'anju1', day: 1, time: '14:10', description: "The Postman delivers a letter from Kafei to Anju.", icon: 'event' },
+                { id: 'anju2', day: 1, time: '16:30', description: "Speak to Anju wearing the Kafei Mask to schedule a meeting in the kitchen at night.", icon: 'event' },
+                { id: 'anju3', day: 1, time: '23:30', description: "Meet Anju in the inn's kitchen. She gives you the Letter to Kafei.", icon: 'reward' },
+                { id: 'anju4', day: 2, time: '16:00', description: "Anju worries in her room. If you didn't meet her, she goes to Romani Ranch.", icon: 'event' },
+                { id: 'anju5', day: 3, time: '13:00', description: "Anju waits in her room for Kafei's return. Give her the Pendant of Memories to receive the Couple's Mask.", icon: 'reward' }
+            ]
+        },
+        {
+            id: 'kafei', name: 'Kafei', description: 'A resident of Clock Town who has mysteriously vanished.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Kafei',
+            events: [
+                { id: 'kafei1', day: 1, time: '15:15', description: "Mail the Letter to Kafei in a postbox.", icon: 'event' },
+                { id: 'kafei2', day: 2, time: '13:45', description: "The Postman delivers the letter to Kafei's hideout behind the Curiosity Shop.", icon: 'event' },
+                { id: 'kafei3', day: 2, time: '16:10', description: "Meet Kafei in his hideout. He gives you the Pendant of Memories.", icon: 'reward' },
+                { id: 'kafei4', day: 3, time: '13:00', description: "Confront Sakon in Ikana Canyon to retrieve the Sun's Mask. Kafei gives you the Keaton Mask and a letter for his mother.", icon: 'reward' },
+                 { id: 'kafei5', day: 3, time: '16:30', description: "Kafei returns to the Stock Pot Inn to reunite with Anju.", icon: 'event' }
+            ]
+        },
+        {
+            id: 'romani', name: 'Romani', description: 'A young girl who runs Romani Ranch with her sister.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Romani',
+            events: [
+                { id: 'romani1', day: 1, time: '06:00', description: "Talk to Romani and agree to help her defend the barn from 'Them'.", icon: 'event' },
+                { id: 'romani2', day: 1, time: '02:30', description: "Defend the barn from the alien invaders until 5:15 AM.", icon: 'reward' },
+                { id: 'romani3', day: 2, time: '18:00', description: "If you succeeded, escort Cremia's milk delivery to Clock Town, defending it from the Gorman Brothers.", icon: 'reward' }
+            ]
+        },
+        {
+            id: 'gorman', name: 'Gorman Bros.', description: 'A shady pair of brothers who dislike Cremia.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Gorman',
+            events: [
+                { id: 'gorman1', day: 2, time: '18:00', description: "They will attempt to raid Cremia's milk cart on the way to Clock Town.", icon: 'event' }
+            ]
+        },
+         {
+            id: 'granny', name: 'Anju\'s Granny', description: 'An old woman at the Stock Pot Inn with stories to tell.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Granny',
+            events: [
+                { id: 'granny1', day: 1, time: '08:00', description: "Listen to her 2-hour story 'Carnival of Time' with the All-Night Mask to get a Piece of Heart.", icon: 'reward' },
+                { id: 'granny2', day: 2, time: '08:00', description: "Listen to her 6-hour story 'The Four Giants' with the All-Night Mask to get another Piece of Heart.", icon: 'reward' },
+            ]
+        },
+    ];
+    
     // --- INSTRUMENT IMAGES ---
     const instrumentImages = [
         'linkOcarina.webp',
@@ -68,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const songSelectionView = document.getElementById('song-selection');
     const songDetailView = document.getElementById('song-detail-view');
     const mapsView = document.getElementById('maps-view');
+    const bombersNotebookView = document.getElementById('bombers-notebook-view');
     
     const songGrid = document.getElementById('song-grid');
     const songTitleEl = document.getElementById('song-title');
@@ -77,9 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const instrumentImage = document.getElementById('instrument-image');
 
     const tingleContainer = document.getElementById('tingle-container');
+    const bombersNotebookIconContainer = document.getElementById('bombers-notebook-icon-container');
     const mapGrid = document.getElementById('map-grid');
     const mapsBackButton = document.getElementById('maps-back-button');
-    // Map Modal elements
+    const bombersBackButton = document.getElementById('bombers-back-button');
+    const bomberCodeInput = document.getElementById('bomber-code-input');
+    const bomberCodeSavedMessage = document.getElementById('bomber-code-saved-message');
+    
     const mapModal = document.getElementById('map-modal');
     const mapModalImage = document.getElementById('map-modal-image');
     const mapModalClose = document.getElementById('map-modal-close');
@@ -89,10 +139,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const iconEyeOpen = document.getElementById('icon-eye-open');
     const iconEyeClosed = document.getElementById('icon-eye-closed');
 
+    // Notebook DOM elements
+    const notebookCharacters = document.getElementById('notebook-characters');
+    const notebookTimeline = document.getElementById('notebook-timeline');
+    const detailsCharImg = document.getElementById('details-char-img');
+    const detailsCharName = document.getElementById('details-char-name');
+    const detailsCharDesc = document.getElementById('details-char-desc');
+
     // --- STATE ---
     let lastClickedButtonRect = null;
     let audioFadeInterval;
     let hideUiTimeout;
+    let completedEvents = JSON.parse(localStorage.getItem('completedEvents')) || [];
 
     // --- AUDIO CONTROL ---
     function fadeAudio(targetVolume) {
@@ -146,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const isSongSelection = viewToShow === songSelectionView;
         tingleContainer.style.display = isSongSelection ? 'block' : 'none';
+        bombersNotebookIconContainer.style.display = isSongSelection ? 'block' : 'none';
         toggleUiButton.style.display = isSongSelection ? 'flex' : 'none';
         if (isSongSelection) {
             resetHideUiTimeout();
@@ -188,16 +247,19 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const showSongSelection = () => {
-        if (!lastClickedButtonRect) return;
-
-        // Fade in background audio
         fadeAudio(0.5);
-
         youtubePlayer.src = 'about:blank';
-        
-        const endTransform = getAnimationTransforms(lastClickedButtonRect);
-        songDetailView.style.transform = endTransform;
-        switchView(songSelectionView);
+        if (lastClickedButtonRect) {
+            const endTransform = getAnimationTransforms(lastClickedButtonRect);
+            songDetailView.style.transform = endTransform;
+        }
+        // A bit of a hack to prevent animation clash when coming from notebook
+        const fromNotebook = document.querySelector('.view-container.is-active') === bombersNotebookView;
+        if (fromNotebook) {
+            setTimeout(() => switchView(songSelectionView), 50);
+        } else {
+            switchView(songSelectionView);
+        }
     };
 
     const populateSongGrid = () => {
@@ -234,7 +296,107 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const showMapsView = () => { switchView(mapsView); };
     const showSongSelectionFromMaps = () => { switchView(songSelectionView); };
+    
+    // --- BOMBER'S NOTEBOOK LOGIC ---
+    const eventIcons = {
+        event: `<svg class="event-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"></path></svg>`,
+        reward: `<svg class="event-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4-4h-8v-2h8v2zm0-4h-8v-2h8v2z"></path></svg>`,
+    };
 
+    function populateBombersNotebook() {
+        notebookCharacters.innerHTML = '';
+        // Clear existing timeline rows before adding new ones
+        notebookTimeline.querySelectorAll('.timeline-row').forEach(row => row.remove());
+
+        bombersNotebookData.forEach((char, index) => {
+            // Create character portrait
+            const charItem = document.createElement('div');
+            charItem.className = 'character-item';
+            charItem.dataset.charId = char.id;
+            charItem.innerHTML = `<img src="${char.img}" alt="${char.name}" loading="lazy">`;
+            charItem.addEventListener('click', () => {
+                updateNotebookDetails(char.id);
+                document.querySelectorAll('.character-item').forEach(item => item.classList.remove('active'));
+                charItem.classList.add('active');
+            });
+            notebookCharacters.appendChild(charItem);
+
+            // Create timeline row
+            const timelineRow = document.createElement('div');
+            timelineRow.className = 'timeline-row';
+            timelineRow.id = `timeline-row-${char.id}`;
+
+            char.events.forEach(event => {
+                const dayIndex = event.day - 1;
+                const [hours, minutes] = event.time.split(':').map(Number);
+                const totalMinutesInDay = 12 * 60; // 6am to 6pm is 12 hours
+                const eventMinutes = (hours-6)*60 + minutes;
+                const topPercentage = (eventMinutes / totalMinutesInDay) * 100;
+                
+                const eventMarker = document.createElement('div');
+                eventMarker.className = 'event-marker';
+                if(completedEvents.includes(event.id)) {
+                    eventMarker.classList.add('completed');
+                }
+                eventMarker.style.top = `${Math.max(0, Math.min(100, topPercentage))}%`;
+                eventMarker.style.left = `${(100/3) * dayIndex + (100/6)}%`
+                eventMarker.innerHTML = eventIcons[event.icon] || eventIcons.event;
+                
+                eventMarker.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    updateNotebookDetails(char.id, event.id);
+                    toggleEventCompletion(event.id);
+                });
+                timelineRow.appendChild(eventMarker);
+            });
+            notebookTimeline.appendChild(timelineRow);
+        });
+    }
+
+    function toggleEventCompletion(eventId) {
+        const eventIndex = completedEvents.indexOf(eventId);
+        if (eventIndex > -1) {
+            completedEvents.splice(eventIndex, 1);
+        } else {
+            completedEvents.push(eventId);
+        }
+        localStorage.setItem('completedEvents', JSON.stringify(completedEvents));
+        populateBombersNotebook(); // Repopulate to update styles
+    }
+
+    function updateNotebookDetails(charId, eventId = null) {
+        const char = bombersNotebookData.find(c => c.id === charId);
+        if (!char) return;
+
+        if (eventId) {
+            const event = char.events.find(e => e.id === eventId);
+            if(event) {
+                detailsCharImg.src = char.img;
+                detailsCharName.textContent = `[${event.day} - ${event.time}] ${char.name}`;
+                detailsCharDesc.textContent = `${event.description} (Click to mark as ${completedEvents.includes(eventId) ? 'incomplete' : 'complete'})`;
+            }
+        } else {
+            detailsCharImg.src = char.img;
+            detailsCharName.textContent = char.name;
+            detailsCharDesc.textContent = char.description;
+        }
+    }
+
+    const showBombersNotebook = () => {
+        switchView(bombersNotebookView);
+        const savedCode = localStorage.getItem('bomberCode');
+        if (savedCode) {
+            bomberCodeInput.value = savedCode;
+        }
+    };
+    
+    const saveBomberCode = () => {
+        localStorage.setItem('bomberCode', bomberCodeInput.value);
+        bomberCodeSavedMessage.style.opacity = '1';
+        setTimeout(() => {
+            bomberCodeSavedMessage.style.opacity = '0';
+        }, 2000);
+    };
 
     // --- UI Toggle Logic ---
     const resetHideUiTimeout = () => {
@@ -252,18 +414,22 @@ document.addEventListener('DOMContentLoaded', () => {
         iconEyeClosed.classList.toggle('hidden', !isHidden);
         resetHideUiTimeout();
     };
-    // --- EVENT LISTENERS ---
+    // --- INITIALIZATION & EVENT LISTENERS ---
     populateSongGrid();
     populateMapsGrid();
+    populateBombersNotebook();
+
     backButton.addEventListener('click', showSongSelection);
     instrumentImage.addEventListener('click', handleInstrumentClick);
     tingleContainer.addEventListener('click', showMapsView);
-    mapsBackButton.addEventListener('click', showSongSelectionFromMaps);
+    mapsBackButton.addEventListener('click', () => switchView(songSelectionView));
+    bombersBackButton.addEventListener('click', showSongSelection);
+    bombersNotebookIconContainer.addEventListener('click', showBombersNotebook);
+    bomberCodeInput.addEventListener('input', saveBomberCode);
     mapModalClose.addEventListener('click', closeMapModal);
     mapModal.addEventListener('click', (e) => { if (e.target === mapModal) { closeMapModal(); } });
     toggleUiButton.addEventListener('click', toggleControlsVisibility);
 
-    // Inactivity Listeners
     document.addEventListener('mousemove', resetHideUiTimeout);
     document.addEventListener('keydown', resetHideUiTimeout);
     document.addEventListener('click', resetHideUiTimeout);

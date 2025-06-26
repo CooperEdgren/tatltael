@@ -27,9 +27,14 @@
         <img src="clocktown.png" alt="Clock Town" id="clocktown-image">
     </div>
 
-    <!-- Tingle! -->
-    <div id="tingle-container">
-        <img src="tinglemyboy.png" alt="Tingle" id="tingle-image">
+    <!-- Corner Icons -->
+    <div class="corner-icons-container">
+        <div id="tingle-container">
+            <img src="tinglemyboy.png" alt="Tingle" id="tingle-image">
+        </div>
+        <div id="bombers-notebook-icon-container">
+             <img src="bombers-notebook.png" alt="Bomber's Notebook" id="bombers-notebook-icon">
+        </div>
     </div>
 
 
@@ -38,18 +43,16 @@
 
         <!-- Main Song Selection Screen -->
         <div id="song-selection" class="view-container is-active">
-            <header class="mb-8">
-                <!-- Animated Fairy Container -->
+            <header class="mb-8" id="main-header">
                 <div id="fairy-container" class="w-28 h-28 mx-auto mb-4">
                     <div class="fairy" id="light-fairy"></div>
                     <div class="fairy" id="dark-fairy"></div>
                 </div>
-                <h1 class="text-6xl md:text-8xl font-zelda text-purple-200 title-reveal">TatlTael</h1>
+                <h1 id="main-title" class="text-6xl md:text-8xl font-zelda text-purple-200 title-reveal">TatlTael</h1>
             </header>
             <main id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
                 <!-- Song buttons will be dynamically injected here -->
             </main>
-             <!-- Hide/Show UI Button -->
             <button id="toggle-ui-button" class="btn-toggle-ui">
                 <svg id="icon-eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 <svg id="icon-eye-closed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88"></path></svg>
@@ -58,12 +61,10 @@
 
         <!-- Song Detail View -->
         <div id="song-detail-view" class="view-container">
-            <!-- This inner container is for content, the parent handles animation -->
             <div class="w-full h-full max-w-6xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
                     <div class="flex items-center gap-4">
                         <h2 id="song-title" class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow"></h2>
-                        <!-- Clickable instrument image -->
                         <img id="instrument-image" src="linkOcarina.webp" alt="Instrument" class="h-16 object-contain">
                     </div>
                     <button id="back-button" class="btn-back">
@@ -100,6 +101,58 @@
              </div>
         </div>
 
+        <!-- Bomber's Notebook View -->
+        <div id="bombers-notebook-view" class="view-container">
+            <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
+                <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Bomber's Notebook</h2>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="bomber-code-input" class="bomber-code-input-sm" maxlength="5" placeholder="Code...">
+                             <p id="bomber-code-saved-message" class="text-green-400 text-sm opacity-0 transition-opacity duration-500">Saved!</p>
+                        </div>
+                    </div>
+                    <button id="bombers-back-button" class="btn-back">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+                        Song Select
+                    </button>
+                </header>
+                <main class="flex-grow flex flex-col notebook-bg">
+                    <!-- Notebook Header -->
+                    <div class="notebook-header-grid">
+                        <div class="text-center font-bold">Time of Day</div>
+                        <div class="text-center font-bold day-header">1st</div>
+                        <div class="text-center font-bold day-header">2nd</div>
+                        <div class="text-center font-bold day-header">Final</div>
+                    </div>
+
+                    <!-- Notebook Content -->
+                    <div class="flex-grow notebook-content-grid overflow-hidden">
+                        <div id="notebook-characters" class="overflow-y-auto">
+                            <!-- Character portraits injected here -->
+                        </div>
+                        <div id="notebook-timeline" class="grid grid-cols-3 relative overflow-y-auto">
+                            <div class="day-column bg-blue-900/30"></div>
+                            <div class="day-column bg-red-900/40"></div>
+                            <div class="day-column bg-purple-900/30"></div>
+                             <!-- Event timelines injected here -->
+                        </div>
+                    </div>
+
+                     <!-- Notebook Details Footer -->
+                    <div id="notebook-details-footer" class="p-3 bg-black/40 rounded-b-lg mt-auto">
+                        <div id="notebook-details-content" class="flex items-center gap-4">
+                           <img id="details-char-img" src="https://placehold.co/80x80/1e1b4b/a78bfa?text=?" alt="character" class="rounded-md w-20 h-20">
+                           <div>
+                               <h3 id="details-char-name" class="font-bold text-xl font-zelda">Select a person or event</h3>
+                               <p id="details-char-desc" class="text-purple-200">View their schedule and events.</p>
+                           </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+       </div>
+
     </div>
     <!-- Map Modal/Lightbox -->
     <div id="map-modal" class="map-modal-overlay">
@@ -107,7 +160,7 @@
         <img id="map-modal-image" src="" alt="Full size map">
     </div>
 
-    <!-- Custom JavaScript -->
-    <script src="script.js" defer></script>
+    <!-- Main Application Script (as a module) -->
+    <script type="module" src="app.js" defer></script>
 </body>
 </html>
