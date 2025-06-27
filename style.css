@@ -58,6 +58,11 @@ html, body {
 #moon-image {
     position: absolute; top: 5%; right: 5%; width: 15%; max-width: 150px; z-index: 2;
     animation: pulse-shiver 8s infinite ease-in-out;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+#moon-image:hover {
+    filter: brightness(1.2);
 }
 @keyframes pulse-shiver {
     0%, 100% { transform: scale(1) rotate(0deg); }
@@ -104,13 +109,14 @@ html, body {
     background: transparent;
     border: 2px solid transparent;
     color: #e9d5ff;
-    padding: 0.75rem 2.5rem;
-    font-size: 2.25rem;
+    padding: 0.5rem 2rem;
+    font-size: 2rem;
+    line-height: 1.2;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border-radius: 9999px;
     cursor: pointer;
     position: relative; 
-    z-index: 10; /* Ensure button is above the pill background */
+    z-index: 10; 
 }
 #main-title-button.nav-active {
     background: rgba(10, 5, 20, 0.6);
@@ -120,13 +126,13 @@ html, body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.05);
 }
 
-/* --- New Pill Nav Styles --- */
+/* --- Unified Pill Nav Styles --- */
 #nav-pill {
     top: 50%;
     left: 50%;
     width: auto;
-    min-width: 600px; /* Wider pill for more space */
-    height: 64px; /* Taller to fit icons comfortably */
+    max-width: 90vw;
+    height: 56px; 
     background: rgba(10, 5, 20, 0.6);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
@@ -137,30 +143,29 @@ html, body {
     opacity: 0;
     pointer-events: none;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    padding: 0 1rem;
 }
 #nav-pill.is-visible {
     transform: translate(-50%, -50%) scaleX(1);
     opacity: 1;
     pointer-events: auto;
 }
-/* Container inside the pill for wings */
 #nav-pill > .flex {
     width: 100%;
     justify-content: space-between;
-    padding: 0 1rem; /* Padding at the edges of the pill */
 }
 .nav-wing {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Space between items in a wing */
+    gap: 1rem;
     opacity: 0;
-    transition: opacity 0.3s ease 0.2s; /* Delay opacity transition */
+    transition: opacity 0.3s ease 0.2s;
 }
 #nav-wing-left {
-    padding-right: 120px; /* Space to avoid the center button */
+    padding-right: 110px; 
 }
 #nav-wing-right {
-    padding-left: 120px; /* Space to avoid the center button */
+    padding-left: 110px; 
 }
 #nav-pill.is-visible .nav-wing {
     opacity: 1;
@@ -169,7 +174,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.1rem;
     color: #e9d5ff;
     background: transparent;
     border: none;
@@ -177,7 +182,7 @@ html, body {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     transition: transform 0.2s ease, color 0.2s ease;
-    width: 90px; /* Give a fixed width to help with spacing */
+    width: 80px; 
     text-align: center;
 }
 .nav-item:hover {
@@ -188,25 +193,16 @@ html, body {
     color: #fde047;
 }
 .nav-item img {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
-    /* Removed the boxy style */
     background: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
     border-radius: 0;
     border: none;
     padding: 0;
-    transition: none; /* Let parent .nav-item handle hover animations */
-}
-.nav-item:hover img, .nav-item.active img {
-    /* No special border or shadow on hover for the image */
-    border-color: transparent;
-    box-shadow: none;
 }
 .nav-item span {
-    font-size: 0.75rem; /* 12px */
+    font-size: 0.7rem; 
     white-space: nowrap;
 }
 
@@ -382,69 +378,43 @@ html, body {
 /* --- Mobile & Responsive Adjustments --- */
 @media (max-width: 768px) {
     #main-header {
-        padding-top: 1rem; /* Reduce top padding */
+        padding-top: 1rem;
     }
     #main-title-button {
-        font-size: 1.75rem; /* Smaller title on mobile */
+        font-size: 1.5rem;
         padding: 0.5rem 1.5rem;
-    }
-    #nav-pill {
-        min-width: 0;
-        width: 95vw;
-        height: auto; /* Allow height to grow */
-        flex-direction: column; /* Stack wings vertically */
-        gap: 0.5rem; /* Space between the two wings */
-        padding: 0.75rem;
-        border-radius: 1.5rem;
-    }
-    #nav-pill.is-visible {
-        transform: translate(-50%, -50%) scale(1);
-    }
-    #nav-pill > .flex {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0;
     }
     .nav-wing {
         gap: 0.5rem;
-        justify-content: space-around; /* Space items out evenly */
-        width: 100%;
-        padding: 0 !important; /* Override desktop padding to prevent overlap */
+    }
+    #nav-wing-left {
+        padding-right: 90px;
+    }
+    #nav-wing-right {
+        padding-left: 90px;
     }
     .nav-item {
-        width: auto; /* Let item size be flexible */
-        gap: 0.25rem;
-    }
-    .nav-item img {
-        width: 40px;
-        height: 40px;
+        width: 60px;
     }
     .nav-item span {
-        font-size: 0.65rem;
-        white-space: normal;
-        text-align: center;
+        font-size: 0.6rem;
     }
+    
     .view-container {
         padding: 0;
     }
-    /* Add scroll to content areas on mobile */
     #main-content-area {
-        padding-top: 6rem; /* Adjust to be below the header */
+        padding-top: 6rem;
         height: 100vh;
     }
     .main-content {
         height: 100%;
         overflow-y: auto;
-        padding-bottom: 6rem; /* Add padding at the bottom to not be obscured by UI toggle button */
+        padding-bottom: 6rem; 
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
-    #song-grid-content {
-       padding: 1rem;
-    }
-    #notebook-content {
-        height: 100%;
-        display: flex; /* Ensure flex properties apply */
-        flex-direction: column;
-    }
+
     #song-detail-view .main-container,
     #maps-view .main-container,
     #notebook-content .main-container {
@@ -462,52 +432,41 @@ html, body {
         flex-direction: column;
     }
     #song-title {
-        font-size: 2rem; /* Smaller song titles */
+        font-size: 2rem;
     }
     .btn-back {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
     }
     #instrument-image {
-        height: 48px; /* Smaller instrument */
+        height: 48px;
     }
     .corner-icons-container {
         top: 1%;
         left: 1%;
     }
     #tingle-image {
-        width: 80px; /* Smaller Tingle */
+        width: 80px;
+    }
+    #moon-image {
+        width: 25%;
+        max-width: 100px;
     }
     .btn-toggle-ui {
         bottom: 1rem;
         right: 1rem;
     }
-    /* Make notebook scrollable on small screens */
+    .notebook-content-grid, .notebook-header-grid {
+        display: grid; 
+        grid-template-columns: 80px 1fr 1fr 1fr; /* Keep grid for structure */
+    }
     .notebook-content-grid {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+        overflow-y: auto; /* Allow vertical scrolling of the whole content */
+        overflow-x: hidden;
     }
-    .notebook-header-grid {
-       display: block;
-       overflow-x: auto;
-       white-space: nowrap;
-    }
-    #notebook-characters,
-    #notebook-timeline,
-    .notebook-header-grid > div {
-       display: inline-block;
-       vertical-align: top;
-    }
-    #notebook-timeline, .notebook-header-grid > .day-header {
-       width: 450px; /* Force a width to enable scrolling */
-    }
-    #notebook-details-footer {
-        font-size: 0.9rem;
-    }
-    #details-char-img {
-        width: 60px;
-        height: 60px;
+    #notebook-characters, #notebook-timeline {
+        overflow-y: auto;
+        max-height: 40vh; /* Example height */
     }
     .map-item h3 {
         font-size: 1rem;
@@ -515,33 +474,28 @@ html, body {
 }
 
 @media (max-width: 480px) {
-    #song-grid {
-        grid-template-columns: 1fr;
+    #song-grid, #map-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         gap: 0.5rem;
     }
     .btn-song {
         padding: 1rem;
-        font-size: 1.25rem;
-    }
-    #map-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 0.5rem;
+        font-size: 1.1rem;
     }
     #main-title-button {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
-    header#main-header {
-        padding-top: 1rem;
+    #nav-wing-left { padding-right: 80px; }
+    #nav-wing-right { padding-left: 80px; }
+    .nav-item {
+        width: 50px;
     }
-    /* Hide nav text on very small screens to save space */
+    .nav-item img {
+        width: 32px;
+        height: 32px;
+    }
     .nav-item span {
         display: none;
-    }
-    .nav-item {
-        gap: 0;
-    }
-    .nav-wing {
-        gap: 0.25rem;
     }
     .note-icon {
         width: 40px;
@@ -551,8 +505,6 @@ html, body {
         height: 30px;
     }
     .map-modal-close-btn, .controller-modal-close-btn {
-        top: 1rem;
-        right: 1rem;
-        font-size: 2.5rem;
+        top: 1rem; right: 1rem; font-size: 2.5rem;
     }
 }

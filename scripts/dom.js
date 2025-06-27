@@ -6,7 +6,7 @@ export const mapsView = document.getElementById('maps-view');
 // --- Main Nav Elements ---
 export const mainTitleButton = document.getElementById('main-title-button');
 export const navPill = document.getElementById('nav-pill');
-export const navItems = [...document.querySelectorAll('.nav-item')]; // Get all nav items
+export const navItems = [...document.querySelectorAll('.nav-item')];
 
 // --- Main Content Containers ---
 export const songsContent = document.getElementById('song-grid-content');
@@ -23,8 +23,9 @@ export const notesContainer = document.getElementById('notes-container');
 export const backButton = document.getElementById('back-button');
 export const instrumentImage = document.getElementById('instrument-image');
 
-// --- Main UI / Corner Icons ---
+// --- Main UI / Corner & Background Icons ---
 export const tingleContainer = document.getElementById('tingle-container');
+export const moonImage = document.getElementById('moon-image'); // Clickable moon
 export const toggleUiButton = document.getElementById('toggle-ui-button');
 export const iconEyeOpen = document.getElementById('icon-eye-open');
 export const iconEyeClosed = document.getElementById('icon-eye-closed');
@@ -50,5 +51,6 @@ export const controllerModal = document.getElementById('controller-modal');
 export const controllerModalImage = document.getElementById('controller-modal-image');
 export const controllerModalClose = document.getElementById('controller-modal-close');
 
-// --- Other ---
+// --- Audio Elements ---
 export const backgroundAudio = document.getElementById('background-audio');
+// Note: Nav sounds are now handled in audio.js via new Audio()

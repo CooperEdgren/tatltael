@@ -14,11 +14,6 @@
     
     <!-- App Icons -->
     <link rel="apple-touch-icon" href="app-icon/icon-192x192.png">
-    <!-- Add more sizes as needed -->
-    <!-- <link rel="apple-touch-icon" sizes="152x152" href="app-icon/icon-152x152.png"> -->
-    <!-- <link rel="apple-touch-icon" sizes="180x180" href="app-icon/icon-180x180.png"> -->
-    <!-- <link rel="apple-touch-icon" sizes="167x167" href="app-icon/icon-167x167.png"> -->
-
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,13 +26,12 @@
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Tone.js for audio synthesis -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
 </head>
 <body class="bg-[#03000a]">
     
-    <!-- Background Audio Player -->
+    <!-- Audio Players -->
     <audio id="background-audio" loop src="music/Relaxing and Ambient Music From Zelda _ Majora's Mask | 40 Minutes (StudyingRelaxingSleep).mp3"></audio>
+    <!-- Nav sound effects are now created in audio.js, so no need for tags here -->
 
     <!-- CSS Animated Background -->
     <div class="background-effects">
@@ -64,11 +58,9 @@
             <!-- Header and Nav -->
             <header class="absolute top-0 pt-6 w-full flex justify-center z-20" id="main-header">
                 <div id="main-nav-container" class="relative flex justify-center items-center">
-                    <!-- Nav pill is now positioned entirely by the CSS for better alignment -->
                     <nav id="nav-pill" class="absolute flex items-center justify-center">
                         <div class="flex items-center justify-between w-full">
-                             <!-- Left Nav Wing -->
-                            <div class="nav-wing flex gap-4" id="nav-wing-left">
+                             <div class="nav-wing flex items-center" id="nav-wing-left">
                                 <button class="nav-item" data-content="songs">
                                     <img src="images/songs_icon.png" alt="Songs" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Songs'">
                                     <span>Songs</span>
@@ -78,11 +70,10 @@
                                     <span>Items</span>
                                 </button>
                             </div>
-                            <!-- Right Nav Wing -->
-                             <div class="nav-wing flex gap-4" id="nav-wing-right">
+                             <div class="nav-wing flex items-center" id="nav-wing-right">
                                 <button class="nav-item" data-content="notebook">
                                     <img src="images/bombers-notebook.png" alt="Bomber's Notebook" onerror="this.onerror=null;this.src='https://placehold.co/80x80/a16207/fdecc8?text=Notebook'">
-                                    <span>Bomber's Notebook</span>
+                                    <span>Notebook</span>
                                 </button>
                                 <button class="nav-item" data-content="masks">
                                     <img src="images/masks_icon.png" alt="Masks" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Masks'">
@@ -111,7 +102,6 @@
                     </div>
                 </main>
 
-                <!-- Bomber's Notebook is now part of the main screen -->
                 <div id="notebook-content" class="main-content hidden">
                      <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
                         <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
@@ -122,7 +112,6 @@
                                      <p id="bomber-code-saved-message" class="text-green-400 text-sm opacity-0 transition-opacity duration-500">Saved!</p>
                                 </div>
                             </div>
-                            <!-- Back button removed -->
                         </header>
                         <main class="flex-grow flex flex-col notebook-bg">
                             <div class="notebook-header-grid">
@@ -152,7 +141,6 @@
                     </div>
                 </div>
 
-                <!-- Placeholder for other content -->
                 <div id="items-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Items Content Here</div>
                 <div id="masks-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Masks Content Here</div>
             </div>
@@ -163,7 +151,6 @@
             </button>
         </div>
 
-        <!-- Song Detail View (remains separate) -->
         <div id="song-detail-view" class="view-container">
              <div class="w-full h-full max-w-6xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
@@ -187,7 +174,6 @@
             </div>
         </div>
 
-        <!-- Maps View (remains separate) -->
         <div id="maps-view" class="view-container">
              <div class="w-full h-full max-w-screen-xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">

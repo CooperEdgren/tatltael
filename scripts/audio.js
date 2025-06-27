@@ -1,47 +1,51 @@
 import * as dom from './dom.js';
 
 let audioFadeInterval;
-let synth;
+let navOpenSound;
+let navCloseSound;
+let isAudioInitialized = false;
 
 /**
- * Initializes the synthesizer after Tone.js is loaded and audio context is started.
+ * Creates and preloads the navigation sound effects.
+ * This should be called after the first user interaction.
  */
-function initializeSynth() {
-    // Check if Tone.js is available on the window object
-    if (window.Tone && !synth) {
-        // Create a polyphonic synthesizer
-        synth = new Tone.PolySynth(Tone.Synth, {
-            oscillator: {
-                type: 'triangle' // A softer, more "classic" synth sound
-            },
-            envelope: {
-                attack: 0.02,
-                decay: 0.1,
-                sustain: 0.3,
-                release: 0.5
-            }
-        }).toDestination(); // Connect the synth to the main audio output
+function initializeSounds() {
+    if (isAudioInitialized) return;
+
+    try {
+        // Create new Audio objects for the navigation sounds.
+        // Assumes you have 'nav-open.mp3' and 'nav-close.mp3' in a 'music' folder.
+        navOpenSound = new Audio('music/open.mp3');
+        navCloseSound = new Audio('music/close.mp3');
+        
+        // Preload the sounds for faster playback.
+        navOpenSound.preload = 'auto';
+        navCloseSound.preload = 'auto';
+
+        isAudioInitialized = true;
+        console.log('Navigation sounds initialized.');
+    } catch (e) {
+        console.error("Error initializing navigation sounds:", e);
     }
 }
 
+
 /**
- * Plays a sound for opening the navigation.
- * This plays a simple, pleasant C-major chord.
+ * Plays the sound for opening the navigation.
  */
 export function playNavOpenSound() {
-    if (!synth) return;
-    const now = Tone.now();
-    synth.triggerAttackRelease(['C4', 'E4', 'G4'], '8n', now);
+    if (!navOpenSound) return;
+    navOpenSound.currentTime = 0; // Rewind to the start
+    navOpenSound.play().catch(e => console.error("Error playing open sound:", e));
 }
 
 /**
- * Plays a sound for closing the navigation.
- * This plays the same C-major chord, but inverted, for a "closing" feel.
+ * Plays the sound for closing the navigation.
  */
 export function playNavCloseSound() {
-    if (!synth) return;
-    const now = Tone.now();
-    synth.triggerAttackRelease(['G4', 'E4', 'C4'], '8n', now);
+    if (!navCloseSound) return;
+    navCloseSound.currentTime = 0; // Rewind to the start
+    navCloseSound.play().catch(e => console.error("Error playing close sound:", e));
 }
 
 /**
@@ -54,12 +58,12 @@ export function fadeAudio(targetVolume) {
     clearInterval(audioFadeInterval);
     const startVolume = dom.backgroundAudio.volume;
     const difference = targetVolume - startVolume;
+    if (difference === 0) return;
+    
     const duration = 1000;
     const stepTime = 50;
     const steps = duration / stepTime;
     const volumeStep = difference / steps;
-
-    if (difference === 0) return;
 
     audioFadeInterval = setInterval(() => {
         const currentVolume = dom.backgroundAudio.volume;
@@ -70,34 +74,38 @@ export function fadeAudio(targetVolume) {
             clearInterval(audioFadeInterval);
         }
         
-        dom.backgroundAudio.volume = newVolume;
+        try {
+            dom.backgroundAudio.volume = newVolume;
+        } catch (e) {
+            console.error("Error setting audio volume:", e);
+            clearInterval(audioFadeInterval);
+        }
     }, stepTime);
 }
 
 /**
- * Starts background music on the first user interaction.
- * This function is async to handle the promise from Tone.start().
+ * Starts background music and initializes sound effects on the first user interaction.
  */
-async function startBackgroundMusic() {
-    // Start Tone.js Audio Context if it's not already running
-    if (window.Tone && Tone.context.state !== 'running') {
-        await Tone.start();
-        console.log('Audio context started');
-        initializeSynth(); // Initialize our synth now that the context is running
-    }
+function handleFirstInteraction() {
+    console.log('First user interaction detected. Initializing audio.');
+    
+    // Initialize the navigation sounds
+    initializeSounds();
 
+    // Play the main background music
     if (dom.backgroundAudio && dom.backgroundAudio.paused) {
-        dom.backgroundAudio.volume = 0.5;
-        dom.backgroundAudio.play().catch(e => console.error("Audio autoplay was prevented. Needs user interaction.", e));
+        dom.backgroundAudio.volume = 0; // Start muted and fade in
+        dom.backgroundAudio.play().then(() => {
+            fadeAudio(0.5); // Fade in to 50% volume
+        }).catch(e => console.error("Audio autoplay was prevented.", e));
     }
 }
 
 /**
- * Sets up listeners to start the background music and initialize all audio
- * on the first user interaction (click or keydown).
+ * Sets up a one-time listener to enable all audio on the site.
  */
 export function initializeAudio() {
     // The { once: true } option automatically removes the event listener after it runs once.
-    document.body.addEventListener('click', startBackgroundMusic, { once: true });
-    document.body.addEventListener('keydown', startBackgroundMusic, { once: true });
+    document.body.addEventListener('click', handleFirstInteraction, { once: true });
+    document.body.addEventListener('keydown', handleFirstInteraction, { once: true });
 }

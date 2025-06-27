@@ -10,10 +10,10 @@ import * as notebookView from './notebook-view.js';
  */
 function main() {
     // --- INITIAL POPULATION ---
-    if(songView.populateSongGrid) songView.populateSongGrid();
-    if(mapsView.populateMapsGrid) mapsView.populateMapsGrid();
-    if(notebookView.populateBombersNotebook) notebookView.populateBombersNotebook();
-    if(audio.initializeAudio) audio.initializeAudio();
+    songView.populateSongGrid();
+    mapsView.populateMapsGrid();
+    notebookView.populateBombersNotebook();
+    audio.initializeAudio();
 
     // --- EVENT LISTENERS ---
 
@@ -23,15 +23,15 @@ function main() {
         ui.toggleMainNav();
     });
     
-    // Simplified nav item click listener
     dom.navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.stopPropagation();
             const content = item.dataset.content;
-            // Let ui.js handle the logic of showing content and managing the active state
             ui.showContentForNav(content);
-            // Close the nav pill after a selection is made or toggled
-            ui.toggleMainNav();
+            // We can choose to close the nav automatically after a selection
+            if (ui.isNavOpen()) {
+                ui.toggleMainNav();
+            }
         });
     });
 
@@ -50,19 +50,22 @@ function main() {
     // Maps View Listeners
     dom.tingleContainer.addEventListener('click', mapsView.showMapsView);
     dom.mapsBackButton.addEventListener('click', songView.showMainScreen);
-    if(mapsView.closeMapModal) {
-        dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
-        dom.mapModal.addEventListener('click', (e) => {
-            if (e.target === dom.mapModal) {
-                mapsView.closeMapModal();
-            }
-        });
-    }
+    dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
+    dom.mapModal.addEventListener('click', (e) => {
+        if (e.target === dom.mapModal) {
+            mapsView.closeMapModal();
+        }
+    });
+    
+    // Moon click listener
+    dom.moonImage.addEventListener('click', () => {
+        // Opens a YouTube playlist in a new tab
+        window.open('https://youtube.com/playlist?list=PLF41D831CF4427BE5&si=fl3Yuo2SQiO8CFny', '_blank');
+    });
+
 
     // Bomber's Notebook Listener
-    if(notebookView.saveBomberCode) {
-        dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
-    }
+    dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
 
     // General UI Listeners
     dom.toggleUiButton.addEventListener('click', ui.toggleControlsVisibility);
