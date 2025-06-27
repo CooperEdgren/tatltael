@@ -15,7 +15,7 @@
 </head>
 <body class="bg-[#03000a]">
     
-    <!-- Background Audio Player using HTML5 Audio -->
+    <!-- Background Audio Player -->
     <audio id="background-audio" loop src="music/Relaxing and Ambient Music From Zelda _ Majora's Mask | 40 Minutes (StudyingRelaxingSleep).mp3"></audio>
 
     <!-- CSS Animated Background -->
@@ -27,13 +27,10 @@
         <img src="images/clocktown.png" alt="Clock Town" id="clocktown-image">
     </div>
 
-    <!-- Corner Icons -->
+    <!-- Tingle Icon -->
     <div class="corner-icons-container">
         <div id="tingle-container">
             <img src="images/tinglemyboy.png" alt="Tingle" id="tingle-image">
-        </div>
-        <div id="bombers-notebook-icon-container">
-             <img src="images/bombers-notebook.png" alt="Bomber's Notebook" id="bombers-notebook-icon">
         </div>
     </div>
 
@@ -41,27 +38,113 @@
     <!-- Main Application Wrapper -->
     <div id="app-wrapper" class="relative w-full min-h-screen flex items-center justify-center p-4">
 
-        <!-- Main Song Selection Screen -->
-        <div id="song-selection" class="view-container is-active">
-            <header class="mb-8" id="main-header">
-                <div id="fairy-container" class="w-28 h-28 mx-auto mb-4">
+        <!-- Main Screen (was Song Selection) -->
+        <div id="main-screen" class="view-container is-active">
+            <!-- Header and Nav -->
+            <header class="absolute top-0 pt-6 w-full flex justify-center z-20" id="main-header">
+                <div id="main-nav-container" class="relative flex justify-center items-center">
+                    <!-- Nav pill is now positioned entirely by the CSS for better alignment -->
+                    <nav id="nav-pill" class="absolute flex items-center justify-center">
+                        <div class="flex items-center justify-between w-full px-16">
+                             <!-- Left Nav Wing -->
+                            <div class="nav-wing flex gap-4" id="nav-wing-left">
+                                <button class="nav-item" data-content="songs">
+                                    <img src="images/songs_icon.png" alt="Songs" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Songs'">
+                                    <span>Songs</span>
+                                </button>
+                                <button class="nav-item" data-content="items">
+                                    <img src="images/items_icon.png" alt="Items" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Items'">
+                                    <span>Items</span>
+                                </button>
+                            </div>
+                            <!-- Right Nav Wing -->
+                             <div class="nav-wing flex gap-4" id="nav-wing-right">
+                                <button class="nav-item" data-content="notebook">
+                                    <img src="images/bombers-notebook.png" alt="Bomber's Notebook" onerror="this.onerror=null;this.src='https://placehold.co/80x80/a16207/fdecc8?text=Notebook'">
+                                    <span>Bomber's Notebook</span>
+                                </button>
+                                <button class="nav-item" data-content="masks">
+                                    <img src="images/masks_icon.png" alt="Masks" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Masks'">
+                                    <span>Masks</span>
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+                    <button id="main-title-button" class="font-zelda relative">TatlTael</button>
+                </div>
+            </header>
+            
+            <!-- Fairy animation -->
+            <div id="fairy-container" class="w-full h-full absolute top-0 left-0 flex items-center justify-center opacity-25 pointer-events-none">
+                <div class="relative w-28 h-28">
                     <div class="fairy" id="light-fairy"></div>
                     <div class="fairy" id="dark-fairy"></div>
                 </div>
-                <h1 id="main-title" class="text-6xl md:text-8xl font-zelda text-purple-200 title-reveal">TatlTael</h1>
-            </header>
-            <main id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                <!-- Song buttons will be dynamically injected here -->
-            </main>
+            </div>
+
+            <!-- Content Area for Nav Items -->
+            <div id="main-content-area" class="w-full max-w-7xl mx-auto pt-40">
+                <main id="song-grid-content" class="main-content hidden">
+                    <div id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+                        <!-- Song buttons injected here -->
+                    </div>
+                </main>
+
+                <!-- Bomber's Notebook is now part of the main screen -->
+                <div id="notebook-content" class="main-content hidden">
+                     <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
+                        <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
+                            <div class="flex items-center gap-4">
+                                <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Bomber's Notebook</h2>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" id="bomber-code-input" class="bomber-code-input-sm" maxlength="5" placeholder="Code...">
+                                     <p id="bomber-code-saved-message" class="text-green-400 text-sm opacity-0 transition-opacity duration-500">Saved!</p>
+                                </div>
+                            </div>
+                            <!-- Back button removed -->
+                        </header>
+                        <main class="flex-grow flex flex-col notebook-bg">
+                            <div class="notebook-header-grid">
+                                <div class="text-center font-bold">Time of Day</div>
+                                <div class="text-center font-bold day-header">1st</div>
+                                <div class="text-center font-bold day-header">2nd</div>
+                                <div class="text-center font-bold day-header">Final</div>
+                            </div>
+                            <div class="flex-grow notebook-content-grid overflow-hidden">
+                                <div id="notebook-characters" class="overflow-y-auto"></div>
+                                <div id="notebook-timeline" class="grid grid-cols-3 relative overflow-y-auto">
+                                    <div class="day-column bg-blue-900/30"></div>
+                                    <div class="day-column bg-red-900/40"></div>
+                                    <div class="day-column bg-purple-900/30"></div>
+                                </div>
+                            </div>
+                            <div id="notebook-details-footer" class="p-3 bg-black/40 rounded-b-lg mt-auto">
+                                <div id="notebook-details-content" class="flex items-center gap-4">
+                                   <img id="details-char-img" src="https://placehold.co/80x80/1e1b4b/a78bfa?text=?" alt="character" class="rounded-md w-20 h-20">
+                                   <div>
+                                       <h3 id="details-char-name" class="font-bold text-xl font-zelda">Select a person or event</h3>
+                                       <p id="details-char-desc" class="text-purple-200">View their schedule and events.</p>
+                                   </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <!-- Placeholder for other content -->
+                <div id="items-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Items Content Here</div>
+                <div id="masks-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Masks Content Here</div>
+            </div>
+
             <button id="toggle-ui-button" class="btn-toggle-ui">
                 <svg id="icon-eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 <svg id="icon-eye-closed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88"></path></svg>
             </button>
         </div>
 
-        <!-- Song Detail View -->
+        <!-- Song Detail View (remains separate) -->
         <div id="song-detail-view" class="view-container">
-            <div class="w-full h-full max-w-6xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
+             <div class="w-full h-full max-w-6xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
                     <div class="flex items-center gap-4">
                         <h2 id="song-title" class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow"></h2>
@@ -69,7 +152,7 @@
                     </div>
                     <button id="back-button" class="btn-back">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
-                        Song Select
+                        Back
                     </button>
                 </header>
                 <div class="flex flex-col lg:flex-row gap-8 flex-grow min-h-0">
@@ -78,89 +161,32 @@
                             <iframe id="youtube-player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
-                    <div id="notes-container" class="lg:w-5/12 w-full space-y-5 overflow-y-auto pr-2">
-                        <!-- Note sections will be injected here -->
-                    </div>
+                    <div id="notes-container" class="lg:w-5/12 w-full space-y-5 overflow-y-auto pr-2"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Maps View -->
+        <!-- Maps View (remains separate) -->
         <div id="maps-view" class="view-container">
              <div class="w-full h-full max-w-screen-xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
                     <h2 class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow">Termina Maps</h2>
                     <button id="maps-back-button" class="btn-back">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
-                        Song Select
+                        Back
                     </button>
                 </header>
-                <main id="map-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto p-2">
-                    <!-- Map items will be injected here -->
-                </main>
+                <main id="map-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto p-2"></main>
              </div>
         </div>
 
-        <!-- Bomber's Notebook View -->
-        <div id="bombers-notebook-view" class="view-container">
-            <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
-                <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
-                    <div class="flex items-center gap-4">
-                        <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Bomber's Notebook</h2>
-                        <div class="flex items-center gap-2">
-                            <input type="text" id="bomber-code-input" class="bomber-code-input-sm" maxlength="5" placeholder="Code...">
-                             <p id="bomber-code-saved-message" class="text-green-400 text-sm opacity-0 transition-opacity duration-500">Saved!</p>
-                        </div>
-                    </div>
-                    <button id="bombers-back-button" class="btn-back">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
-                        Song Select
-                    </button>
-                </header>
-                <main class="flex-grow flex flex-col notebook-bg">
-                    <!-- Notebook Header -->
-                    <div class="notebook-header-grid">
-                        <div class="text-center font-bold">Time of Day</div>
-                        <div class="text-center font-bold day-header">1st</div>
-                        <div class="text-center font-bold day-header">2nd</div>
-                        <div class="text-center font-bold day-header">Final</div>
-                    </div>
-
-                    <!-- Notebook Content -->
-                    <div class="flex-grow notebook-content-grid overflow-hidden">
-                        <div id="notebook-characters" class="overflow-y-auto">
-                            <!-- Character portraits injected here -->
-                        </div>
-                        <div id="notebook-timeline" class="grid grid-cols-3 relative overflow-y-auto">
-                            <div class="day-column bg-blue-900/30"></div>
-                            <div class="day-column bg-red-900/40"></div>
-                            <div class="day-column bg-purple-900/30"></div>
-                             <!-- Event timelines injected here -->
-                        </div>
-                    </div>
-
-                     <!-- Notebook Details Footer -->
-                    <div id="notebook-details-footer" class="p-3 bg-black/40 rounded-b-lg mt-auto">
-                        <div id="notebook-details-content" class="flex items-center gap-4">
-                           <img id="details-char-img" src="https://placehold.co/80x80/1e1b4b/a78bfa?text=?" alt="character" class="rounded-md w-20 h-20">
-                           <div>
-                               <h3 id="details-char-name" class="font-bold text-xl font-zelda">Select a person or event</h3>
-                               <p id="details-char-desc" class="text-purple-200">View their schedule and events.</p>
-                           </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-       </div>
-
     </div>
-    <!-- Map Modal/Lightbox -->
+
+    <!-- Modals -->
     <div id="map-modal" class="map-modal-overlay">
         <button id="map-modal-close" class="map-modal-close-btn">&times;</button>
         <img id="map-modal-image" src="" alt="Full size map">
     </div>
-
-    <!-- Controller Image Modal -->
     <div id="controller-modal" class="controller-modal-overlay">
         <button id="controller-modal-close" class="controller-modal-close-btn">&times;</button>
         <div id="controller-modal-content">
@@ -168,8 +194,7 @@
         </div>
     </div>
 
-
-    <!-- Main Application Script (as a module) -->
+    <!-- Scripts -->
     <script type="module" src="scripts/app.js" defer></script>
 </body>
 </html>

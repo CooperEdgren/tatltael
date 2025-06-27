@@ -10,7 +10,6 @@ import * as notebookView from './notebook-view.js';
  */
 function main() {
     // --- INITIAL POPULATION ---
-    // Ensure these functions exist in their respective files or comment them out.
     if(songView.populateSongGrid) songView.populateSongGrid();
     if(mapsView.populateMapsGrid) mapsView.populateMapsGrid();
     if(notebookView.populateBombersNotebook) notebookView.populateBombersNotebook();
@@ -18,14 +17,31 @@ function main() {
 
     // --- EVENT LISTENERS ---
 
-    // Song View Listeners
-    dom.backButton.addEventListener('click', songView.showSongSelection);
+    // Main Nav listeners
+    dom.mainTitleButton.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent the body click listener from firing immediately
+        ui.toggleMainNav();
+    });
+    
+    // Simplified nav item click listener
+    dom.navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const content = item.dataset.content;
+            // Let ui.js handle the logic of showing content and managing the active state
+            ui.showContentForNav(content);
+            // Close the nav pill after a selection is made or toggled
+            ui.toggleMainNav();
+        });
+    });
+
+    // Song Detail View Listeners
+    dom.backButton.addEventListener('click', songView.showMainScreen);
     dom.instrumentImage.addEventListener('click', songView.handleInstrumentClick);
     
     // Controller Modal Listeners
     dom.controllerModalClose.addEventListener('click', songView.closeControllerModal);
     dom.controllerModal.addEventListener('click', (e) => {
-        // Close modal if the overlay is clicked, but not the content inside
         if (e.target === dom.controllerModal) {
             songView.closeControllerModal();
         }
@@ -33,7 +49,7 @@ function main() {
 
     // Maps View Listeners
     dom.tingleContainer.addEventListener('click', mapsView.showMapsView);
-    dom.mapsBackButton.addEventListener('click', songView.showSongSelection);
+    dom.mapsBackButton.addEventListener('click', songView.showMainScreen);
     if(mapsView.closeMapModal) {
         dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
         dom.mapModal.addEventListener('click', (e) => {
@@ -43,11 +59,7 @@ function main() {
         });
     }
 
-    // Notebook View Listeners
-    if(notebookView.showBombersNotebook) {
-        dom.bombersNotebookIconContainer.addEventListener('click', notebookView.showBombersNotebook);
-    }
-    dom.bombersBackButton.addEventListener('click', songView.showSongSelection);
+    // Bomber's Notebook Listener
     if(notebookView.saveBomberCode) {
         dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
     }
@@ -59,7 +71,7 @@ function main() {
     document.addEventListener('click', ui.resetHideUiTimeout);
 
     // --- INITIAL STATE ---
-    ui.switchView(dom.songSelectionView);
+    ui.switchView(dom.mainScreen);
 }
 
 // Run the application once the DOM is fully loaded.

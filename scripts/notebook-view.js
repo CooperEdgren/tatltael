@@ -1,6 +1,6 @@
 import * as data from './data.js';
 import * as dom from './dom.js';
-import * as ui from './ui.js';
+// No 'ui' import needed anymore for switching views
 
 // --- STATE ---
 let completedEvents = JSON.parse(localStorage.getItem('completedEvents')) || [];
@@ -33,7 +33,7 @@ function updateNotebookDetails(charId, eventId = null) {
         const event = char.events.find(e => e.id === eventId);
         if (event) {
             dom.detailsCharImg.src = char.img;
-            dom.detailsCharName.textContent = `[${event.day} - ${event.time}] ${char.name}`;
+            dom.detailsCharName.textContent = `[Day ${event.day} - ${event.time}] ${char.name}`;
             dom.detailsCharDesc.textContent = `${event.description} (Click to mark as ${completedEvents.includes(eventId) ? 'incomplete' : 'complete'})`;
         }
     } else {
@@ -45,10 +45,23 @@ function updateNotebookDetails(charId, eventId = null) {
 
 /**
  * Renders the entire Bomber's Notebook content.
+ * This is now just populating the elements, not controlling view visibility.
  */
 export function populateBombersNotebook() {
+    if (!dom.notebookCharacters || !dom.notebookTimeline) return;
+    
     dom.notebookCharacters.innerHTML = '';
+    // Clear previous timeline rows before adding new ones
     dom.notebookTimeline.querySelectorAll('.timeline-row').forEach(row => row.remove());
+    
+    // Always ensure the day columns exist
+    if (dom.notebookTimeline.querySelectorAll('.day-column').length === 0) {
+        dom.notebookTimeline.innerHTML = `
+            <div class="day-column bg-blue-900/30"></div>
+            <div class="day-column bg-red-900/40"></div>
+            <div class="day-column bg-purple-900/30"></div>
+        `;
+    }
 
     data.bombersNotebookData.forEach((char) => {
         // Create character portrait
@@ -63,10 +76,9 @@ export function populateBombersNotebook() {
         });
         dom.notebookCharacters.appendChild(charItem);
 
-        // Create timeline row and events
+        // Create timeline row for this character's events
         const timelineRow = document.createElement('div');
         timelineRow.className = 'timeline-row';
-        timelineRow.id = `timeline-row-${char.id}`;
 
         char.events.forEach(event => {
             const dayIndex = event.day - 1;
@@ -80,6 +92,7 @@ export function populateBombersNotebook() {
             if (completedEvents.includes(event.id)) {
                 eventMarker.classList.add('completed');
             }
+            // Position the event marker within the correct day column
             eventMarker.style.top = `${Math.max(0, Math.min(100, topPercentage))}%`;
             eventMarker.style.left = `${(100 / 3) * dayIndex + (100 / 6)}%`;
             eventMarker.innerHTML = data.eventIcons[event.icon] || data.eventIcons.event;
@@ -93,13 +106,7 @@ export function populateBombersNotebook() {
         });
         dom.notebookTimeline.appendChild(timelineRow);
     });
-}
 
-/**
- * Switches to the Bomber's Notebook view.
- */
-export function showBombersNotebook() {
-    ui.switchView(dom.bombersNotebookView);
     const savedCode = localStorage.getItem('bomberCode');
     if (savedCode) {
         dom.bomberCodeInput.value = savedCode;
