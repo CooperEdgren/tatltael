@@ -9,7 +9,7 @@ export const platforms = {
     'gamecube': {
         name: 'GameCube (Wii VC)',
         logo: 'logos/gamecube/Nintendo_GameCube_Official_Logo.svg.png',
-        controller: 'logos/gamecube/Control Screen Colored.svg'
+        controller: 'logos/gamecube/Control Screen Colored 4k.png'
     },
     'n3ds': {
         name: 'Nintendo 3DS',
@@ -19,12 +19,12 @@ export const platforms = {
     'ps': {
         name: 'PlayStation',
         logo: 'logos/ps5/PlayStation_Wordmark.svg.png',
-        controller: 'logos/ps5/ControlSolid.svg'
+        controller: 'logos/ps5/Control Solid Inv 4k.png'
     },
     'xbox': {
         name: 'Xbox',
         logo: 'logos/xbox/Xbox_wordmark.svg.png',
-        controller: 'logos/xbox/Control Solid SVG.svg'
+        controller: 'logos/xbox/Control Solid Alt Inv 4k.png'
     }
 };
 
