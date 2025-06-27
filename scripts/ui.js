@@ -1,19 +1,29 @@
 import * as dom from './dom.js';
 import { showSongGridWithAnimation } from './song-view.js';
+import { playNavOpenSound, playNavCloseSound } from './audio.js'; // Import sound functions
 
 let hideUiTimeout;
 let activeContent = null; // Tracks which content is currently visible ('songs', 'notebook', etc.)
 let isNavOpen = false;
 
 /**
- * Toggles the visibility of the main navigation pill.
+ * Toggles the visibility of the main navigation pill and plays corresponding sounds.
  */
 export function toggleMainNav() {
     isNavOpen = !isNavOpen;
+
+    // Play sound based on the new state of the navigation
+    if (isNavOpen) {
+        playNavOpenSound();
+    } else {
+        playNavCloseSound();
+    }
+
     dom.mainTitleButton.classList.toggle('nav-active', isNavOpen);
     dom.navPill.classList.toggle('is-visible', isNavOpen);
     
-    // Add or remove a listener to close the nav if clicking outside
+    // Add or remove a listener to close the nav if clicking outside of it.
+    // This makes the navigation feel more intuitive.
     if (isNavOpen) {
         setTimeout(() => document.body.addEventListener('click', closeNavOnClickOutside), 0);
     } else {
@@ -22,7 +32,7 @@ export function toggleMainNav() {
 }
 
 /**
- * Closes the navigation if a click occurs outside of it.
+ * Closes the navigation if a click occurs outside of the nav pill or the main title button.
  * @param {MouseEvent} event
  */
 function closeNavOnClickOutside(event) {
@@ -40,7 +50,7 @@ function closeNavOnClickOutside(event) {
 export function showContentForNav(newContent) {
     const newActiveItem = document.querySelector(`.nav-item[data-content="${newContent}"]`);
 
-    // If the clicked content is already active, toggle it off.
+    // If the clicked content is already active, toggle it off to hide it.
     if (newContent === activeContent) {
         hideAllContent();
         activeContent = null;
@@ -58,7 +68,7 @@ export function showContentForNav(newContent) {
     switch (newContent) {
         case 'songs':
             contentToShow = dom.songsContent;
-            showSongGridWithAnimation(); // Special animation for songs
+            showSongGridWithAnimation(); // Play the special animation for the song grid
             break;
         case 'notebook':
             contentToShow = dom.notebookContent;
@@ -98,7 +108,7 @@ export function switchView(viewToShow) {
     }
     const isMainScreen = viewToShow === dom.mainScreen;
     
-    // Tingle and UI toggle only visible on main screen
+    // Tingle and UI toggle button should only be visible on the main screen.
     dom.tingleContainer.style.opacity = isMainScreen ? '1' : '0';
     dom.tingleContainer.style.pointerEvents = isMainScreen ? 'auto' : 'none';
     dom.toggleUiButton.style.display = isMainScreen ? 'flex' : 'none';
@@ -107,8 +117,7 @@ export function switchView(viewToShow) {
         resetHideUiTimeout();
     } else {
         clearTimeout(hideUiTimeout);
-        // If moving to another view (e.g. song detail), just ensure nav is closed.
-        // We no longer hide the content, so it's there when we come back.
+        // If moving to another view (e.g., song detail), ensure the nav is closed.
         if(isNavOpen) toggleMainNav();
     }
 }
@@ -139,7 +148,7 @@ export function resetHideUiTimeout() {
 }
 
 /**
- * Toggles the visibility of the main screen controls.
+ * Toggles the visibility of the main screen controls (header, content area).
  */
 export function toggleControlsVisibility() {
     dom.mainScreen.classList.toggle('controls-hidden');

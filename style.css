@@ -109,8 +109,8 @@ html, body {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border-radius: 9999px;
     cursor: pointer;
-    position: relative; /* Ensure it stays on top of the nav pill */
-    z-index: 1;
+    position: relative; 
+    z-index: 10; /* Ensure button is above the pill background */
 }
 #main-title-button.nav-active {
     background: rgba(10, 5, 20, 0.6);
@@ -122,53 +122,92 @@ html, body {
 
 /* --- New Pill Nav Styles --- */
 #nav-pill {
-    /* Centering styles added */
     top: 50%;
     left: 50%;
-
     width: auto;
-    min-width: 550px;
-    height: 56px; /* Pill is now thinner */
+    min-width: 600px; /* Wider pill for more space */
+    height: 64px; /* Taller to fit icons comfortably */
     background: rgba(10, 5, 20, 0.6);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border: 2px solid rgba(167, 139, 250, 0.3);
     border-radius: 9999px;
     transform-origin: center;
-    /* Transform updated for centering and animation */
     transform: translate(-50%, -50%) scaleX(0);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
 #nav-pill.is-visible {
-    /* Transform updated for centering */
     transform: translate(-50%, -50%) scaleX(1);
     opacity: 1;
     pointer-events: auto;
 }
+/* Container inside the pill for wings */
+#nav-pill > .flex {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 1rem; /* Padding at the edges of the pill */
+}
 .nav-wing {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Space between items in a wing */
     opacity: 0;
     transition: opacity 0.3s ease 0.2s; /* Delay opacity transition */
+}
+#nav-wing-left {
+    padding-right: 120px; /* Space to avoid the center button */
+}
+#nav-wing-right {
+    padding-left: 120px; /* Space to avoid the center button */
 }
 #nav-pill.is-visible .nav-wing {
     opacity: 1;
 }
 .nav-item {
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: #e9d5ff;
-    background: transparent; border: none; cursor: pointer; font-family: 'Inter', sans-serif;
-    font-weight: 500; transition: transform 0.2s ease, color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    color: #e9d5ff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: transform 0.2s ease, color 0.2s ease;
+    width: 90px; /* Give a fixed width to help with spacing */
+    text-align: center;
 }
-.nav-item:hover { transform: scale(1.1); color: #fde047; }
-.nav-item.active { color: #fde047; }
+.nav-item:hover {
+    transform: scale(1.1);
+    color: #fde047;
+}
+.nav-item.active {
+    color: #fde047;
+}
 .nav-item img {
-    width: 64px; height: 64px; object-fit: contain; background: rgba(10, 5, 20, 0.5);
-    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border-radius: 12px;
-    border: 1px solid rgba(167, 139, 250, 0.2); padding: 8px; transition: all 0.2s ease;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    /* Removed the boxy style */
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-radius: 0;
+    border: none;
+    padding: 0;
+    transition: none; /* Let parent .nav-item handle hover animations */
 }
 .nav-item:hover img, .nav-item.active img {
-    border-color: rgba(216, 180, 254, 0.5);
-    box-shadow: 0 0 15px rgba(216, 180, 254, 0.3);
+    /* No special border or shadow on hover for the image */
+    border-color: transparent;
+    box-shadow: none;
+}
+.nav-item span {
+    font-size: 0.75rem; /* 12px */
+    white-space: nowrap;
 }
 
 /* --- Instrument Image --- */
@@ -179,14 +218,14 @@ html, body {
 #app-wrapper { z-index: 10; }
 .view-container {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* Changed */
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     padding: 1rem; opacity: 0; pointer-events: none;
     transition: opacity 0.4s ease-in-out, transform 0.4s cubic-bezier(0.45, 0, 0.55, 1);
     transform: scale(1.05);
 }
 .view-container#main-screen { justify-content: center; }
 .view-container.is-active { opacity: 1; transform: scale(1); pointer-events: auto; }
-#song-detail-view, #maps-view { z-index: 100; justify-content: center; } /* Re-center these */
+#song-detail-view, #maps-view { z-index: 100; justify-content: center; }
 
 /* --- Main Content Styling --- */
 .main-container {
@@ -208,7 +247,6 @@ html, body {
 
 /* --- Song Button Styles --- */
 .btn-song {
-    /* Increased the blur effect */
     background: rgba(10, 5, 20, 0.6); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
     border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 16px; color: #e9d5ff;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -343,75 +381,96 @@ html, body {
 
 /* --- Mobile & Responsive Adjustments --- */
 @media (max-width: 768px) {
+    #main-header {
+        padding-top: 1rem; /* Reduce top padding */
+    }
     #main-title-button {
         font-size: 1.75rem; /* Smaller title on mobile */
         padding: 0.5rem 1.5rem;
     }
-
     #nav-pill {
-        min-width: 90vw; /* Use viewport width */
+        min-width: 0;
+        width: 95vw;
         height: auto; /* Allow height to grow */
-        flex-direction: column; /* Stack wings */
-        padding: 1rem;
-        border-radius: 2rem; /* Adjusted border radius for new shape */
-    }
-    
-    #nav-pill.is-visible {
-        transform: translate(-50%, -50%) scale(1); /* Adjust animation for vertical layout */
-    }
-    
-    #nav-pill > div {
         flex-direction: column; /* Stack wings vertically */
-        gap: 1rem;
-        width: 100%;
-        padding: 0; /* Remove horizontal padding */
+        gap: 0.5rem; /* Space between the two wings */
+        padding: 0.75rem;
+        border-radius: 1.5rem;
     }
-
+    #nav-pill.is-visible {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    #nav-pill > .flex {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0;
+    }
     .nav-wing {
-       justify-content: center; /* Center items in the wing */
-       flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: space-around; /* Space items out evenly */
+        width: 100%;
+        padding: 0 !important; /* Override desktop padding to prevent overlap */
     }
-
+    .nav-item {
+        width: auto; /* Let item size be flexible */
+        gap: 0.25rem;
+    }
     .nav-item img {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
     }
-    
     .nav-item span {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
+        white-space: normal;
+        text-align: center;
     }
-
-    /* Make main views take full screen on mobile */
     .view-container {
         padding: 0;
     }
-
+    /* Add scroll to content areas on mobile */
+    #main-content-area {
+        padding-top: 6rem; /* Adjust to be below the header */
+        height: 100vh;
+    }
+    .main-content {
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 6rem; /* Add padding at the bottom to not be obscured by UI toggle button */
+    }
+    #song-grid-content {
+       padding: 1rem;
+    }
+    #notebook-content {
+        height: 100%;
+        display: flex; /* Ensure flex properties apply */
+        flex-direction: column;
+    }
     #song-detail-view .main-container,
     #maps-view .main-container,
     #notebook-content .main-container {
         padding: 1rem;
-        height: 100%; /* Use 100% height */
+        height: 100%;
         max-height: 100vh;
         border-radius: 0;
+        width: 100vw;
     }
-
+    #notebook-content .main-container {
+        display: flex;
+        flex-direction: column;
+    }
     #song-detail-view .flex-col.lg\\:flex-row {
         flex-direction: column;
     }
-
     #song-title {
         font-size: 2rem; /* Smaller song titles */
     }
-    
     .btn-back {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
     }
-    
     #instrument-image {
         height: 48px; /* Smaller instrument */
     }
-
     .corner-icons-container {
         top: 1%;
         left: 1%;
@@ -419,35 +478,30 @@ html, body {
     #tingle-image {
         width: 80px; /* Smaller Tingle */
     }
-    
     .btn-toggle-ui {
         bottom: 1rem;
         right: 1rem;
     }
-
     /* Make notebook scrollable on small screens */
     .notebook-content-grid {
-        display: block; /* Break the grid for mobile */
+        display: block;
         overflow-x: auto;
-        white-space: nowrap; /* Prevent wrapping inside */
+        white-space: nowrap;
     }
     .notebook-header-grid {
        display: block;
        overflow-x: auto;
        white-space: nowrap;
     }
-    
     #notebook-characters,
     #notebook-timeline,
     .notebook-header-grid > div {
-       display: inline-block; /* Allow items to sit side-by-side in scrollable area */
+       display: inline-block;
        vertical-align: top;
     }
-
     #notebook-timeline, .notebook-header-grid > .day-header {
        width: 450px; /* Force a width to enable scrolling */
     }
-    
     #notebook-details-footer {
         font-size: 0.9rem;
     }
@@ -455,7 +509,6 @@ html, body {
         width: 60px;
         height: 60px;
     }
-
     .map-item h3 {
         font-size: 1rem;
     }
@@ -463,36 +516,40 @@ html, body {
 
 @media (max-width: 480px) {
     #song-grid {
-        grid-template-columns: 1fr; /* Single column for songs on very small screens */
+        grid-template-columns: 1fr;
         gap: 0.5rem;
     }
     .btn-song {
         padding: 1rem;
         font-size: 1.25rem;
     }
-
     #map-grid {
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         gap: 0.5rem;
     }
-
     #main-title-button {
         font-size: 1.5rem;
     }
-    
     header#main-header {
         padding-top: 1rem;
     }
-
+    /* Hide nav text on very small screens to save space */
+    .nav-item span {
+        display: none;
+    }
+    .nav-item {
+        gap: 0;
+    }
+    .nav-wing {
+        gap: 0.25rem;
+    }
     .note-icon {
         width: 40px;
         height: 40px;
     }
-
     .platform-logo {
         height: 30px;
     }
-
     .map-modal-close-btn, .controller-modal-close-btn {
         top: 1rem;
         right: 1rem;
