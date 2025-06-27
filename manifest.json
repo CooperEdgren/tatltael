@@ -1,0 +1,23 @@
+{
+  "short_name": "TatlTael",
+  "name": "TatlTael - Majora's Mask Companion",
+  "icons": [
+    {
+      "src": "app-icon/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "app-icon/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#03000a",
+  "theme_color": "#03000a",
+  "description": "A companion app for Majora's Mask, featuring songs, maps, and the Bomber's Notebook."
+}

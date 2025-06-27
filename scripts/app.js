@@ -72,6 +72,17 @@ function main() {
 
     // --- INITIAL STATE ---
     ui.switchView(dom.mainScreen);
+
+    // --- PWA Service Worker Registration ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
 }
 
 // Run the application once the DOM is fully loaded.
