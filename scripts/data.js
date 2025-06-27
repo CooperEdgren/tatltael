@@ -172,10 +172,10 @@ export const bombersNotebookData = [
 
 // --- INSTRUMENT & EVENT ICONS ---
 export const instrumentImages = [
-    'linkOcarina.webp',
-    'goronDrums.png',
-    'zoraGuitar.png',
-    'pipesOfAwakening.png'
+    'images/linkOcarina.webp',
+    'images/goronDrums.png',
+    'images/zoraGuitar.png',
+    'images/pipesOfAwakening.png'
 ];
 
 export const eventIcons = {
