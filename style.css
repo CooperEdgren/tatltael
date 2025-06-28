@@ -58,12 +58,8 @@ html, body {
 #moon-image {
     position: absolute; top: 5%; right: 5%; width: 15%; max-width: 150px; z-index: 2;
     animation: pulse-shiver 8s infinite ease-in-out;
-    cursor: pointer;
-    transition: filter 0.3s ease;
 }
-#moon-image:hover {
-    filter: brightness(1.2);
-}
+
 @keyframes pulse-shiver {
     0%, 100% { transform: scale(1) rotate(0deg); }
     50% { transform: scale(1.08) rotate(1deg); }
@@ -316,17 +312,77 @@ html, body {
 }
 .map-modal-overlay.is-visible, .controller-modal-overlay.is-visible { opacity: 1; pointer-events: auto; }
 #map-modal-image, #controller-modal-content {
-    max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 16px;
+    max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 16px;
     box-shadow: 0 0 50px rgba(167, 139, 250, 0.5);
     transform: scale(0.9); transition: transform 0.3s ease-in-out;
 }
 .map-modal-overlay.is-visible #map-modal-image, .controller-modal-overlay.is-visible #controller-modal-content { transform: scale(1); }
-.map-modal-close-btn, .controller-modal-close-btn {
-    position: absolute; top: 2rem; right: 2rem; font-size: 3rem; color: white;
+
+/* --- HD Map Modal Enhancements --- */
+.map-modal-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+    pointer-events: none; /* Allows clicks to pass through to the image */
+}
+.map-modal-title {
+    font-family: 'Almendra', serif;
+    font-size: 1.5rem;
+    color: #fde047;
+    text-shadow: 0 2px 4px black;
+    pointer-events: auto; /* Re-enable pointer events for text selection if needed */
+}
+.map-modal-close-btn {
+    position: absolute; top: 1rem; right: 1rem; font-size: 3rem; color: white;
     background: none; border: none; cursor: pointer; line-height: 1;
     text-shadow: 0 0 10px black; transition: transform 0.2s ease;
+    z-index: 210;
+    pointer-events: auto;
 }
-.map-modal-close-btn:hover, .controller-modal-close-btn:hover { transform: scale(1.2); color: #fde047; }
+.map-modal-close-btn:hover { transform: scale(1.2); color: #fde047; }
+
+.map-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+    z-index: 210;
+}
+.map-modal-nav:hover {
+    background: rgba(0,0,0,0.6);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+.map-modal-nav.hidden {
+    display: none;
+}
+.map-modal-nav.prev { left: 1.5rem; }
+.map-modal-nav.next { right: 1.5rem; }
+
+
+#controller-modal-content {
+    max-width: 90vw; max-height: 90vh;
+}
+.controller-modal-close-btn {
+    position: absolute; top: 2rem; right: 2rem; font-size: 3rem; color: white; background: none; border: none; cursor: pointer; line-height: 1; text-shadow: 0 0 10px black; transition: transform 0.2s ease;
+}
+.controller-modal-close-btn:hover { transform: scale(1.2); color: #fde047; }
 #controller-modal-image { max-width: 80vw; max-height: 80vh; filter: drop-shadow(0 5px 25px rgba(167, 139, 250, 0.4)); }
 
 /* --- BOMBER'S NOTEBOOK STYLES --- */
@@ -471,6 +527,15 @@ html, body {
     .map-item h3 {
         font-size: 1rem;
     }
+
+    .map-modal-nav {
+        width: 48px;
+        height: 48px;
+    }
+    .map-modal-nav.prev { left: 0.5rem; }
+    .map-modal-nav.next { right: 0.5rem; }
+    .map-modal-title { font-size: 1.2rem; }
+
 }
 
 @media (max-width: 480px) {

@@ -57,13 +57,6 @@ function main() {
         }
     });
     
-    // Moon click listener
-    dom.moonImage.addEventListener('click', () => {
-        // Opens a YouTube playlist in a new tab
-        window.open('https://youtube.com/playlist?list=PLF41D831CF4427BE5&si=fl3Yuo2SQiO8CFny', '_blank');
-    });
-
-
     // Bomber's Notebook Listener
     dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
 

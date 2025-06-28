@@ -15,8 +15,8 @@ function initializeSounds() {
     try {
         // Create new Audio objects for the navigation sounds.
         // Assumes you have 'nav-open.mp3' and 'nav-close.mp3' in a 'music' folder.
-        navOpenSound = new Audio('music/open.mp3');
-        navCloseSound = new Audio('music/close.mp3');
+        navOpenSound = new Audio('music/sounds/MMsounds/Tatl & Tael/MM_Tatl_Shift.wav');
+        navCloseSound = new Audio('music/sounds/MMsounds/Tatl & Tael/MM_Tatl_In.wav');
         
         // Preload the sounds for faster playback.
         navOpenSound.preload = 'auto';

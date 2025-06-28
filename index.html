@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-title" content="TatlTael">
     
     <!-- App Icons -->
-    <link rel="apple-touch-icon" href="app-icon/icon-192x192.png">
+    <link rel="apple-touch-icon" href="app-icon/icon-1024x1024.png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +31,6 @@
     
     <!-- Audio Players -->
     <audio id="background-audio" loop src="music/Relaxing and Ambient Music From Zelda _ Majora's Mask | 40 Minutes (StudyingRelaxingSleep).mp3"></audio>
-    <!-- Nav sound effects are now created in audio.js, so no need for tags here -->
 
     <!-- CSS Animated Background -->
     <div class="background-effects">
@@ -191,9 +190,19 @@
 
     <!-- Modals -->
     <div id="map-modal" class="map-modal-overlay">
-        <button id="map-modal-close" class="map-modal-close-btn">&times;</button>
+        <div class="map-modal-header">
+            <h3 id="map-modal-title" class="map-modal-title"></h3>
+            <button id="map-modal-close" class="map-modal-close-btn">&times;</button>
+        </div>
+        <button id="map-modal-prev" class="map-modal-nav prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
         <img id="map-modal-image" src="" alt="Full size map">
+        <button id="map-modal-next" class="map-modal-nav next">
+             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
     </div>
+
     <div id="controller-modal" class="controller-modal-overlay">
         <button id="controller-modal-close" class="controller-modal-close-btn">&times;</button>
         <div id="controller-modal-content">

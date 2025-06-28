@@ -25,7 +25,6 @@ export const instrumentImage = document.getElementById('instrument-image');
 
 // --- Main UI / Corner & Background Icons ---
 export const tingleContainer = document.getElementById('tingle-container');
-export const moonImage = document.getElementById('moon-image'); // Clickable moon
 export const toggleUiButton = document.getElementById('toggle-ui-button');
 export const iconEyeOpen = document.getElementById('icon-eye-open');
 export const iconEyeClosed = document.getElementById('icon-eye-closed');
@@ -36,6 +35,10 @@ export const mapsBackButton = document.getElementById('maps-back-button');
 export const mapModal = document.getElementById('map-modal');
 export const mapModalImage = document.getElementById('map-modal-image');
 export const mapModalClose = document.getElementById('map-modal-close');
+export const mapModalTitle = document.getElementById('map-modal-title');
+export const mapModalPrev = document.getElementById('map-modal-prev');
+export const mapModalNext = document.getElementById('map-modal-next');
+
 
 // --- Bomber's Notebook Elements ---
 export const bomberCodeInput = document.getElementById('bomber-code-input');
@@ -53,4 +56,3 @@ export const controllerModalClose = document.getElementById('controller-modal-cl
 
 // --- Audio Elements ---
 export const backgroundAudio = document.getElementById('background-audio');
-// Note: Nav sounds are now handled in audio.js via new Audio()
