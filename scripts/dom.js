@@ -1,13 +1,15 @@
 // --- Main Views / Screens ---
 export const mainScreen = document.getElementById('main-screen');
 export const songDetailView = document.getElementById('song-detail-view');
-export const mapsView = document.getElementById('maps-view');
+export const mapsView = document.getElementById('maps-view'); // Tingle's maps
+export const terminaMapView = document.getElementById('termina-map-view'); // Full Termina map
 
 // --- Main Nav Elements ---
 export const mainNavContainer = document.getElementById('main-nav-container');
 export const mainTitleButton = document.getElementById('main-title-button');
 export const navPill = document.getElementById('nav-pill');
-export const navItems = [...document.querySelectorAll('.nav-item')];
+// This is now a function to ensure it's always up-to-date if nav items are ever changed dynamically.
+export const getNavItems = () => [...document.querySelectorAll('.nav-item')];
 
 // --- Fairy Elements ---
 export const fairyContainer = document.getElementById('fairy-container');
@@ -19,7 +21,8 @@ export const songsContent = document.getElementById('song-grid-content');
 export const notebookContent = document.getElementById('notebook-content');
 export const itemsContent = document.getElementById('items-content');
 export const masksContent = document.getElementById('masks-content');
-export const allMainContentTypes = [songsContent, notebookContent, itemsContent, masksContent];
+export const heartContainersContent = document.getElementById('heart-containers-content');
+export const allMainContentTypes = [songsContent, notebookContent, itemsContent, masksContent, heartContainersContent];
 
 // --- Song Selection / Detail Elements ---
 export const songGrid = document.getElementById('song-grid');
@@ -35,7 +38,7 @@ export const toggleUiButton = document.getElementById('toggle-ui-button');
 export const iconEyeOpen = document.getElementById('icon-eye-open');
 export const iconEyeClosed = document.getElementById('icon-eye-closed');
 
-// --- Maps Elements ---
+// --- Tingle's Maps Elements ---
 export const mapGrid = document.getElementById('map-grid');
 export const mapsBackButton = document.getElementById('maps-back-button');
 export const mapModal = document.getElementById('map-modal');
@@ -45,6 +48,8 @@ export const mapModalTitle = document.getElementById('map-modal-title');
 export const mapModalPrev = document.getElementById('map-modal-prev');
 export const mapModalNext = document.getElementById('map-modal-next');
 
+// --- Termina Map Elements ---
+export const terminaMapBackButton = document.getElementById('termina-map-back-button');
 
 // --- Bomber's Notebook Elements ---
 export const bomberCodeInput = document.getElementById('bomber-code-input');
@@ -59,6 +64,9 @@ export const detailsCharDesc = document.getElementById('details-char-desc');
 export const controllerModal = document.getElementById('controller-modal');
 export const controllerModalImage = document.getElementById('controller-modal-image');
 export const controllerModalClose = document.getElementById('controller-modal-close');
+
+// --- Item Detail Modal ---
+export const itemDetailModal = document.getElementById('item-detail-modal');
 
 // --- Audio Elements ---
 export const backgroundAudio = document.getElementById('background-audio');

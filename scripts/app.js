@@ -4,6 +4,7 @@ import * as ui from './ui.js';
 import * as songView from './song-view.js';
 import * as mapsView from './maps-view.js';
 import * as notebookView from './notebook-view.js';
+import * as itemsView from './items-view.js';
 
 /**
  * Main application initialization function.
@@ -13,6 +14,7 @@ function main() {
     songView.populateSongGrid();
     mapsView.populateMapsGrid();
     notebookView.populateBombersNotebook();
+    itemsView.populateItemsView(); // Populate the new items view
     audio.initializeAudio();
 
     // --- EVENT LISTENERS ---
@@ -23,13 +25,20 @@ function main() {
         ui.toggleMainNav();
     });
     
-    dom.navItems.forEach(item => {
+    dom.getNavItems().forEach(item => {
         item.addEventListener('click', (e) => {
             e.stopPropagation();
             const content = item.dataset.content;
-            ui.showContentForNav(content);
-            // We can choose to close the nav automatically after a selection
-            if (ui.isNavOpen()) {
+
+            if (content === 'termina') {
+                // Special case for the full-screen Termina map
+                ui.switchView(dom.terminaMapView);
+            } else {
+                ui.showContentForNav(content);
+            }
+            
+            // Close the nav automatically after a selection
+            if (ui.getNavState()) {
                 ui.toggleMainNav();
             }
         });
@@ -47,7 +56,7 @@ function main() {
         }
     });
 
-    // Maps View Listeners
+    // Tingle's Maps View Listeners
     dom.tingleContainer.addEventListener('click', mapsView.showMapsView);
     dom.mapsBackButton.addEventListener('click', songView.showMainScreen);
     dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
@@ -56,6 +65,9 @@ function main() {
             mapsView.closeMapModal();
         }
     });
+
+    // Termina Map View Listener
+    dom.terminaMapBackButton.addEventListener('click', songView.showMainScreen);
     
     // Bomber's Notebook Listener
     dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);

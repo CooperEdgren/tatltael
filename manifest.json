@@ -21,9 +21,10 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#03000a",
   "theme_color": "#03000a",
-  "description": "A companion app for Majora's Mask, featuring songs, maps, and the Bomber's Notebook."
+  "orientation": "any",
+  "description": "A companion app for Majora's Mask, featuring songs, maps, items, and the Bomber's Notebook."
 }

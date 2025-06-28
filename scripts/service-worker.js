@@ -1,56 +1,105 @@
-// A unique name for the cache
-const CACHE_NAME = 'tatltael-cache-v1';
+// A unique name for the cache, incremented to force an update
+const CACHE_NAME = 'tatltael-cache-v2';
 
-// The list of files to be cached
-// Add any other critical assets here, like fonts or key images.
+// The list of files to be cached, now including new scripts and icons
 const urlsToCache = [
   '/',
   'index.html',
   'style.css',
-  'app.js',
-  'audio.js',
-  'data.js',
-  'dom.js',
-  'maps-view.js',
-  'notebook-view.js',
-  'song-view.js',
-  'ui.js',
+  'scripts/app.js',
+  'scripts/audio.js',
+  'scripts/data.js',
+  'scripts/data-items.js', // New
+  'scripts/dom.js',
+  'scripts/items-view.js', // New
+  'scripts/maps-view.js',
+  'scripts/notebook-view.js',
+  'scripts/song-view.js',
+  'scripts/ui.js',
+  // Key UI Images
   'images/moon.png',
-  'images/clocktown.png',
   'images/tinglemyboy.png',
+  // Nav Icons
   'images/songs_icon.png',
   'images/items_icon.png',
   'images/bombers-notebook.png',
-  'images/masks_icon.png'
+  'images/masks_icon.png',
+  'images/heart_container_icon.png',
+  'images/maps_icon.png',
+  // Item Images (add more as needed for offline support)
+  'images/items/inventory/Ocarina_of_Time_3D.png',
+  'images/items/inventory/Heros_Bow_3D.png',
+  'images/items/equipment/Heros_Shield_3D.png',
+  'images/items/masks/Deku_Mask_3D.png',
+  'images/items/masks/Goron_Mask_3D.png',
+  'images/items/masks/Zora_Mask_3D.png',
+  'images/items/bottled/Empty_Bottle_3D.png'
 ];
 
 // Event listener for the 'install' event
-// This is where we populate the cache with the app shell files.
 self.addEventListener('install', event => {
-  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
-        // Add all the specified assets to the cache
+        console.log('Opened cache and caching app shell');
         return cache.addAll(urlsToCache);
       })
   );
 });
 
+// Event listener for the 'activate' event
+// This is where we clean up old caches.
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+
 // Event listener for the 'fetch' event
-// This intercepts network requests and serves cached files if available.
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // If the request is in the cache, return the cached response
+        // Cache hit - return response
         if (response) {
           return response;
         }
-        // Otherwise, fetch the request from the network
-        return fetch(event.request);
-      }
-    )
-  );
+
+        // Clone the request because it's a stream and can only be consumed once.
+        const fetchRequest = event.request.clone();
+
+        return fetch(fetchRequest).then(
+          response => {
+            // Check if we received a valid response
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // Clone the response because it's also a stream.
+            const responseToCache = response.clone();
+
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                // We don't want to cache everything, just GET requests
+                if(event.request.method === 'GET') {
+                    cache.put(event.request, responseToCache);
+                }
+              });
+
+            return response;
+          }
+        );
+      })
+    );
 });

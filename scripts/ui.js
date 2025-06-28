@@ -29,7 +29,6 @@ export function toggleMainNav() {
 
     dom.mainTitleButton.classList.toggle('nav-active', isNavOpen);
     dom.navPill.classList.toggle('is-visible', isNavOpen);
-    // Add a class to the container to manage fairy animations via CSS
     dom.mainNavContainer.classList.toggle('nav-is-open', isNavOpen);
     
     if (isNavOpen) {
@@ -44,7 +43,7 @@ export function toggleMainNav() {
  * @param {MouseEvent} event
  */
 function closeNavOnClickOutside(event) {
-    if (!dom.mainNavContainer.contains(event.target)) {
+    if (!dom.mainNavContainer.contains(event.target) && event.target !== dom.mainTitleButton) {
         if (isNavOpen) {
             toggleMainNav();
         }
@@ -86,6 +85,9 @@ export function showContentForNav(newContent) {
         case 'masks':
             contentToShow = dom.masksContent;
             break;
+        case 'heart-containers':
+            contentToShow = dom.heartContainersContent;
+            break;
         default:
             return;
     }
@@ -100,7 +102,7 @@ export function showContentForNav(newContent) {
  */
 function hideAllContent() {
     dom.allMainContentTypes.forEach(el => el.classList.add('hidden'));
-    dom.navItems.forEach(item => item.classList.remove('active'));
+    dom.getNavItems().forEach(item => item.classList.remove('active'));
 }
 
 /**
@@ -159,20 +161,16 @@ export function toggleControlsVisibility() {
     dom.iconEyeOpen.classList.toggle('hidden', isHidden);
     dom.iconEyeClosed.classList.toggle('hidden', !isHidden);
     
-    // Toggle the class on the nav container to manage fairy animations
     dom.mainNavContainer.classList.toggle('ui-is-hidden', isHidden);
 
     if (isHidden) {
-        // If the UI is hidden, start an interval to periodically switch the explore animation
         exploreInterval = setInterval(() => {
             dom.mainNavContainer.classList.toggle('alt-explore');
-        }, 8000); // Switch animation every 8 seconds
+        }, 8000);
     } else {
-        // If UI is shown, clear the interval and remove the alternate class
         clearInterval(exploreInterval);
         exploreInterval = null;
         dom.mainNavContainer.classList.remove('alt-explore');
     }
-
     resetHideUiTimeout();
 }

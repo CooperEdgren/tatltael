@@ -37,43 +37,33 @@
         <div id="stars1"></div>
         <div id="stars2"></div>
         <div id="stars3"></div>
-        <img src="images/moon.png" alt="The Moon" id="moon-image">
+        <img src="images/moon.png" alt="The Moon" id="moon-image" onerror="this.onerror=null;this.src='https://placehold.co/150x150/090a0f/ffffff?text=Moon'">
         
         <!-- Animated Clock Town Layers -->
         <div id="animated-background">
             <img src="images/clocktown/clocktownBaseLayer.png" alt="Clock Town" id="clocktown-base">
-            
-            <!-- Volcano Cloud -->
             <img src="images/clocktown/volcanocloudLayer.png" alt="Volcano Cloud" id="volcano-cloud">
-
-            <!-- Middle Chimney Smoke -->
             <div id="middle-smoke-container">
                 <img src="images/clocktown/middlesmokingLayer1.png" alt="smoke" class="smoke-frame">
                 <img src="images/clocktown/middlesmokingLayer2.png" alt="smoke" class="smoke-frame">
                 <img src="images/clocktown/middlesmokingLayer3.png" alt="smoke" class="smoke-frame">
             </div>
-
-            <!-- Right Chimney Smoke -->
             <div id="right-smoke-container">
                 <img src="images/clocktown/rightsmokingLayer1.png" alt="smoke" class="smoke-frame">
                 <img src="images/clocktown/rightsmokingLayer2.png" alt="smoke" class="smoke-frame">
                 <img src="images/clocktown/rightsmokingLayer3.png" alt="smoke" class="smoke-frame">
                 <img src="images/clocktown/rightsmokingLayer4.png" alt="smoke" class="smoke-frame">
             </div>
-
-            <!-- Flying Deku -->
             <img src="images/clocktown/item-dekuLayer.png" alt="Flying Deku" id="flying-deku">
         </div>
-
     </div>
-
+    
     <!-- Tingle Icon -->
     <div class="corner-icons-container">
         <div id="tingle-container">
             <img src="images/tinglemyboy.png" alt="Tingle" id="tingle-image">
         </div>
     </div>
-
 
     <!-- Main Application Wrapper -->
     <div id="app-wrapper" class="relative w-full min-h-screen flex items-center justify-center p-4">
@@ -94,6 +84,10 @@
                                     <img src="images/items_icon.png" alt="Items" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Items'">
                                     <span>Items</span>
                                 </button>
+                                <button class="nav-item" data-content="heart-containers">
+                                    <img src="images/heart_container_icon.png" alt="Heart Containers" onerror="this.onerror=null;this.src='https://placehold.co/80x80/ef4444/fee2e2?text=Hearts'">
+                                    <span>Hearts</span>
+                                </button>
                             </div>
                              <div class="nav-wing flex items-center" id="nav-wing-right">
                                 <button class="nav-item" data-content="notebook">
@@ -104,6 +98,10 @@
                                     <img src="images/masks_icon.png" alt="Masks" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Masks'">
                                     <span>Masks</span>
                                 </button>
+                                <button class="nav-item" data-content="termina">
+                                    <img src="images/map_icon.png" alt="Termina" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Termina'">
+                                    <span>Termina</span>
+                                </button>
                             </div>
                         </div>
                     </nav>
@@ -111,20 +109,17 @@
                 </div>
             </header>
             
-            <!-- Fairy container is now a direct child of main-screen to avoid being hidden -->
             <div id="fairy-container" class="pointer-events-none">
-                <img src="images/Tatl.png" class="fairy" id="tatl-fairy" alt="Tatl" onerror="this.onerror=null;this.src='https://placehold.co/30x30/fef08a/fef08a?text=T'">
-                <img src="images/Tael.png" class="fairy" id="tael-fairy" alt="Tael" onerror="this.onerror=null;this.src='https://placehold.co/30x30/c084fc/c084fc?text=T'">
+                <img src="images/Tatl.png" class="fairy" id="tatl-fairy" alt="Tatl" onerror="this.onerror=null;this.src='https://placehold.co/30x30/fef08a/000000?text=T'">
+                <img src="images/Tael.png" class="fairy" id="tael-fairy" alt="Tael" onerror="this.onerror=null;this.src='https://placehold.co/30x30/c084fc/000000?text=T'">
             </div>
 
             <!-- Content Area for Nav Items -->
             <div id="main-content-area" class="w-full max-w-7xl mx-auto pt-40">
                 <main id="song-grid-content" class="main-content hidden">
-                    <div id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
-                        <!-- Song buttons injected here -->
-                    </div>
+                    <div id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full"></div>
                 </main>
-
+                <div id="items-content" class="main-content hidden"></div>
                 <div id="notebook-content" class="main-content hidden">
                      <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
                         <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
@@ -163,9 +158,8 @@
                         </main>
                     </div>
                 </div>
-
-                <div id="items-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Items Content Here</div>
                 <div id="masks-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Masks Content Here</div>
+                <div id="heart-containers-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Heart Containers Content Here</div>
             </div>
 
             <button id="toggle-ui-button" class="btn-toggle-ui">
@@ -200,7 +194,7 @@
         <div id="maps-view" class="view-container">
              <div class="w-full h-full max-w-screen-xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
-                    <h2 class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow">Termina Maps</h2>
+                    <h2 class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow">Tingle's Maps</h2>
                     <button id="maps-back-button" class="btn-back">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
                         Back
@@ -209,7 +203,21 @@
                 <main id="map-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto p-2"></main>
              </div>
         </div>
-
+        
+        <div id="termina-map-view" class="view-container">
+             <div class="w-full h-full max-w-screen-2xl p-2 sm:p-4 md:p-6 rounded-2xl main-container flex flex-col">
+                <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
+                    <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Map of Termina</h2>
+                    <button id="termina-map-back-button" class="btn-back">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+                        Back
+                    </button>
+                </header>
+                <main class="flex-grow w-full h-full overflow-auto flex items-center justify-center">
+                    <img src="maps/InteractMap/fulltermina.png" alt="Interactive Map of Termina" class="max-w-full max-h-full object-contain">
+                </main>
+             </div>
+        </div>
     </div>
 
     <!-- Modals -->
@@ -232,6 +240,10 @@
         <div id="controller-modal-content">
             <img id="controller-modal-image" src="" alt="Controller Layout">
         </div>
+    </div>
+
+    <div id="item-detail-modal" class="item-detail-modal-overlay">
+        <!-- Content injected by items-view.js -->
     </div>
 
     <!-- Scripts -->
