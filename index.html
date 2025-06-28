@@ -38,7 +38,33 @@
         <div id="stars2"></div>
         <div id="stars3"></div>
         <img src="images/moon.png" alt="The Moon" id="moon-image">
-        <img src="images/clocktown.png" alt="Clock Town" id="clocktown-image">
+        
+        <!-- Animated Clock Town Layers -->
+        <div id="animated-background">
+            <img src="images/clocktown/clocktownBaseLayer.png" alt="Clock Town" id="clocktown-base">
+            
+            <!-- Volcano Cloud -->
+            <img src="images/clocktown/volcanocloudLayer.png" alt="Volcano Cloud" id="volcano-cloud">
+
+            <!-- Middle Chimney Smoke -->
+            <div id="middle-smoke-container">
+                <img src="images/clocktown/middlesmokingLayer1.png" alt="smoke" class="smoke-frame">
+                <img src="images/clocktown/middlesmokingLayer2.png" alt="smoke" class="smoke-frame">
+                <img src="images/clocktown/middlesmokingLayer3.png" alt="smoke" class="smoke-frame">
+            </div>
+
+            <!-- Right Chimney Smoke -->
+            <div id="right-smoke-container">
+                <img src="images/clocktown/rightsmokingLayer1.png" alt="smoke" class="smoke-frame">
+                <img src="images/clocktown/rightsmokingLayer2.png" alt="smoke" class="smoke-frame">
+                <img src="images/clocktown/rightsmokingLayer3.png" alt="smoke" class="smoke-frame">
+                <img src="images/clocktown/rightsmokingLayer4.png" alt="smoke" class="smoke-frame">
+            </div>
+
+            <!-- Flying Deku -->
+            <img src="images/clocktown/item-dekuLayer.png" alt="Flying Deku" id="flying-deku">
+        </div>
+
     </div>
 
     <!-- Tingle Icon -->
@@ -85,12 +111,10 @@
                 </div>
             </header>
             
-            <!-- Fairy animation -->
-            <div id="fairy-container" class="w-full h-full absolute top-0 left-0 flex items-center justify-center opacity-25 pointer-events-none">
-                <div class="relative w-28 h-28">
-                    <div class="fairy" id="light-fairy"></div>
-                    <div class="fairy" id="dark-fairy"></div>
-                </div>
+            <!-- Fairy container is now a direct child of main-screen to avoid being hidden -->
+            <div id="fairy-container" class="pointer-events-none">
+                <img src="images/Tatl.png" class="fairy" id="tatl-fairy" alt="Tatl" onerror="this.onerror=null;this.src='https://placehold.co/30x30/fef08a/fef08a?text=T'">
+                <img src="images/Tael.png" class="fairy" id="tael-fairy" alt="Tael" onerror="this.onerror=null;this.src='https://placehold.co/30x30/c084fc/c084fc?text=T'">
             </div>
 
             <!-- Content Area for Nav Items -->

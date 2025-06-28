@@ -14,41 +14,6 @@ html, body {
     font-family: 'Almendra', serif;
 }
 
-/* --- Animated Fairy Icon --- */
-#fairy-container {
-    position: relative;
-}
-.fairy {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-}
-#light-fairy {
-    background-color: #fef08a; /* Bright yellow core */
-    box-shadow: 0 0 8px #fef08a, 0 0 16px #fde047, 0 0 24px #facc15;
-    animation: dance-light 5s infinite ease-in-out;
-}
-#dark-fairy {
-    background-color: #c084fc; /* Bright purple core */
-    box-shadow: 0 0 8px #c084fc, 0 0 16px #a855f7, 0 0 24px #ec4899;
-    animation: dance-dark 5s infinite ease-in-out;
-}
-@keyframes dance-light {
-    0%, 100% { transform: translate(-35px, 0) scale(1); }
-    25% { transform: translate(0, 30px) scale(0.8); }
-    50% { transform: translate(35px, 0) scale(1); }
-    75% { transform: translate(0, -30px) scale(1.2); }
-}
-@keyframes dance-dark {
-    0%, 100% { transform: translate(35px, 0) scale(1); }
-    25% { transform: translate(0, -30px) scale(1.2); }
-    50% { transform: translate(-35px, 0) scale(1); }
-    75% { transform: translate(0, 30px) scale(0.8); }
-}
-
 /* --- Animated Background Elements --- */
 .background-effects {
     position: fixed;
@@ -59,16 +24,100 @@ html, body {
     position: absolute; top: 5%; right: 5%; width: 15%; max-width: 150px; z-index: 2;
     animation: pulse-shiver 8s infinite ease-in-out;
 }
-
 @keyframes pulse-shiver {
     0%, 100% { transform: scale(1) rotate(0deg); }
     50% { transform: scale(1.08) rotate(1deg); }
     70% { transform: scale(1.08) rotate(-1deg); }
     80% { transform: scale(1.08) rotate(1deg); }
 }
-#clocktown-image {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: auto; object-fit: cover; z-index: 1; opacity: 0.7;
+
+/* --- New Animated Clock Town Background --- */
+#animated-background {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%; /* Adjust as needed */
+    pointer-events: none;
 }
+#animated-background img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+#clocktown-base {
+    z-index: 1;
+}
+
+#volcano-cloud {
+    z-index: 2;
+    width: 8%;
+    left: 10.5%;
+    bottom: 45%;
+    transform-origin: center;
+    animation: volcano-pulse 15s infinite ease-in-out;
+}
+
+@keyframes volcano-pulse {
+    0%, 100% { transform: scale(1) translateX(0px); opacity: 0.8; }
+    50% { transform: scale(1.1) translateX(5px); opacity: 0.95; }
+}
+
+#flying-deku {
+    z-index: 4;
+    width: 4%;
+    left: 50%; /* Start position */
+    bottom: 60%; /* Start position */
+    animation: fly-around 25s infinite ease-in-out;
+}
+
+@keyframes fly-around {
+    0% { transform: translate(0, 0) rotate(5deg); }
+    25% { transform: translate(-20vw, 5vh) rotate(-5deg); }
+    50% { transform: translate(0, 10vh) rotate(5deg); }
+    75% { transform: translate(20vw, 5vh) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(5deg); }
+}
+
+#middle-smoke-container, #right-smoke-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+.smoke-frame {
+    opacity: 0;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+/* Middle Smoke Animation */
+#middle-smoke-container .smoke-frame { animation-name: middle-smoke-fade; animation-duration: 4s; }
+#middle-smoke-container .smoke-frame:nth-child(2) { animation-delay: 1.3s; }
+#middle-smoke-container .smoke-frame:nth-child(3) { animation-delay: 2.6s; }
+
+@keyframes middle-smoke-fade {
+    0%, 100% { opacity: 0; transform: translateY(0) scale(0.9); }
+    25% { opacity: 1; }
+    50% { opacity: 0; transform: translateY(-30px) scale(1.1); }
+}
+
+/* Right Smoke Animation */
+#right-smoke-container .smoke-frame { animation-name: right-smoke-fade; animation-duration: 5s; }
+#right-smoke-container .smoke-frame:nth-child(2) { animation-delay: 1.25s; }
+#right-smoke-container .smoke-frame:nth-child(3) { animation-delay: 2.5s; }
+#right-smoke-container .smoke-frame:nth-child(4) { animation-delay: 3.75s; }
+
+@keyframes right-smoke-fade {
+    0%, 100% { opacity: 0; transform: translateY(0) scale(1); }
+    25% { opacity: 0.8; }
+    50% { opacity: 0; transform: translateY(-40px) scale(1.2); }
+}
+
 @keyframes animStar {
   from { transform: translateY(0px); }
   to { transform: translateY(-2000px); }
@@ -120,6 +169,118 @@ html, body {
     backdrop-filter: blur(8px);
     border-color: rgba(167, 139, 250, 0.3);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.05);
+}
+
+/* --- Fairy Animations --- */
+#fairy-container {
+    position: absolute;
+    /* Positioned to overlay the header */
+    top: 2.5rem; /* ~pt-6 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px; /* Width of the title button area */
+    height: 60px; /* Height of the title button area */
+    z-index: 11;
+    pointer-events: none;
+}
+
+.fairy {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    will-change: transform;
+    animation-play-state: running; /* Default state */
+}
+
+#tatl-fairy {
+    background-image: url(images/Tatl.png);
+    animation: fly-around-tatl 6s infinite ease-in-out;
+}
+
+#tael-fairy {
+    background-image: url(images/Tael.png);
+    animation: fly-around-tael 7s infinite linear;
+}
+
+/* Default state: Flying around the title */
+@keyframes fly-around-tatl {
+    0% { transform: translate(-50%, -50%) rotate(0deg) translateX(80px) translateY(5px) rotate(0deg) scale(1); }
+    25% { transform: translate(-50%, -50%) rotate(90deg) translateX(60px) translateY(0px) rotate(-90deg) scale(0.9); }
+    50% { transform: translate(-50%, -50%) rotate(180deg) translateX(80px) translateY(-5px) rotate(-180deg) scale(1); }
+    75% { transform: translate(-50%, -50%) rotate(270deg) translateX(60px) translateY(0px) rotate(-270deg) scale(1.1); }
+    100% { transform: translate(-50%, -50%) rotate(360deg) translateX(80px) translateY(5px) rotate(-360deg) scale(1); }
+}
+@keyframes fly-around-tael {
+    0% { transform: translate(-50%, -50%) rotate(0deg) translateX(-70px) translateY(-5px) rotate(0deg) scale(0.95); }
+    25% { transform: translate(-50%, -50%) rotate(-90deg) translateX(-80px) translateY(0px) rotate(90deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(-180deg) translateX(-70px) translateY(5px) rotate(180deg) scale(0.95); }
+    75% { transform: translate(-50%, -50%) rotate(-270deg) translateX(-80px) translateY(0px) rotate(270deg) scale(0.9); }
+    100% { transform: translate(-50%, -50%) rotate(-360deg) translateX(-70px) translateY(-5px) rotate(360deg) scale(0.95); }
+}
+
+/* State 2: Nav is open */
+.nav-is-open .fairy {
+    animation-play-state: paused; /* Pause flight animation */
+}
+.nav-is-open #tatl-fairy {
+    transform: translate(-320px, 0px) scale(1.2);
+}
+.nav-is-open #tael-fairy {
+    transform: translate(320px, 0px) scale(1.2);
+}
+
+/* State 3: UI is hidden */
+.ui-is-hidden .fairy {
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+.ui-is-hidden #tatl-fairy {
+    animation-name: explore-clocktown-1;
+    animation-duration: 20s;
+}
+.ui-is-hidden #tael-fairy {
+    animation-name: explore-clocktown-2;
+    animation-duration: 22s;
+}
+
+/* Alternate exploring animation for variety */
+.ui-is-hidden.alt-explore #tatl-fairy {
+    animation-name: dart-diamond-tatl;
+    animation-duration: 4s;
+}
+.ui-is-hidden.alt-explore #tael-fairy {
+    animation-name: dart-diamond-tael;
+    animation-duration: 4s;
+}
+
+@keyframes explore-clocktown-1 {
+    0%, 100% { transform: translate(-30vw, 38vh) scale(0.8); }
+    25% { transform: translate(-10vw, 42vh) scale(0.9); }
+    50% { transform: translate(-25vw, 48vh) scale(0.8); }
+    75% { transform: translate(-20vw, 35vh) scale(1); }
+}
+@keyframes explore-clocktown-2 {
+    0%, 100% { transform: translate(20vw, 40vh) scale(0.8); }
+    25% { transform: translate(30vw, 45vh) scale(1); }
+    50% { transform: translate(15vw, 38vh) scale(0.9); }
+    75% { transform: translate(25vw, 42vh) scale(0.8); }
+}
+@keyframes dart-diamond-tatl {
+    0%, 100% { transform: translate(-15vw, 38vh) scale(0.9); }
+    25% { transform: translate(-13vw, 35vh) scale(1); }
+    50% { transform: translate(-17vw, 38vh) scale(0.9); }
+    75% { transform: translate(-13vw, 41vh) scale(1); }
+}
+@keyframes dart-diamond-tael {
+    0%, 100% { transform: translate(18vw, 42vh) scale(0.9); }
+    25% { transform: translate(20vw, 45vh) scale(1); }
+    50% { transform: translate(22vw, 42vh) scale(0.9); }
+    75% { transform: translate(20vw, 39vh) scale(1); }
 }
 
 /* --- Unified Pill Nav Styles --- */
@@ -288,10 +449,14 @@ html, body {
 .platform-logo { height: 40px; margin-bottom: 0.75rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
 /* --- Hidden Controls Styling --- */
+/* This now only hides the header, not the fairy container */
 .controls-hidden #main-header,
 .controls-hidden #main-content-area {
-    opacity: 0; pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
 }
+
 
 /* --- Map Item Styling --- */
 .map-item {
@@ -535,7 +700,9 @@ html, body {
     .map-modal-nav.prev { left: 0.5rem; }
     .map-modal-nav.next { right: 0.5rem; }
     .map-modal-title { font-size: 1.2rem; }
-
+    
+    .nav-is-open #tatl-fairy { transform: translate(-160px, 0px) scale(1.1); }
+    .nav-is-open #tael-fairy { transform: translate(160px, 0px) scale(1.1); }
 }
 
 @media (max-width: 480px) {
@@ -572,4 +739,7 @@ html, body {
     .map-modal-close-btn, .controller-modal-close-btn {
         top: 1rem; right: 1rem; font-size: 2.5rem;
     }
+
+    .nav-is-open #tatl-fairy { transform: translate(-120px, 0px) scale(1); }
+    .nav-is-open #tael-fairy { transform: translate(120px, 0px) scale(1); }
 }

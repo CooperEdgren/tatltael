@@ -1,18 +1,26 @@
 import * as dom from './dom.js';
 import { showSongGridWithAnimation } from './song-view.js';
-import { playNavOpenSound, playNavCloseSound } from './audio.js'; // Import sound functions
+import { playNavOpenSound, playNavCloseSound } from './audio.js';
 
 let hideUiTimeout;
-let activeContent = null; // Tracks which content is currently visible ('songs', 'notebook', etc.)
+let activeContent = null;
 let isNavOpen = false;
+let exploreInterval = null;
 
 /**
- * Toggles the visibility of the main navigation pill and plays corresponding sounds.
+ * Provides the current state of the navigation pill.
+ * @returns {boolean} - True if the nav is open.
+ */
+export function getNavState() {
+    return isNavOpen;
+}
+
+/**
+ * Toggles the visibility of the main navigation pill and its associated states.
  */
 export function toggleMainNav() {
     isNavOpen = !isNavOpen;
 
-    // Play sound based on the new state of the navigation
     if (isNavOpen) {
         playNavOpenSound();
     } else {
@@ -21,9 +29,9 @@ export function toggleMainNav() {
 
     dom.mainTitleButton.classList.toggle('nav-active', isNavOpen);
     dom.navPill.classList.toggle('is-visible', isNavOpen);
+    // Add a class to the container to manage fairy animations via CSS
+    dom.mainNavContainer.classList.toggle('nav-is-open', isNavOpen);
     
-    // Add or remove a listener to close the nav if clicking outside of it.
-    // This makes the navigation feel more intuitive.
     if (isNavOpen) {
         setTimeout(() => document.body.addEventListener('click', closeNavOnClickOutside), 0);
     } else {
@@ -32,11 +40,11 @@ export function toggleMainNav() {
 }
 
 /**
- * Closes the navigation if a click occurs outside of the nav pill or the main title button.
+ * Closes the navigation if a click occurs outside of the nav container.
  * @param {MouseEvent} event
  */
 function closeNavOnClickOutside(event) {
-    if (!dom.mainTitleButton.contains(event.target) && !dom.navPill.contains(event.target)) {
+    if (!dom.mainNavContainer.contains(event.target)) {
         if (isNavOpen) {
             toggleMainNav();
         }
@@ -50,7 +58,6 @@ function closeNavOnClickOutside(event) {
 export function showContentForNav(newContent) {
     const newActiveItem = document.querySelector(`.nav-item[data-content="${newContent}"]`);
 
-    // If the clicked content is already active, toggle it off to hide it.
     if (newContent === activeContent) {
         hideAllContent();
         activeContent = null;
@@ -68,7 +75,7 @@ export function showContentForNav(newContent) {
     switch (newContent) {
         case 'songs':
             contentToShow = dom.songsContent;
-            showSongGridWithAnimation(); // Play the special animation for the song grid
+            showSongGridWithAnimation();
             break;
         case 'notebook':
             contentToShow = dom.notebookContent;
@@ -96,7 +103,6 @@ function hideAllContent() {
     dom.navItems.forEach(item => item.classList.remove('active'));
 }
 
-
 /**
  * Switches the currently active view (e.g., to song detail, maps).
  * @param {HTMLElement} viewToShow - The view container element to make active.
@@ -108,7 +114,6 @@ export function switchView(viewToShow) {
     }
     const isMainScreen = viewToShow === dom.mainScreen;
     
-    // Tingle and UI toggle button should only be visible on the main screen.
     dom.tingleContainer.style.opacity = isMainScreen ? '1' : '0';
     dom.tingleContainer.style.pointerEvents = isMainScreen ? 'auto' : 'none';
     dom.toggleUiButton.style.display = isMainScreen ? 'flex' : 'none';
@@ -117,7 +122,6 @@ export function switchView(viewToShow) {
         resetHideUiTimeout();
     } else {
         clearTimeout(hideUiTimeout);
-        // If moving to another view (e.g., song detail), ensure the nav is closed.
         if(isNavOpen) toggleMainNav();
     }
 }
@@ -148,12 +152,27 @@ export function resetHideUiTimeout() {
 }
 
 /**
- * Toggles the visibility of the main screen controls (header, content area).
+ * Toggles the visibility of the main screen controls and fairy states.
  */
 export function toggleControlsVisibility() {
-    dom.mainScreen.classList.toggle('controls-hidden');
-    const isHidden = dom.mainScreen.classList.contains('controls-hidden');
+    const isHidden = dom.mainScreen.classList.toggle('controls-hidden');
     dom.iconEyeOpen.classList.toggle('hidden', isHidden);
     dom.iconEyeClosed.classList.toggle('hidden', !isHidden);
+    
+    // Toggle the class on the nav container to manage fairy animations
+    dom.mainNavContainer.classList.toggle('ui-is-hidden', isHidden);
+
+    if (isHidden) {
+        // If the UI is hidden, start an interval to periodically switch the explore animation
+        exploreInterval = setInterval(() => {
+            dom.mainNavContainer.classList.toggle('alt-explore');
+        }, 8000); // Switch animation every 8 seconds
+    } else {
+        // If UI is shown, clear the interval and remove the alternate class
+        clearInterval(exploreInterval);
+        exploreInterval = null;
+        dom.mainNavContainer.classList.remove('alt-explore');
+    }
+
     resetHideUiTimeout();
 }

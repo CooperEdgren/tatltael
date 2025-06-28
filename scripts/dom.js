@@ -4,9 +4,15 @@ export const songDetailView = document.getElementById('song-detail-view');
 export const mapsView = document.getElementById('maps-view');
 
 // --- Main Nav Elements ---
+export const mainNavContainer = document.getElementById('main-nav-container');
 export const mainTitleButton = document.getElementById('main-title-button');
 export const navPill = document.getElementById('nav-pill');
 export const navItems = [...document.querySelectorAll('.nav-item')];
+
+// --- Fairy Elements ---
+export const fairyContainer = document.getElementById('fairy-container');
+export const tatlFairy = document.getElementById('tatl-fairy');
+export const taelFairy = document.getElementById('tael-fairy');
 
 // --- Main Content Containers ---
 export const songsContent = document.getElementById('song-grid-content');
