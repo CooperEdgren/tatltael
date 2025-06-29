@@ -1,10 +1,11 @@
 import * as dom from './dom.js';
 import { showSongGridWithAnimation } from './song-view.js';
-import { playNavOpenSound, playNavCloseSound } from './audio.js';
+import { playNavOpenSound, playNavCloseSound, setVolume, toggleMute } from './audio.js';
 
 let hideUiTimeout;
 let activeContent = null;
 let isNavOpen = false;
+let isSettingsMenuOpen = false;
 let exploreInterval = null;
 
 /**
@@ -25,6 +26,9 @@ export function toggleMainNav() {
         playNavOpenSound();
     } else {
         playNavCloseSound();
+        if (isSettingsMenuOpen) {
+            toggleSettingsMenu(); // Close settings if nav is closing
+        }
     }
 
     dom.mainTitleButton.classList.toggle('nav-active', isNavOpen);
@@ -37,6 +41,58 @@ export function toggleMainNav() {
         document.body.removeEventListener('click', closeNavOnClickOutside);
     }
 }
+
+/**
+ * Toggles the visibility of the settings menu.
+ */
+function toggleSettingsMenu() {
+    isSettingsMenuOpen = !isSettingsMenuOpen;
+    dom.settingsMenu.classList.toggle('is-active', isSettingsMenuOpen);
+}
+
+/**
+ * Initializes the settings menu event listeners.
+ */
+export function initializeSettings() {
+    dom.settingsButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSettingsMenu();
+    });
+
+    dom.volumeSlider.addEventListener('input', (e) => {
+        setVolume(e.target.value);
+    });
+
+    dom.muteToggle.addEventListener('click', () => {
+        const isMuted = toggleMute();
+        dom.iconVolumeOn.classList.toggle('hidden', isMuted);
+        dom.iconVolumeOff.classList.toggle('hidden', !isMuted);
+        if (isMuted) {
+            dom.volumeSlider.disabled = true;
+        } else {
+            dom.volumeSlider.disabled = false;
+        }
+    });
+
+    dom.appIconOptions.addEventListener('click', (e) => {
+        const button = e.target.closest('.app-icon-option');
+        if (!button) return;
+
+        const iconName = button.dataset.icon;
+        // Here you would implement the logic to change the app icon
+        // This might involve updating the manifest.json or link tags
+        console.log(`Selected app icon: ${iconName}`);
+
+        // Update active state
+        dom.appIconOptions.querySelectorAll('.app-icon-option').forEach(opt => opt.classList.remove('active'));
+        button.classList.add('active');
+    });
+
+    // Set initial state
+    dom.volumeSlider.value = 0.5;
+    dom.appIconOptions.querySelector('[data-icon="default"]').classList.add('active');
+}
+
 
 /**
  * Closes the navigation if a click occurs outside of the nav container.

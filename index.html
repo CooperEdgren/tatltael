@@ -9,6 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#03000a">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="TatlTael">
     
@@ -30,7 +31,7 @@
 <body class="bg-[#03000a]">
     
     <!-- Audio Players -->
-    <audio id="background-audio" loop src="music/Relaxing and Ambient Music From Zelda _ Majora's Mask | 40 Minutes (StudyingRelaxingSleep).mp3"></audio>
+    <audio id="background-audio" loop></audio>
 
     <!-- CSS Animated Background -->
     <div class="background-effects">
@@ -106,6 +107,32 @@
                         </div>
                     </nav>
                     <button id="main-title-button" class="font-zelda relative">TatlTael</button>
+                    <div id="settings-container" class="settings-container">
+                        <button id="settings-button" class="settings-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        </button>
+                        <div id="settings-menu" class="settings-menu">
+                            <div class="settings-section">
+                                <label for="volume-slider" class="text-sm font-medium text-purple-200">Music Volume</label>
+                                <div class="flex items-center gap-2">
+                                    <input id="volume-slider" type="range" min="0" max="1" step="0.05" class="w-full">
+                                    <button id="mute-toggle" class="p-1">
+                                        <svg id="icon-volume-on" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                                        <svg id="icon-volume-off" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9"x2="23" y2="15"></line></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="settings-section">
+                                <label class="text-sm font-medium text-purple-200">App Icon</label>
+                                <div id="app-icon-options" class="grid grid-cols-3 gap-2 pt-2">
+                                    <!-- App icon options will be populated here by JS -->
+                                    <button class="app-icon-option" data-icon="default"><img src="app-icon/icon-192x192.png" alt="Default Icon"></button>
+                                    <button class="app-icon-option" data-icon="moon"><img src="images/moon.png" alt="Moon Icon"></button>
+                                    <button class="app-icon-option" data-icon="notebook"><img src="images/bombers-notebook.png" alt="Notebook Icon"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
             

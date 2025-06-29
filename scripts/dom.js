@@ -65,6 +65,16 @@ export const controllerModal = document.getElementById('controller-modal');
 export const controllerModalImage = document.getElementById('controller-modal-image');
 export const controllerModalClose = document.getElementById('controller-modal-close');
 
+// --- Settings Menu Elements ---
+export const settingsContainer = document.getElementById('settings-container');
+export const settingsButton = document.getElementById('settings-button');
+export const settingsMenu = document.getElementById('settings-menu');
+export const volumeSlider = document.getElementById('volume-slider');
+export const muteToggle = document.getElementById('mute-toggle');
+export const iconVolumeOn = document.getElementById('icon-volume-on');
+export const iconVolumeOff = document.getElementById('icon-volume-off');
+export const appIconOptions = document.getElementById('app-icon-options');
+
 // --- Item Detail Modal ---
 export const itemDetailModal = document.getElementById('item-detail-modal');
 

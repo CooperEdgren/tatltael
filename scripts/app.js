@@ -16,6 +16,7 @@ function main() {
     notebookView.populateBombersNotebook();
     itemsView.populateItemsView();
     audio.initializeAudio();
+    ui.initializeSettings();
 
     // --- EVENT LISTENERS ---
 
