@@ -32,15 +32,15 @@ function main() {
 
             // Handle switching views based on nav item clicked
             if (content === 'termina') {
-                // Special case for the full-screen Termina map
+                // Special case for the full-screen Termina map, which is a separate view
                 ui.switchView(dom.terminaMapView);
-                // Close nav when switching to a full-screen view
+                // FIX: Close nav automatically ONLY when switching to a full-screen view
                 if (ui.getNavState()) {
                     ui.toggleMainNav();
                 }
             } else {
                 // For content inside the main screen, just show it.
-                // The nav will remain open for easy switching.
+                // The nav will remain open for easy switching between content panels.
                 ui.showContentForNav(content);
             }
         });
