@@ -14,7 +14,7 @@ function main() {
     songView.populateSongGrid();
     mapsView.populateMapsGrid();
     notebookView.populateBombersNotebook();
-    itemsView.populateItemsView(); // Populate the new items view
+    itemsView.populateItemsView();
     audio.initializeAudio();
 
     // --- EVENT LISTENERS ---
@@ -30,16 +30,18 @@ function main() {
             e.stopPropagation();
             const content = item.dataset.content;
 
+            // Handle switching views based on nav item clicked
             if (content === 'termina') {
                 // Special case for the full-screen Termina map
                 ui.switchView(dom.terminaMapView);
+                // Close nav when switching to a full-screen view
+                if (ui.getNavState()) {
+                    ui.toggleMainNav();
+                }
             } else {
+                // For content inside the main screen, just show it.
+                // The nav will remain open for easy switching.
                 ui.showContentForNav(content);
-            }
-            
-            // Close the nav automatically after a selection
-            if (ui.getNavState()) {
-                ui.toggleMainNav();
             }
         });
     });
