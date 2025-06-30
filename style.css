@@ -507,39 +507,165 @@ html, body {
 .controller-modal-close-btn:hover { transform: scale(1.2); color: #fde047; }
 #controller-modal-image { max-width: 80vw; max-height: 80vh; filter: drop-shadow(0 5px 25px rgba(167, 139, 250, 0.4)); }
 
-/* --- BOMBER'S NOTEBOOK STYLES --- */
-.bomber-code-input-sm {
-    background-color: rgba(0, 0, 0, 0.5); border: 1px solid rgba(167, 139, 250, 0.5);
-    color: #e9d5ff; font-size: 1rem; font-family: 'Almendra', serif; text-align: center;
-    width: 100px; padding: 0.25rem; border-radius: 8px; letter-spacing: 0.2rem;
-    outline: none; transition: all 0.3s ease;
+.notebook-bg-texture {
+    background-color: #fdf6e3;
+    border: 8px solid #6b462a;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
 }
-.bomber-code-input-sm:focus { border-color: #fde047; box-shadow: 0 0 10px rgba(253, 224, 71, 0.4); }
-.notebook-bg {
-    background-color: #fdf6e3; color: #374151; border-radius: 12px;
-    border: 4px solid #854d0e; box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+
+.notebook-paper-texture {
+    background-image: url('../images/paper-texture.png');
+    background-size: cover;
+    border: 2px solid #c2a578;
 }
-.notebook-header-grid, .notebook-content-grid { display: grid; grid-template-columns: 100px 1fr 1fr 1fr; gap: 4px; }
-.notebook-header-grid { padding: 8px; border-bottom: 2px solid #a16207; background-color: #fdecc8; border-top-left-radius: 6px; border-top-right-radius: 6px; }
-.day-header { color: #b45309; }
-#notebook-characters { border-right: 2px solid #a16207; padding: 4px; }
-.character-item { padding: 4px; cursor: pointer; transition: background-color 0.2s ease; border-radius: 8px; position: relative; }
-.character-item:hover, .character-item.active { background-color: #fdecc8; }
-.character-item img { width: 100%; border-radius: 6px; border: 2px solid #c2a578; }
-.timeline-row { position: relative; height: 92px; border-bottom: 1px dashed #d8b488; }
-#notebook-timeline .day-column { border-right: 1px solid #d8b488; }
-#notebook-timeline .day-column:last-child { border-right: none; }
-.event-marker {
-    position: absolute; left: 50%; transform: translateX(-50%); width: 40px; height: 40px;
-    background-color: #f59e0b; border: 2px solid #b45309; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
-    transition: all 0.2s ease; z-index: 10;
+
+.bomber-code-input {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #854d0e;
+    color: #fdecc8;
+    font-size: 1.25rem;
+    font-family: 'Almendra', serif;
+    text-align: center;
+    width: 120px;
+    padding: 0.25rem;
+    border-radius: 8px;
+    letter-spacing: 0.3rem;
+    outline: none;
+    transition: all 0.3s ease;
 }
-.event-marker:hover { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 10px #f59e0b; }
-.event-marker.completed { background-color: #16a34a; border-color: #14532d; }
-.event-marker.completed .event-icon { filter: brightness(0) invert(1); }
-.event-icon { width: 24px; height: 24px; color: #451a03; }
-#notebook-details-footer { border-top: 2px solid #a16207; color: #e9d5ff; }
+.bomber-code-input:focus {
+    border-color: #fde047;
+    box-shadow: 0 0 10px rgba(253, 224, 71, 0.4);
+}
+
+.notebook-tabs-container {
+    display: flex;
+    border-radius: 12px 12px 0 0;
+}
+
+.notebook-tab {
+    flex-grow: 1;
+    padding: 0.75rem 0.5rem;
+    background-color: #a16207;
+    color: #fdecc8;
+    border: none;
+    font-family: 'Almendra', serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-top: 2px solid #ca8a04;
+    border-left: 2px solid #ca8a04;
+    border-right: 2px solid #ca8a04;
+}
+.notebook-tab:first-child { border-radius: 8px 0 0 0; }
+.notebook-tab:last-child { border-radius: 0 8px 0 0; }
+
+.notebook-tab.active {
+    background-color: #fdecc8;
+    color: #854d0e;
+}
+
+.quest-category-title {
+    font-family: 'Almendra', serif;
+    font-size: 1.5rem;
+    color: #854d0e;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    border-bottom: 2px solid #854d0e;
+}
+
+.quest-list-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #c2a578;
+    color: #374151;
+}
+
+.quest-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.quest-list-item.active {
+    background-color: rgba(161, 98, 7, 0.1);
+    font-weight: bold;
+}
+
+.quest-list-item.completed {
+    opacity: 0.6;
+}
+
+.quest-list-item.completed .quest-name::after {
+    content: ' ✔';
+    color: #16a34a;
+}
+
+.quest-step {
+    padding: 0.75rem 1rem;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #374151;
+}
+
+.quest-step:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0,0,0,0.2);
+}
+
+.quest-step.completed {
+    background-color: rgba(74, 222, 128, 0.1);
+    opacity: 0.7;
+}
+
+.quest-step .checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #854d0e;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quest-step.completed .checkbox::after {
+    content: '✔';
+    color: #854d0e;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.reward-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(0,0,0,0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    color: #374151;
+    border: 1px solid #c2a578;
+}
+
+.reward-item img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
 
 /* --- Button Color Schemes --- */
 .n64-c { background: #facc15; } .n64-a { background: #3b82f6; } .n64-b { background: #4ade80; }

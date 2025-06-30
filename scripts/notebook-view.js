@@ -1,111 +1,28 @@
-import * as data from './data.js';
+import { notebookData } from './data-notebook.js';
 import * as dom from './dom.js';
-// No 'ui' import needed anymore for switching views
 
-// --- STATE ---
-let completedEvents = JSON.parse(localStorage.getItem('completedEvents')) || [];
+let questData = {};
+let activeQuestId = null;
+let activeTab = 'scheduled'; // 'scheduled' or 'completed'
 
 /**
- * Toggles the completion status of a notebook event and saves to localStorage.
- * @param {string} eventId - The unique ID of the event.
+ * Loads quest progress and Bomber's Code from local storage.
  */
-function toggleEventCompletion(eventId) {
-    const eventIndex = completedEvents.indexOf(eventId);
-    if (eventIndex > -1) {
-        completedEvents.splice(eventIndex, 1);
+function loadProgress() {
+    const savedProgress = localStorage.getItem('bombersNotebookProgress_v3');
+    if (savedProgress) {
+        questData = JSON.parse(savedProgress);
     } else {
-        completedEvents.push(eventId);
+        questData = JSON.parse(JSON.stringify(notebookData)); // Deep copy
     }
-    localStorage.setItem('completedEvents', JSON.stringify(completedEvents));
-    populateBombersNotebook(); // Repopulate to update styles
-}
-
-/**
- * Updates the details pane at the bottom of the notebook.
- * @param {string} charId - The ID of the character.
- * @param {string|null} eventId - The ID of the specific event (optional).
- */
-function updateNotebookDetails(charId, eventId = null) {
-    const char = data.bombersNotebookData.find(c => c.id === charId);
-    if (!char) return;
-
-    if (eventId) {
-        const event = char.events.find(e => e.id === eventId);
-        if (event) {
-            dom.detailsCharImg.src = char.img;
-            dom.detailsCharName.textContent = `[Day ${event.day} - ${event.time}] ${char.name}`;
-            dom.detailsCharDesc.textContent = `${event.description} (Click to mark as ${completedEvents.includes(eventId) ? 'incomplete' : 'complete'})`;
-        }
-    } else {
-        dom.detailsCharImg.src = char.img;
-        dom.detailsCharName.textContent = char.name;
-        dom.detailsCharDesc.textContent = char.description;
-    }
-}
-
-/**
- * Renders the entire Bomber's Notebook content.
- * This is now just populating the elements, not controlling view visibility.
- */
-export function populateBombersNotebook() {
-    if (!dom.notebookCharacters || !dom.notebookTimeline) return;
-    
-    dom.notebookCharacters.innerHTML = '';
-    // Clear previous timeline rows before adding new ones
-    dom.notebookTimeline.querySelectorAll('.timeline-row').forEach(row => row.remove());
-    
-    // Always ensure the day columns exist
-    if (dom.notebookTimeline.querySelectorAll('.day-column').length === 0) {
-        dom.notebookTimeline.innerHTML = `
-            <div class="day-column bg-blue-900/30"></div>
-            <div class="day-column bg-red-900/40"></div>
-            <div class="day-column bg-purple-900/30"></div>
-        `;
-    }
-
-    data.bombersNotebookData.forEach((char) => {
-        // Create character portrait
-        const charItem = document.createElement('div');
-        charItem.className = 'character-item';
-        charItem.dataset.charId = char.id;
-        charItem.innerHTML = `<img src="${char.img}" alt="${char.name}" loading="lazy">`;
-        charItem.addEventListener('click', () => {
-            updateNotebookDetails(char.id);
-            document.querySelectorAll('.character-item').forEach(item => item.classList.remove('active'));
-            charItem.classList.add('active');
-        });
-        dom.notebookCharacters.appendChild(charItem);
-
-        // Create timeline row for this character's events
-        const timelineRow = document.createElement('div');
-        timelineRow.className = 'timeline-row';
-
-        char.events.forEach(event => {
-            const dayIndex = event.day - 1;
-            const [hours, minutes] = event.time.split(':').map(Number);
-            const totalMinutesInDay = 12 * 60; // Assuming 6am to 6pm schedule
-            const eventMinutes = (hours - 6) * 60 + minutes;
-            const topPercentage = (eventMinutes / totalMinutesInDay) * 100;
-
-            const eventMarker = document.createElement('div');
-            eventMarker.className = 'event-marker';
-            if (completedEvents.includes(event.id)) {
-                eventMarker.classList.add('completed');
+    // Ensure all quests have a completed property
+    for (const category in questData) {
+        questData[category].quests.forEach(quest => {
+            if (quest.completed === undefined) {
+                quest.completed = quest.steps.every(s => s.completed);
             }
-            // Position the event marker within the correct day column
-            eventMarker.style.top = `${Math.max(0, Math.min(100, topPercentage))}%`;
-            eventMarker.style.left = `${(100 / 3) * dayIndex + (100 / 6)}%`;
-            eventMarker.innerHTML = data.eventIcons[event.icon] || data.eventIcons.event;
-
-            eventMarker.addEventListener('click', (e) => {
-                e.stopPropagation();
-                updateNotebookDetails(char.id, event.id);
-                toggleEventCompletion(event.id);
-            });
-            timelineRow.appendChild(eventMarker);
         });
-        dom.notebookTimeline.appendChild(timelineRow);
-    });
+    }
 
     const savedCode = localStorage.getItem('bomberCode');
     if (savedCode) {
@@ -114,12 +31,128 @@ export function populateBombersNotebook() {
 }
 
 /**
- * Saves the 5-digit code from the input field to localStorage.
+ * Saves quest progress and Bomber's Code to local storage.
  */
-export function saveBomberCode() {
+function saveProgress() {
+    localStorage.setItem('bombersNotebookProgress_v3', JSON.stringify(questData));
     localStorage.setItem('bomberCode', dom.bomberCodeInput.value);
-    dom.bomberCodeSavedMessage.style.opacity = '1';
-    setTimeout(() => {
-        dom.bomberCodeSavedMessage.style.opacity = '0';
-    }, 2000);
+}
+
+/**
+ * Renders the list of quests based on the active tab.
+ */
+function renderQuestList() {
+    const container = dom.questListContainer;
+    if (!container) return;
+    container.innerHTML = '';
+
+    for (const categoryKey in questData) {
+        const category = questData[categoryKey];
+        const questsToShow = category.quests.filter(q => 
+            activeTab === 'completed' ? q.completed : !q.completed
+        );
+
+        if (questsToShow.length > 0) {
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.className = 'quest-category-title';
+            categoryTitle.textContent = category.title;
+            container.appendChild(categoryTitle);
+
+            questsToShow.forEach(quest => {
+                const questItem = document.createElement('div');
+                questItem.className = 'quest-list-item';
+                questItem.innerHTML = `<span class="quest-name">${quest.name}</span>`;
+                questItem.dataset.questId = quest.id;
+
+                if (quest.id === activeQuestId) questItem.classList.add('active');
+                if (quest.completed) questItem.classList.add('completed');
+
+                questItem.addEventListener('click', () => {
+                    activeQuestId = quest.id;
+                    renderApp();
+                });
+                container.appendChild(questItem);
+            });
+        }
+    }
+}
+
+/**
+ * Renders the detailed view for the currently active quest.
+ */
+function renderQuestDetail() {
+    if (!activeQuestId) {
+        dom.notebookPlaceholderView.classList.remove('hidden');
+        dom.questDetailView.classList.add('hidden');
+        return;
+    }
+
+    const quest = Object.values(questData).flatMap(c => c.quests).find(q => q.id === activeQuestId);
+    if (!quest) return;
+
+    dom.notebookPlaceholderView.classList.add('hidden');
+    dom.questDetailView.classList.remove('hidden');
+
+    dom.questTitle.textContent = quest.name;
+    dom.questRegion.textContent = quest.region;
+
+    const stepsContainer = dom.questStepsList;
+    stepsContainer.innerHTML = '';
+    quest.steps.forEach((step, index) => {
+        const stepEl = document.createElement('div');
+        stepEl.className = 'quest-step';
+        if (step.completed) stepEl.classList.add('completed');
+        stepEl.innerHTML = `<div class="checkbox"></div><p>${step.description}</p>`;
+        stepEl.addEventListener('click', () => {
+            step.completed = !step.completed;
+            quest.completed = quest.steps.every(s => s.completed);
+            saveProgress();
+            renderApp();
+        });
+        stepsContainer.appendChild(stepEl);
+    });
+
+    const rewardsContainer = dom.questRewardsList;
+    rewardsContainer.innerHTML = '';
+    quest.rewards.forEach(rewardText => {
+        const rewardEl = document.createElement('div');
+        rewardEl.className = 'reward-item';
+        let icon = '';
+        if (rewardText.toLowerCase().includes('mask')) icon = 'images/masks_icon.png';
+        else if (rewardText.toLowerCase().includes('heart')) icon = 'images/heart_container_icon.png';
+        else if (rewardText.toLowerCase().includes('song')) icon = 'images/songs_icon.png';
+        
+        rewardEl.innerHTML = icon ? `<img src="${icon}" alt="reward">` : '';
+        rewardEl.innerHTML += `<span>${rewardText}</span>`;
+        rewardsContainer.appendChild(rewardEl);
+    });
+}
+
+/**
+ * Main render function for the notebook.
+ */
+function renderApp() {
+    renderQuestList();
+    renderQuestDetail();
+}
+
+/**
+ * Initializes the Bomber's Notebook view and its event listeners.
+ */
+export function populateBombersNotebook() {
+    loadProgress();
+    renderApp();
+
+    dom.bomberCodeInput.addEventListener('input', saveProgress);
+
+    const tabs = document.querySelectorAll('.notebook-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            activeTab = tab.dataset.tab;
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            activeQuestId = null; 
+            renderApp();
+        });
+    });
 }

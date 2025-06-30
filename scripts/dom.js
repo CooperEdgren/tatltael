@@ -51,14 +51,19 @@ export const mapModalNext = document.getElementById('map-modal-next');
 // --- Termina Map Elements ---
 export const terminaMapBackButton = document.getElementById('termina-map-back-button');
 
-// --- Bomber's Notebook Elements ---
+
+
+// --- New Bomber's Notebook Elements ---
+export const questListContainer = document.getElementById('quest-list-container');
+export const notebookDetailContainer = document.getElementById('notebook-detail-container');
+export const notebookPlaceholderView = document.getElementById('notebook-placeholder-view');
+export const questDetailView = document.getElementById('quest-detail-view');
+export const questTitle = document.getElementById('quest-title');
+export const questRegion = document.getElementById('quest-region');
+export const questStepsList = document.getElementById('quest-steps-list');
+export const questRewardsList = document.getElementById('quest-rewards-list');
 export const bomberCodeInput = document.getElementById('bomber-code-input');
-export const bomberCodeSavedMessage = document.getElementById('bomber-code-saved-message');
-export const notebookCharacters = document.getElementById('notebook-characters');
-export const notebookTimeline = document.getElementById('notebook-timeline');
-export const detailsCharImg = document.getElementById('details-char-img');
-export const detailsCharName = document.getElementById('details-char-name');
-export const detailsCharDesc = document.getElementById('details-char-desc');
+
 
 // --- Controller Modal Elements ---
 export const controllerModal = document.getElementById('controller-modal');

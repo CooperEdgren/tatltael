@@ -75,9 +75,6 @@ function main() {
     // Termina Map View Listener
     dom.terminaMapBackButton.addEventListener('click', songView.showMainScreen);
     
-    // Bomber's Notebook Listener
-    dom.bomberCodeInput.addEventListener('input', notebookView.saveBomberCode);
-
     // General UI Listeners
     dom.toggleUiButton.addEventListener('click', ui.toggleControlsVisibility);
     document.addEventListener('mousemove', ui.resetHideUiTimeout);

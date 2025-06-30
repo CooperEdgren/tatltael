@@ -164,41 +164,43 @@
                     </div>
                 </div>
                 <div id="notebook-content" class="main-content hidden">
-                     <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
-                        <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
-                            <div class="flex items-center gap-4">
-                                <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Bomber's Notebook</h2>
-                                <div class="flex items-center gap-2">
-                                    <input type="text" id="bomber-code-input" class="bomber-code-input-sm" maxlength="5" placeholder="Code...">
-                                     <p id="bomber-code-saved-message" class="text-green-400 text-sm opacity-0 transition-opacity duration-500">Saved!</p>
+                     <div class="w-full h-full max-w-screen-2xl p-2 md:p-4 rounded-2xl main-container flex flex-col notebook-bg-texture">
+                        <div class="flex-shrink-0 flex justify-between items-center px-4 md:px-6 py-2 border-b-4 border-yellow-700/50">
+                            <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Bomber's Notebook</h2>
+                            <div class="flex items-center gap-2">
+                                <label for="bomber-code-input" class="font-zelda text-yellow-200 text-lg">Code:</label>
+                                <input type="text" id="bomber-code-input" class="bomber-code-input" maxlength="5" placeholder="_ _ _ _ _">
+                            </div>
+                        </div>
+                        <div class="flex-grow flex flex-col md:flex-row gap-4 min-h-0 p-2 md:p-4">
+                            <aside class="w-full md:w-1/3 lg:w-1/4 flex-shrink-0 flex flex-col">
+                                <div class="notebook-tabs-container">
+                                    <button class="notebook-tab active" data-tab="scheduled">Events</button>
+                                    <button class="notebook-tab" data-tab="completed">Completed</button>
                                 </div>
-                            </div>
-                        </header>
-                        <main class="flex-grow flex flex-col notebook-bg">
-                            <div class="notebook-header-grid">
-                                <div class="text-center font-bold">Time of Day</div>
-                                <div class="text-center font-bold day-header">1st</div>
-                                <div class="text-center font-bold day-header">2nd</div>
-                                <div class="text-center font-bold day-header">Final</div>
-                            </div>
-                            <div class="flex-grow notebook-content-grid overflow-hidden">
-                                <div id="notebook-characters" class="overflow-y-auto"></div>
-                                <div id="notebook-timeline" class="grid grid-cols-3 relative overflow-y-auto">
-                                    <div class="day-column bg-blue-900/30"></div>
-                                    <div class="day-column bg-red-900/40"></div>
-                                    <div class="day-column bg-purple-900/30"></div>
+                                <div id="quest-list-container" class="bg-black/10 rounded-b-xl p-2 overflow-y-auto flex-grow notebook-paper-texture"></div>
+                            </aside>
+                            <main id="notebook-detail-container" class="flex-grow flex flex-col bg-black/10 rounded-xl p-4 md:p-6 notebook-paper-texture">
+                                <div id="notebook-placeholder-view" class="flex flex-col items-center justify-center h-full text-center text-yellow-800/70">
+                                    <img src="images/bombers-notebook.png" alt="Bomber's Notebook" class="w-32 h-32 opacity-50 mb-4">
+                                    <h3 class="text-2xl font-zelda">Select a quest to view details</h3>
+                                    <p>Your progress will be saved automatically.</p>
                                 </div>
-                            </div>
-                            <div id="notebook-details-footer" class="p-3 bg-black/40 rounded-b-lg mt-auto">
-                                <div id="notebook-details-content" class="flex items-center gap-4">
-                                   <img id="details-char-img" src="https://placehold.co/80x80/1e1b4b/a78bfa?text=?" alt="character" class="rounded-md w-20 h-20">
-                                   <div>
-                                       <h3 id="details-char-name" class="font-bold text-xl font-zelda">Select a person or event</h3>
-                                       <p id="details-char-desc" class="text-purple-200">View their schedule and events.</p>
-                                   </div>
+                                <div id="quest-detail-view" class="hidden w-full h-full flex-col">
+                                    <header class="pb-3 mb-4 border-b-2 border-yellow-700/50">
+                                        <h3 id="quest-title" class="text-3xl font-zelda text-yellow-200 title-glow"></h3>
+                                        <p id="quest-region" class="text-yellow-700 font-medium"></p>
+                                    </header>
+                                    <div class="flex-grow overflow-y-auto pr-2">
+                                        <div id="quest-steps-list"></div>
+                                    </div>
+                                    <footer class="pt-3 mt-4 border-t-2 border-yellow-700/50">
+                                        <h4 class="font-zelda text-yellow-600 text-xl">Rewards</h4>
+                                        <div id="quest-rewards-list" class="flex flex-wrap gap-4 mt-2"></div>
+                                    </footer>
                                 </div>
-                            </div>
-                        </main>
+                            </main>
+                        </div>
                     </div>
                 </div>
                 <div id="masks-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Masks Content Here</div>
