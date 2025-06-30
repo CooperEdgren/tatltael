@@ -63,6 +63,14 @@ export function initializeSettings() {
         setVolume(e.target.value);
     });
 
+    // Add touch events for mobile
+    dom.volumeSlider.addEventListener('touchstart', (e) => {
+        setVolume(e.target.value);
+    });
+    dom.volumeSlider.addEventListener('touchmove', (e) => {
+        setVolume(e.target.value);
+    });
+
     dom.muteToggle.addEventListener('click', () => {
         const isMuted = toggleMute();
         dom.iconVolumeOn.classList.toggle('hidden', isMuted);

@@ -1,100 +1,90 @@
-import { itemsData } from './data-items.js';
+import { items } from './data-items.js';
 import * as dom from './dom.js';
+import * as ui from './ui.js';
+
+let currentCategory = 'All';
 
 /**
- * Creates and displays a modal with detailed information about a specific item.
- * @param {string} categoryKey - The key for the category (e.g., 'inventory').
- * @param {string} itemId - The ID of the item to display.
+ * Renders the items in the grid based on the current category and search term.
+ * @param {string} category - The category to display.
+ * @param {string} [searchTerm=''] - The search term to filter by.
  */
-function showItemDetailModal(categoryKey, itemId) {
-    const category = itemsData[categoryKey];
-    if (!category) return;
+function renderItems(category, searchTerm = '') {
+    const grid = dom.itemGrid;
+    if (!grid) return;
 
-    const item = category.find(i => i.id === itemId);
-    if (!item) return;
+    grid.innerHTML = '';
+    const searchTermLower = searchTerm.toLowerCase();
 
-    const modalContent = document.createElement('div');
-    modalContent.className = 'p-4 sm:p-6 rounded-lg relative max-w-lg w-11/12 main-container flex flex-col items-center text-center';
+    const itemsToRender = items[category].filter(item => 
+        item.name.toLowerCase().includes(searchTermLower)
+    );
 
-    let useSection = '';
-    if (item.use) {
-        useSection = `
-            <div>
-                <h4 class="font-bold text-lg text-purple-300 font-zelda mt-4">Use</h4>
-                <p class="text-purple-100">${item.use}</p>
-            </div>
-        `;
+    if (itemsToRender.length === 0) {
+        grid.innerHTML = `<p class="col-span-full text-center text-purple-200">No items found.</p>`;
+        return;
     }
 
-    modalContent.innerHTML = `
-        <button class="item-modal-close-btn">&times;</button>
-        <img src="${item.image}" alt="${item.name}" class="w-24 h-24 mb-4 object-contain filter drop-shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/96x96/1e1b4b/a78bfa?text=?'">
-        <h3 class="text-3xl font-zelda text-yellow-200 title-glow mb-2">${item.name}</h3>
-        <div class="text-left w-full overflow-y-auto max-h-[50vh] pr-2 space-y-2 text-sm sm:text-base">
-            <div>
-                <h4 class="font-bold text-lg text-purple-300 font-zelda">Description</h4>
-                <p class="text-purple-100">${item.description}</p>
-            </div>
-            <div>
-                <h4 class="font-bold text-lg text-purple-300 font-zelda mt-4">Location</h4>
-                <p class="text-purple-100">${item.location || 'Location not specified.'}</p>
-            </div>
-            ${useSection}
-        </div>
-    `;
-    
-    dom.itemDetailModal.innerHTML = '';
-    dom.itemDetailModal.appendChild(modalContent);
-
-    modalContent.querySelector('.item-modal-close-btn').addEventListener('click', () => {
-        dom.itemDetailModal.classList.remove('is-visible');
+    itemsToRender.forEach((item, index) => {
+        const card = document.createElement('button');
+        card.className = 'item-card';
+        card.style.animationDelay = `${index * 30}ms`;
+        card.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=?'">
+            <h3>${item.name}</h3>
+        `;
+        card.addEventListener('click', () => showItemDetailView(item));
+        grid.appendChild(card);
     });
-
-    dom.itemDetailModal.classList.add('is-visible');
 }
 
 /**
- * Populates the Items view with categorized grids of items.
+ * Shows the detailed view for a specific item.
+ * @param {object} item - The item object to display.
+ */
+function showItemDetailView(item) {
+    dom.itemDetailTitle.textContent = item.name;
+    dom.itemDetailImage.src = item.image;
+    dom.itemDetailDescription.textContent = item.description;
+    dom.itemDetailAcquisition.textContent = item.acquisition;
+    ui.switchView(dom.itemDetailView);
+}
+
+/**
+ * Populates the Items view, sets up tabs and search functionality.
  */
 export function populateItemsView() {
-    const container = dom.itemsContent;
-    if (!container) return;
+    const tabsContainer = dom.itemCategoryTabs;
+    const searchInput = dom.itemSearchInput;
+    if (!tabsContainer || !searchInput) return;
 
-    container.innerHTML = ''; 
-
-    const categoryOrder = ['inventory', 'equipment', 'masks', 'bottledItems', 'questItems', 'bossRemains'];
-
-    for (const categoryKey of categoryOrder) {
-        if (!itemsData[categoryKey] || itemsData[categoryKey].length === 0) {
-            continue;
+    // Create category tabs
+    tabsContainer.innerHTML = '';
+    Object.keys(items).forEach(category => {
+        const tab = document.createElement('button');
+        tab.className = 'item-category-tab';
+        tab.textContent = category;
+        tab.dataset.category = category;
+        if (category === currentCategory) {
+            tab.classList.add('active');
         }
+        tabsContainer.appendChild(tab);
+    });
 
-        const category = itemsData[categoryKey];
-        
-        const header = document.createElement('h2');
-        header.className = 'item-category-header';
-        header.textContent = categoryKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-        container.appendChild(header);
-
-        const grid = document.createElement('div');
-        grid.className = 'item-grid';
-        
-        for (const item of category) {
-            const card = document.createElement('div');
-            card.className = 'item-card';
-            card.innerHTML = `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=?'">`;
-            
-            card.addEventListener('click', () => showItemDetailModal(categoryKey, item.id));
-
-            grid.appendChild(card);
-        }
-        
-        container.appendChild(grid);
-    }
-
-    dom.itemDetailModal.addEventListener('click', (e) => {
-        if (e.target === dom.itemDetailModal) {
-            dom.itemDetailModal.classList.remove('is-visible');
+    // Add event listeners
+    tabsContainer.addEventListener('click', (e) => {
+        if (e.target.matches('.item-category-tab')) {
+            currentCategory = e.target.dataset.category;
+            tabsContainer.querySelector('.active').classList.remove('active');
+            e.target.classList.add('active');
+            renderItems(currentCategory, searchInput.value);
         }
     });
+
+    searchInput.addEventListener('input', () => {
+        renderItems(currentCategory, searchInput.value);
+    });
+
+    // Initial render
+    renderItems(currentCategory);
 }

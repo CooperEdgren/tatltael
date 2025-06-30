@@ -146,7 +146,23 @@
                 <main id="song-grid-content" class="main-content hidden">
                     <div id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full"></div>
                 </main>
-                <div id="items-content" class="main-content hidden"></div>
+                <div id="items-content" class="main-content hidden">
+                    <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
+                        <header class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
+                            <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow mb-4 sm:mb-0">Items</h2>
+                            <div class="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4">
+                                <div id="item-category-tabs" class="flex items-center gap-2 bg-black/20 p-1 rounded-full"></div>
+                                <div class="relative w-full sm:w-64">
+                                    <input type="text" id="item-search-input" class="w-full bg-black/30 border border-purple-400/30 rounded-full py-2 px-4 text-white placeholder-purple-200/50 focus:outline-none focus:border-yellow-300 focus:ring-1 focus:ring-yellow-300" placeholder="Search for an item...">
+                                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-200/50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                </div>
+                            </div>
+                        </header>
+                        <main id="item-grid-container" class="flex-grow overflow-y-auto p-2">
+                            <div id="item-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+                        </main>
+                    </div>
+                </div>
                 <div id="notebook-content" class="main-content hidden">
                      <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
                         <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
@@ -193,6 +209,26 @@
                 <svg id="icon-eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 <svg id="icon-eye-closed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88"></path></svg>
             </button>
+        </div>
+
+        <div id="item-detail-view" class="view-container">
+             <div class="w-full h-full max-w-4xl p-6 md:p-8 rounded-2xl main-container flex flex-col">
+                <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
+                    <div class="flex items-center gap-4">
+                        <img id="item-detail-image" src="" alt="Item Image" class="h-16 w-16 object-contain">
+                        <h2 id="item-detail-title" class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow"></h2>
+                    </div>
+                    <button id="item-detail-back-button" class="btn-back">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+                        Back
+                    </button>
+                </header>
+                <main class="flex-grow overflow-y-auto pr-2 text-purple-100/90">
+                    <div id="item-detail-description" class="text-lg mb-6"></div>
+                    <h3 class="text-2xl font-zelda text-yellow-200 title-glow mb-2">How to get it</h3>
+                    <div id="item-detail-acquisition" class="text-lg"></div>
+                </main>
+            </div>
         </div>
 
         <div id="song-detail-view" class="view-container">

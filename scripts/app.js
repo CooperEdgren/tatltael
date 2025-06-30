@@ -50,6 +50,9 @@ function main() {
     // Song Detail View Listeners
     dom.backButton.addEventListener('click', songView.showMainScreen);
     dom.instrumentImage.addEventListener('click', songView.handleInstrumentClick);
+
+    // Item Detail View Listeners
+    dom.itemDetailBackButton.addEventListener('click', songView.showMainScreen);
     
     // Controller Modal Listeners
     dom.controllerModalClose.addEventListener('click', songView.closeControllerModal);

@@ -78,5 +78,17 @@ export const appIconOptions = document.getElementById('app-icon-options');
 // --- Item Detail Modal ---
 export const itemDetailModal = document.getElementById('item-detail-modal');
 
+// --- Item View Elements ---
+export const itemGrid = document.getElementById('item-grid');
+export const itemCategoryTabs = document.getElementById('item-category-tabs');
+export const itemSearchInput = document.getElementById('item-search-input');
+export const itemDetailView = document.getElementById('item-detail-view');
+export const itemDetailTitle = document.getElementById('item-detail-title');
+export const itemDetailImage = document.getElementById('item-detail-image');
+export const itemDetailDescription = document.getElementById('item-detail-description');
+export const itemDetailAcquisition = document.getElementById('item-detail-acquisition');
+export const itemDetailBackButton = document.getElementById('item-detail-back-button');
+
+
 // --- Audio Elements ---
 export const backgroundAudio = document.getElementById('background-audio');
