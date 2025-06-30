@@ -1,0 +1,166 @@
+export const fairyData = {
+    "3DS": {
+        "Woodfall Temple": {
+            "reward": "Upgraded Magic Meter",
+            "fairies": [
+                { "location": "Entrance: Straight ahead as you enter the temple.", "found": false },
+                { "location": "Entrance: In a chest on a platform to the right.", "found": false },
+                { "location": "Main Room: Defeat the Deku Baba on the left ramp.", "found": false },
+                { "location": "Main Room: Break the pots in the corner.", "found": false },
+                { "location": "Block-Pushing Room: Defeat the Skulltula in the corner.", "found": false },
+                { "location": "Block-Pushing Room: In a beehive under the central upper platform.", "found": false },
+                { "location": "Dark Room: Defeat all the Black Boes.", "found": false },
+                { "location": "Room past Black Boes: In a bubble on the far side of the room.", "found": false },
+                { "location": "Second Floor, Main Room: In the right corner at the edge of the platform.", "found": false },
+                { "location": "Room to the right of Main Room (2F): In a beehive above the door.", "found": false },
+                { "location": "Main Room: After lighting the torch on the large flower, step on the switch that appears.", "found": false },
+                { "location": "Pre-Boss Room: In a bubble above a flaming pillar. Use the bow to pop it and the Great Fairy's Mask to retrieve it.", "found": false },
+                { "location": "Pre-Boss Room: On a ledge to the right of the entrance.", "found": false },
+                { "location": "Pre-Boss Room: On another ledge to the right of the entrance.", "found": false },
+                { "location": "Pre-Boss Room: On a ledge to the left of the entrance.", "found": false }
+            ]
+        },
+        "Snowhead Temple": {
+            "reward": "Upgraded Spin Attack",
+            "fairies": [
+                { "location": "Bridge Room: In a bubble under the ledge after you cross the broken bridge as Goron Link.", "found": false },
+                { "location": "Bridge Room: On the ledge near the frozen enemy.", "found": false },
+                { "location": "Central Pillar Room (Bottom Floor): Step on the switch as Goron Link to reveal a chest.", "found": false },
+                { "location": "Bombchu Room: On the side of the room with the real Bombchu.", "found": false },
+                { "location": "Icicle Room: Use the Lens of Truth to find a fake wall near a raised platform.", "found": false },
+                { "location": "Platform Puzzle Room: Look at the ceiling with the Lens of Truth.", "found": false },
+                { "location": "Compass Room: In a chest behind a cracked wall.", "found": false },
+                { "location": "Compass Room: Use the Lens of Truth to see through a wall on the upper level.", "found": false },
+                { "location": "Central Pillar Room (Upper Floor): In a bubble in a small alcove.", "found": false },
+                { "location": "Central Pillar Room (Upper Floor): Hit a frozen eye switch with a Fire Arrow to reveal a chest.", "found": false },
+                { "location": "Central Pillar Room (Upper Floor): After raising the central pillar, find a fairy in a bubble on the second floor.", "found": false },
+                { "location": "Central Pillar Room (Upper Floor): In a chest on the third floor, accessible after raising the pillar twice.", "found": false },
+                { "location": "Room with two Freezards: In a bubble behind the Freezards.", "found": false },
+                { "location": "Room with two Freezards: Use the Lens of Truth to find a hidden alcove in the ceiling.", "found": false },
+                { "location": "Pre-Boss Room: Defeat all the enemies in the room.", "found": false }
+            ]
+        },
+        "Great Bay Temple": {
+            "reward": "Doubled Defense",
+            "fairies": [
+                { "location": "Entrance Room: Light the four torches in the room where the turtle drops you off.", "found": false },
+                { "location": "Second Room: Underwater, beneath the platform at the entrance door.", "found": false },
+                { "location": "Second Room: Shoot a Skulltula high up in the left corner.", "found": false },
+                { "location": "Propeller Room: In a pot at the very bottom center.", "found": false },
+                { "location": "Propeller Room: In a large barrel at the top of a ladder. Use Goron Link to break it.", "found": false },
+                { "location": "Hallway to Small Key: Kill all the enemies in the room.", "found": false },
+                { "location": "Waterway from Small Key Room: In a pot in the waterway. Use the hookshot or bow to break it.", "found": false },
+                { "location": "Room with Compass: In a pot on a platform. Use Ice Arrows to create platforms to reach it.", "found": false },
+                { "location": "Room with Ice Arrows: In a jar in the current below.", "found": false },
+                { "location": "Waterfall Room: Freeze the waterfall and look for a small alcove with a chest above the water. Hookshot to it.", "found": false },
+                { "location": "Waterfall Room: While on the stopped propeller, look for another alcove above the gears and hookshot to the chest.", "found": false },
+                { "location": "See-Saw Room: In a barrel in an underwater alcove.", "found": false },
+                { "location": "See-Saw Room: After activating the green pump, walk across the green pipe and drop down to a chest you can hookshot to.", "found": false },
+                { "location": "Pre-Boss Room: In a bubble in an underwater passage at the northeast corner.", "found": false },
+                { "location": "Pre-Boss Room: Underneath the central platform. Stand on the green pipe to shoot the bubble.", "found": false }
+            ]
+        },
+        "Stone Tower Temple": {
+            "reward": "Great Fairy's Sword",
+            "fairies": [
+                { "location": "First Room (Normal): Shoot the eye switch and hookshot to the chest that appears.", "found": false },
+                { "location": "Small Key Room: Use the hookshot on a ceiling target to reach a chest.", "found": false },
+                { "location": "Mirror Room: Shine light on the sun emblems on the wall.", "found": false },
+                { "location": "Mirror Room: Behind one of the sun blocks.", "found": false },
+                { "location": "Lava Room: As Goron Link, stomp a switch in the lava, then quickly roll to another switch to extinguish flames guarding a chest.", "found": false },
+                { "location": "Lava Room: On a ledge to the left of the entrance.", "found": false },
+                { "location": "Post-Garo Master Room: Defeat the Eyegore.", "found": false },
+                { "location": "Entrance (Inverted): Shoot the sun emblem at the entrance while the temple is normal, then invert the temple to open the chest.", "found": false },
+                { "location": "Large Pool before Mirror Room (Inverted): Shoot the frozen eye with a Fire Arrow while the temple is normal, then invert to get the chest.", "found": false },
+                { "location": "Underwater Room (Inverted): In the inverted version of the formerly underwater room.", "found": false },
+                { "location": "Underwater Room (Inverted): In the same room as the previous fairy.", "found": false },
+                { "location": "Wizzrobe Room: In the room where you fight the Wizzrobe.", "found": false },
+                { "location": "Inverted Temple: After completing the inverted temple, switch it back to normal and find fairies at the hookshot targets you created.", "found": false },
+                { "location": "Inverted Temple: Same as the previous one.", "found": false },
+                { "location": "Final Room: In a chest that appears after defeating the Garo Master.", "found": false }
+            ]
+        }
+    },
+    "N64": {
+        "Woodfall Temple": {
+            "reward": "Upgraded Spin Attack",
+            "fairies": [
+                { "location": "Entrance Room: Floating straight ahead as you enter the temple.", "found": false },
+                { "location": "Entrance Room: In a chest on the platform to the right. Use the Deku Flower to fly to it.", "found": false },
+                { "location": "Main Room: Defeat the Deku Baba on the left side of the room.", "found": false },
+                { "location": "Main Room: In a pot on the small island in the southeast corner.", "found": false },
+                { "location": "Block Room: In a beehive on the wall. Knock it down to release the fairy.", "found": false },
+                { "location": "Block Room: Defeat the Skulltula in the corner.", "found": false },
+                { "location": "Dark Room: Defeat all the Black Boes to make a chest appear.", "found": false },
+                { "location": "Room after Dark Room: In a bubble on the far side of the room.", "found": false },
+                { "location": "Main Room (2F): In a bubble near the pillars and the barred door.", "found": false },
+                { "location": "Main Room (2F): In a beehive above the door to the right of the main flower.", "found": false },
+                { "location": "Main Room (2F): After lighting the torch to cleanse the water, step on the switch that appears to reveal a chest.", "found": false },
+                { "location": "Pre-Boss Room: In a bubble above the flaming pillar.", "found": false },
+                { "location": "Pre-Boss Room: On a ledge to the right of the entrance.", "found": false },
+                { "location": "Pre-Boss Room: On another ledge to the right of the entrance.", "found": false },
+                { "location": "Pre-Boss Room: On a ledge to the left of the entrance.", "found": false }
+            ]
+        },
+        "Snowhead Temple": {
+            "reward": "Doubled Magic Meter",
+            "fairies": [
+                { "location": "Bridge Room: In a bubble under the ledge in the room where you roll across the broken bridge as Goron Link.", "found": false },
+                { "location": "Bridge Room: On the ledge near the frozen enemy in the same room.", "found": false },
+                { "location": "Central Pillar Room (Bottom Floor): Step on the switch as Goron Link to make a chest appear.", "found": false },
+                { "location": "Bombchu Room: On the side of the room with the real Bombchu.", "found": false },
+                { "location": "Icicle Room: Use the Lens of Truth to find a fake wall near one of the raised platforms.", "found": false },
+                { "location": "Platform Puzzle Room: Look at the ceiling with the Lens of Truth.", "found": false },
+                { "location": "Central Pillar Room (with Green Door): In a bubble in the lava. Use the Goron Mask to safely get it.", "found": false },
+                { "location": "Central Pillar Room (with Green Door): In a chest that appears after defeating the two Dinolfos.", "found": false },
+                { "location": "Central Pillar Room (with Green Door): In the same room as the previous fairy, in a hidden alcove.", "found": false },
+                { "location": "Icicle Room: In a bubble behind a fake wall, visible with the Lens of Truth.", "found": false },
+                { "location": "Main Room (2F): In a chest in a hidden alcove. Use the Lens of Truth to see the platforms to reach it.", "found": false },
+                { "location": "Eeno Room: Behind a fake wall, visible with the Lens of Truth.", "found": false },
+                { "location": "Main Room (Basement): Step on the switch in the lava to make a chest appear.", "found": false },
+                { "location": "Main Room (1F): Defeat the three Freezards behind one of the green doors to make a chest appear.", "found": false },
+                { "location": "Main Room (Top Floor): In a hidden alcove in the northwest part of the room. Use the Deku Flower to fly to it.", "found": false }
+            ]
+        },
+        "Great Bay Temple": {
+            "reward": "Doubled Defense",
+            "fairies": [
+                { "location": "Entrance Room: Light the four torches to make a chest appear.", "found": false },
+                { "location": "Second Room: Underwater, beneath the platform you enter from.", "found": false },
+                { "location": "Second Room: Defeat the Skulltula high up in the left corner.", "found": false },
+                { "location": "Propeller Room: At the very bottom in the center, inside a pot.", "found": false },
+                { "location": "Propeller Room: In a barrel on the western wall.", "found": false },
+                { "location": "Propeller Room: In a chest on the grating above. Use the Hookshot to get up there.", "found": false },
+                { "location": "Underwater Tunnel: In a pot in an alcove.", "found": false },
+                { "location": "Waterwheel Room: In a bubble in a jar at the bottom of the water.", "found": false },
+                { "location": "Waterwheel Room: Above the grate in this room. Hookshot to the target to reach the upper area.", "found": false },
+                { "location": "Waterwheel Room: Hookshot to the torch at the southeast corner of the room.", "found": false },
+                { "location": "Waterwheel Room: After freezing the waterwheel, hookshot to the chest on the north end of the room.", "found": false },
+                { "location": "See-Saw Room: Underwater in a barrel beneath the first see-saw.", "found": false },
+                { "location": "See-Saw Room: In a chest in a caged-off area. Walk along the green pipe to drop into it.", "found": false },
+                { "location": "Pre-Boss Room: In a bubble underwater in the northeast corner.", "found": false },
+                { "location": "Pre-Boss Room: Hidden underneath the central platform.", "found": false }
+            ]
+        },
+        "Stone Tower Temple": {
+            "reward": "Great Fairy's Sword",
+            "fairies": [
+                { "location": "Normal Temple (First Room): Shoot the eye switch and hookshot to the chest.", "found": false },
+                { "location": "Normal Temple (Small Key Room): Hookshot to the target on the ceiling to get to the chest.", "found": false },
+                { "location": "Normal Temple (Mirror Room): Shine light on the sun emblems on the wall.", "found": false },
+                { "location": "Normal Temple (Mirror Room): Behind one of the sun blocks.", "found": false },
+                { "location": "Normal Temple (Lava Room): Drop down as Goron Link and stomp the switch, then roll to the other switch to extinguish the flames guarding the chest.", "found": false },
+                { "location": "Normal Temple (Lava Room): On a ledge to the left of the entrance.", "found": false },
+                { "location": "Normal Temple: Defeat the Eyegore after the battle with the Garo Master.", "found": false },
+                { "location": "Inverted Temple (Entrance): Shoot the sun emblem with a Light Arrow, then invert the temple to open the chest.", "found": false },
+                { "location": "Inverted Temple (Large Room): Shoot the eye with a fire arrow to trigger a switch, then ride the wind updraft to the chest.", "found": false },
+                { "location": "Inverted Temple (Large Room): Step on the floor switch behind three mines to make a chest appear. Then, in the inverted temple, play the Elegy of Emptiness on a different switch to remove the flame wall.", "found": false },
+                { "location": "Inverted Temple (Wizrobe Room): Defeat the Wizrobe to make a chest appear.", "found": false },
+                { "location": "Inverted Temple (Death Armos Room): Step on the switch guarded by the Death Armos to make a chest appear. Flip the temple back to normal to open it.", "found": false },
+                { "location": "Inverted Temple (Dungeon Map Room): Defeat the Wizrobe to reveal a chest.", "found": false },
+                { "location": "Inverted Temple (Entrance): Shoot the sun face with a Light Arrow to make a chest appear.", "found": false },
+                { "location": "Inverted Temple (Final Room): In a hidden alcove at the northwest part of the main chamber. Use the Bunny Hood and jump from the ledge to the Deku Flower.", "found": false }
+            ]
+        }
+    }
+}

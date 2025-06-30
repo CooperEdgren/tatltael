@@ -20,9 +20,9 @@ export const taelFairy = document.getElementById('tael-fairy');
 export const songsContent = document.getElementById('song-grid-content');
 export const notebookContent = document.getElementById('notebook-content');
 export const itemsContent = document.getElementById('items-content');
-export const masksContent = document.getElementById('masks-content');
+export const fairiesContent = document.getElementById('fairies-content');
 export const heartContainersContent = document.getElementById('heart-containers-content');
-export const allMainContentTypes = [songsContent, notebookContent, itemsContent, masksContent, heartContainersContent];
+export const allMainContentTypes = [songsContent, notebookContent, itemsContent, fairiesContent, heartContainersContent];
 
 // --- Song Selection / Detail Elements ---
 export const songGrid = document.getElementById('song-grid');
@@ -63,6 +63,12 @@ export const questRegion = document.getElementById('quest-region');
 export const questStepsList = document.getElementById('quest-steps-list');
 export const questRewardsList = document.getElementById('quest-rewards-list');
 export const bomberCodeInput = document.getElementById('bomber-code-input');
+
+// --- Stray Fairy Tracker Elements ---
+export const fairyTempleTabs = document.getElementById('fairy-temple-tabs');
+export const fairyChecklistContainer = document.getElementById('fairy-checklist-container');
+export const versionToggle3DS = document.getElementById('version-toggle-3ds');
+export const versionToggleN64 = document.getElementById('version-toggle-n64');
 
 
 // --- Controller Modal Elements ---

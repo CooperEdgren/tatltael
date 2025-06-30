@@ -5,6 +5,7 @@ import * as songView from './song-view.js';
 import * as mapsView from './maps-view.js';
 import * as notebookView from './notebook-view.js';
 import * as itemsView from './items-view.js';
+import * as fairiesView from './fairies-view.js';
 
 /**
  * Main application initialization function.
@@ -15,6 +16,7 @@ function main() {
     mapsView.populateMapsGrid();
     notebookView.populateBombersNotebook();
     itemsView.populateItemsView();
+    fairiesView.populateFairiesView();
     audio.initializeAudio();
     ui.initializeSettings();
 
@@ -87,7 +89,7 @@ function main() {
     // --- PWA Service Worker Registration ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+            navigator.serviceWorker.register('/scripts/service-worker.js').then(registration => {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
             }, err => {
                 console.log('ServiceWorker registration failed: ', err);

@@ -95,9 +95,9 @@
                                     <img src="images/bombers-notebook.png" alt="Bomber's Notebook" onerror="this.onerror=null;this.src='https://placehold.co/80x80/a16207/fdecc8?text=Notebook'">
                                     <span>Notebook</span>
                                 </button>
-                                <button class="nav-item" data-content="masks">
-                                    <img src="images/masks_icon.png" alt="Masks" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Masks'">
-                                    <span>Masks</span>
+                                <button class="nav-item" data-content="fairies">
+                                    <img src="images/stray_fairy_icon.webp" alt="Fairies" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Fairies'">
+                                    <span>Fairies</span>
                                 </button>
                                 <button class="nav-item" data-content="termina">
                                     <img src="images/map_icon.png" alt="Termina" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Termina'">
@@ -203,7 +203,21 @@
                         </div>
                     </div>
                 </div>
-                <div id="masks-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Masks Content Here</div>
+                <div id="fairies-content" class="main-content hidden">
+                    <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
+                        <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
+                            <h2 class="text-3xl md:text-4xl font-zelda text-yellow-200 title-glow">Stray Fairy Locations</h2>
+                            <div class="flex items-center gap-2">
+                                <button id="version-toggle-3ds" class="btn-back text-sm active">3DS</button>
+                                <button id="version-toggle-n64" class="btn-back text-sm">N64</button>
+                            </div>
+                        </header>
+                        <main class="flex-grow flex flex-col md:flex-row gap-4 min-h-0">
+                            <div id="fairy-temple-tabs" class="flex md:flex-col gap-2 md:gap-4 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 md:pr-4 border-b-2 md:border-b-0 md:border-r-2 border-purple-400/30 flex-shrink-0"></div>
+                            <div id="fairy-checklist-container" class="flex-grow overflow-y-auto"></div>
+                        </main>
+                    </div>
+                </div>
                 <div id="heart-containers-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Heart Containers Content Here</div>
             </div>
 

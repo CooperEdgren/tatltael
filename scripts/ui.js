@@ -146,8 +146,8 @@ export function showContentForNav(newContent) {
         case 'items':
             contentToShow = dom.itemsContent;
             break;
-        case 'masks':
-            contentToShow = dom.masksContent;
+        case 'fairies':
+            contentToShow = dom.fairiesContent;
             break;
         case 'heart-containers':
             contentToShow = dom.heartContainersContent;
