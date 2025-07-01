@@ -167,24 +167,30 @@ function renderLinkHearts(totalHearts) {
 }
 
 
-function setVersion(version) {
-    ui.triggerHapticFeedback();
+function setVersion(version, triggerHaptics = false) {
+    if (triggerHaptics) {
+        ui.triggerHapticFeedback();
+    }
     currentVersion = version;
-    dom.versionToggle3dsHearts.classList.toggle('active', version === '3ds');
-    dom.versionToggleN64Hearts.classList.toggle('active', version === 'n64');
+    if (dom.versionToggle3dsHearts) {
+        dom.versionToggle3dsHearts.classList.toggle('active', version === '3ds');
+    }
+    if (dom.versionToggleN64Hearts) {
+        dom.versionToggleN64Hearts.classList.toggle('active', version === 'n64');
+    }
     renderHeartPieces();
 }
 
 export function populateHeartsView() {
-    if (!dom.heartContainersContent) {
-        console.error("heartContainersContent not found");
+    if (!dom.heartContainersContent || !dom.versionToggle3dsHearts || !dom.versionToggleN64Hearts) {
+        console.error("Heart view elements not found");
         return;
     }
     
     loadState();
 
-    dom.versionToggle3dsHearts.addEventListener('click', () => setVersion('3ds'));
-    dom.versionToggleN64Hearts.addEventListener('click', () => setVersion('n64'));
+    dom.versionToggle3dsHearts.addEventListener('click', () => setVersion('3ds', true));
+    dom.versionToggleN64Hearts.addEventListener('click', () => setVersion('n64', true));
 
-    setVersion('n64'); // Default to N64
+    setVersion('n64'); // Default to N64, no haptics on initial load
 }

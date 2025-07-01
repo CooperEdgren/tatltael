@@ -1,5 +1,4 @@
 import * as dom from './dom.js';
-import { showSongGridWithAnimation } from './song-view.js';
 import { playNavOpenSound, playNavCloseSound, setVolume, toggleMute } from './audio.js';
 
 let hideUiTimeout;
@@ -13,7 +12,7 @@ let exploreInterval = null;
  * @param {number} [duration=50] - The vibration duration in milliseconds.
  */
 export function triggerHapticFeedback(duration = 50) {
-    if (navigator.vibrate) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate(duration);
     }
 }
@@ -134,7 +133,7 @@ function closeNavOnClickOutside(event) {
  * Shows a specific section of content linked to a nav item.
  * @param {string} newContent - The 'data-content' attribute value of the clicked nav item.
  */
-export function showContentForNav(newContent) {
+export async function showContentForNav(newContent) {
     triggerHapticFeedback();
     const newActiveItem = document.querySelector(`.nav-item[data-content="${newContent}"]`);
 
@@ -150,29 +149,46 @@ export function showContentForNav(newContent) {
         }
 
         let contentToShow;
-        switch (newContent) {
-            case 'songs':
-                contentToShow = dom.songsContent;
-                showSongGridWithAnimation();
-                break;
-            case 'notebook':
-                contentToShow = dom.notebookContent;
-                break;
-            case 'items':
-                contentToShow = dom.itemsContent;
-                break;
-            case 'fairies':
-                contentToShow = dom.fairiesContent;
-                break;
-            case 'heart-containers':
-                contentToShow = dom.heartContainersContent;
-                break;
-            default:
-                return;
+        if (dom.loadingIndicator) {
+            dom.loadingIndicator.classList.remove('hidden');
         }
-        
-        if (contentToShow) {
-            contentToShow.classList.remove('hidden');
+
+        try {
+            switch (newContent) {
+                case 'songs':
+                    contentToShow = dom.songsContent;
+                    const { showSongGridWithAnimation } = await import('./song-view.js');
+                    showSongGridWithAnimation();
+                    break;
+                case 'notebook':
+                    contentToShow = dom.notebookContent;
+                    await import('./notebook-view.js');
+                    break;
+                case 'items':
+                    contentToShow = dom.itemsContent;
+                    await import('./items-view.js');
+                    break;
+                case 'fairies':
+                    contentToShow = dom.fairiesContent;
+                    await import('./fairies-view.js');
+                    break;
+                case 'heart-containers':
+                    contentToShow = dom.heartContainersContent;
+                    await import('./hearts-view.js');
+                    break;
+                default:
+                    return;
+            }
+            if (contentToShow) {
+                contentToShow.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error(`Failed to load content for ${newContent}:`, error);
+            // Optionally, show an error message to the user
+        } finally {
+            if (dom.loadingIndicator) {
+                dom.loadingIndicator.classList.add('hidden');
+            }
         }
     }
     
@@ -193,10 +209,18 @@ function hideAllContent() {
  * @param {HTMLElement} viewToShow - The view container element to make active.
  */
 export function switchView(viewToShow) {
-    document.querySelectorAll('.view-container').forEach(v => v.classList.remove('is-active'));
+    document.querySelectorAll('.view-container').forEach(v => {
+        v.classList.remove('is-active');
+        v.classList.remove('enable-pinch-zoom');
+    });
+
     if (viewToShow) {
         viewToShow.classList.add('is-active');
+        if (viewToShow === dom.terminaMapView) {
+            viewToShow.classList.add('enable-pinch-zoom');
+        }
     }
+
     const isMainScreen = viewToShow === dom.mainScreen;
     
     dom.toggleUiButton.style.display = isMainScreen ? 'flex' : 'none';
@@ -262,4 +286,46 @@ export function toggleControlsVisibility() {
         dom.mainNavContainer.classList.remove('alt-explore');
     }
     resetHideUiTimeout();
+}
+
+/**
+ * Initializes all UI-related event listeners.
+ */
+export function initializeUI() {
+    dom.mainTitleButton.addEventListener('click', toggleMainNav);
+    dom.toggleUiButton.addEventListener('click', toggleControlsVisibility);
+    
+    dom.getNavItems().forEach(item => {
+        item.addEventListener('click', async (e) => {
+            const content = e.currentTarget.dataset.content;
+            if (content === 'termina') {
+                switchView(dom.terminaMapView);
+            } else {
+                await showContentForNav(content);
+            }
+        });
+    });
+
+    // Back buttons
+    dom.backButton.addEventListener('click', () => switchView(dom.mainScreen));
+    dom.mapsBackButton.addEventListener('click', () => switchView(dom.mainScreen));
+    dom.terminaMapBackButton.addEventListener('click', () => switchView(dom.mainScreen));
+    dom.itemDetailBackButton.addEventListener('click', () => switchView(dom.mainScreen));
+
+    // Modal close buttons
+    dom.mapModalClose.addEventListener('click', () => {
+        triggerHapticFeedback();
+        dom.mapModal.classList.remove('is-visible');
+    });
+    dom.controllerModalClose.addEventListener('click', () => {
+        triggerHapticFeedback();
+        dom.controllerModal.classList.remove('is-visible');
+    });
+
+    // Reset UI timeout on user interaction
+    ['mousemove', 'touchstart', 'scroll'].forEach(evt => {
+        document.addEventListener(evt, resetHideUiTimeout);
+    });
+
+    initializeSettings();
 }

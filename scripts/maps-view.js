@@ -34,6 +34,7 @@ function showHdMap(index) {
 const openMapModal = (index) => {
     showHdMap(index); // Show the selected map first
     dom.mapModal.classList.add('is-visible');
+    dom.mapModal.classList.add('enable-pinch-zoom');
 };
 
 /**

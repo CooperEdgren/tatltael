@@ -29,6 +29,11 @@ html, body {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
+    touch-action: none; /* Disable all touch actions by default */
+}
+
+.enable-pinch-zoom {
+    touch-action: pan-x pan-y;
 }
 
 .font-hylia { font-family: 'HyliaSerifBeta', serif; }

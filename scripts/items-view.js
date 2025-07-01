@@ -25,6 +25,7 @@ function renderItems(category, searchTerm = '') {
         return;
     }
 
+    const fragment = document.createDocumentFragment();
     itemsToRender.forEach((item, index) => {
         const card = document.createElement('button');
         card.className = 'item-card';
@@ -37,8 +38,9 @@ function renderItems(category, searchTerm = '') {
             ui.triggerHapticFeedback();
             showItemDetailView(item);
         });
-        grid.appendChild(card);
+        fragment.appendChild(card);
     });
+    grid.appendChild(fragment);
 }
 
 /**
@@ -86,6 +88,7 @@ export function populateItemsView() {
 
     // Create category tabs
     tabsContainer.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     Object.keys(items).forEach(category => {
         const tab = document.createElement('button');
         tab.className = 'item-category-tab';
@@ -94,8 +97,9 @@ export function populateItemsView() {
         if (category === currentCategory) {
             tab.classList.add('active');
         }
-        tabsContainer.appendChild(tab);
+        fragment.appendChild(tab);
     });
+    tabsContainer.appendChild(fragment);
 
     // Add event listeners
     tabsContainer.addEventListener('click', (e) => {

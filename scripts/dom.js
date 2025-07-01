@@ -22,7 +22,7 @@ export const notebookContent = document.getElementById('notebook-content');
 export const itemsContent = document.getElementById('items-content');
 export const fairiesContent = document.getElementById('fairies-content');
 export const heartContainersContent = document.getElementById('heart-containers-content');
-export const allMainContentTypes = [songsContent, notebookContent, itemsContent, fairiesContent, heartContainersContent];
+export const allMainContentTypes = [songsContent, notebookContent, itemsContent, fairiesContent, heartContainersContent].filter(Boolean);
 
 // --- Song Selection / Detail Elements ---
 export const songGrid = document.getElementById('song-grid');
@@ -37,6 +37,8 @@ export const tingleContainer = document.getElementById('tingle-container');
 export const toggleUiButton = document.getElementById('toggle-ui-button');
 export const iconEyeOpen = document.getElementById('icon-eye-open');
 export const iconEyeClosed = document.getElementById('icon-eye-closed');
+export const loadingIndicator = document.getElementById('loading-indicator');
+
 
 // --- Tingle's Maps Elements ---
 export const mapGrid = document.getElementById('map-grid');

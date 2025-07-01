@@ -4,7 +4,6 @@ const CACHE_NAME = 'tatltael-cache-v7';
 
 // The list of all files to be cached for offline access.
 const urlsToCache = [
-  '/',
   'index.html',
   'style.css',
   // Scripts
@@ -30,10 +29,8 @@ const urlsToCache = [
   'images/songs_icon.png',
   'images/items_icon.png',
   'images/bombers-notebook.png',
-  'images/masks_icon.png',
   'images/heart_container_icon.png',
   'images/map_icon.png',
-  'maps/interactMap/fulltermina.png',
   'images/SS_Heart_Model.png',
   'images/heart_piece_sprites.png'
 ];
@@ -46,7 +43,11 @@ self.addEventListener('install', event => {
         console.log('Opened cache and caching app shell');
         // Use addAll to ensure all assets are cached together.
         // If one fails, the entire cache operation fails.
-        return cache.addAll(urlsToCache);
+        return cache.addAll(urlsToCache).catch(error => {
+          console.error('Failed to cache one or more URLs:', error);
+          // Log the URLs to see which one might be causing the issue
+          console.log('URLs to cache:', urlsToCache);
+        });
       })
   );
 });
@@ -61,11 +62,12 @@ self.addEventListener('activate', event => {
         cacheNames.map(cacheName => {
           // If the cache name is not in our whitelist, delete it.
           if (cacheWhitelist.indexOf(cacheName) === -1) {
-            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
-      );
+      ).catch(error => {
+        console.error('Error deleting old cache:', error);
+      });
     })
   );
 });
