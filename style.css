@@ -26,6 +26,9 @@ html, body {
     font-family: 'RocknRollOne', sans-serif; /* Set default to RocknRollOne */
     background-color: #03000a;
     color: white;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .font-hylia { font-family: 'HyliaSerifBeta', serif; }
