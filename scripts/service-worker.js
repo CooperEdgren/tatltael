@@ -1,6 +1,6 @@
 // A unique name for the cache, incremented to force an update.
 // Incrementing this version (e.g., to v3) forces the service worker to update and re-cache all files.
-const CACHE_NAME = 'tatltael-cache-v3';
+const CACHE_NAME = 'tatltael-cache-v6';
 
 // The list of all files to be cached for offline access.
 const urlsToCache = [
@@ -16,7 +16,7 @@ const urlsToCache = [
   'scripts/items-view.js',
   'scripts/maps-view.js',
   'scripts/notebook-view.js',
-  'scripts/song-view..js',
+  'scripts/song-view.js',
   'scripts/ui.js',
   'scripts/data-hearts.js',
   'scripts/hearts-view.js',
@@ -33,7 +33,7 @@ const urlsToCache = [
   'images/masks_icon.png',
   'images/heart_container_icon.png',
   'images/map_icon.png',
-  'images/maps/InteractMap/fulltermina.png',
+  'maps/interactMap/fulltermina.png',
   'images/SS_Heart_Model.png',
   'images/heart_piece_sprites.png'
 ];

@@ -229,19 +229,20 @@
                                 </div>
                                 <div class="flex items-center gap-2 text-lg font-bold text-pink-200">
                                     <img src="images/heart_container_icon.png" class="w-8 h-8">
-                                    <span id="heart-container-counter">0</span>
-                                    <div id="heart-piece-graphic" class="heart-piece-graphic pieces-0"></div>
-                                    <span id="heart-piece-counter">0/0</span>
+                                    <span id="heart-container-counter">3</span>
+                                    <img id="heart-piece-preview" src="images/empty_heart.png" class="w-8 h-8">
+                                    <span id="heart-piece-counter">0/51</span>
                                 </div>
                             </div>
                         </header>
+                        <div id="link-hearts-container" class="link-hearts-container"></div>
                         <main id="heart-checklist-container" class="flex-grow overflow-y-auto p-2"></main>
                     </div>
                 </div>
             </div>
 
             <button id="toggle-ui-button" class="btn-toggle-ui">
-                <svg id="icon-eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg id="icon-eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10 7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 <svg id="icon-eye-closed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88"></path></svg>
             </button>
         </div>

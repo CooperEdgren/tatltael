@@ -105,9 +105,10 @@ export const versionToggle3dsHearts = document.getElementById('version-toggle-3d
 export const versionToggleN64Hearts = document.getElementById('version-toggle-n64-hearts');
 export const heartContainerCounter = document.getElementById('heart-container-counter');
 export const heartPieceCounter = document.getElementById('heart-piece-counter');
-export const heartPieceGraphic = document.getElementById('heart-piece-graphic');
+export const heartPiecePreview = document.getElementById('heart-piece-preview');
+export const linkHeartsContainer = document.getElementById('link-hearts-container');
+// FIX: Added the missing export for the heart checklist container
 export const heartChecklistContainer = document.getElementById('heart-checklist-container');
-export let linkHeartsContainer = document.getElementById('link-hearts-container');
 
 
 

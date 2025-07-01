@@ -550,24 +550,35 @@ html, body {
     color: #fbcfe8;
 }
 
+/* FIX: Polished heart display styles */
 .link-hearts-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column; /* Stack rows vertically */
+    align-items: center;     /* Center the rows horizontally */
     gap: 4px;
     padding: 1rem;
-    justify-content: center;
+    margin-bottom: 1rem; /* Add some space below the hearts */
 }
 
 .link-heart {
     width: 32px;
     height: 32px;
-    background-image: url('../images/SS_Heart_Model.png');
-    background-size: cover;
-    background-position: -32px 0; /* Empty heart */
+    background-image: url('images/empty_heart.png');
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+    flex-shrink: 0;
 }
 
 .link-heart.full {
-    background-position: 0 0; /* Full heart */
+    background-image: url('images/SS_Heart_Model.png');
+}
+
+.heart-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
 }
 
 .heart-section-title {

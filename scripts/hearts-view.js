@@ -97,6 +97,7 @@ function updateCounters() {
 
     const totalHeartPieces = pieces.length;
     
+    // Link starts with 3 hearts.
     const totalHearts = 3 + foundContainersCount + Math.floor(foundPiecesCount / 4);
     const remainingPieces = foundPiecesCount % 4;
 
@@ -106,26 +107,63 @@ function updateCounters() {
     if (dom.heartContainerCounter) {
         dom.heartContainerCounter.textContent = totalHearts;
     }
-    if (dom.heartPieceGraphic) {
-        dom.heartPieceGraphic.className = `heart-piece-graphic pieces-${remainingPieces}`;
+    
+    if (dom.heartPiecePreview) {
+        switch (remainingPieces) {
+            case 0:
+                dom.heartPiecePreview.src = 'images/empty_heart.png';
+                break;
+            case 1:
+                dom.heartPiecePreview.src = 'images/quarter_heart.png';
+                break;
+            case 2:
+                dom.heartPiecePreview.src = 'images/half_heart.png';
+                break;
+            case 3:
+                dom.heartPiecePreview.src = 'images/threefour_heart.png';
+                break;
+        }
     }
     renderLinkHearts(totalHearts);
 }
 
-let linkHeartsContainer;
-
+/**
+ * Renders Link's life meter.
+ * Displays hearts in two rows of 10, only showing hearts Link has.
+ * @param {number} totalHearts - The total number of heart containers Link has.
+ */
 function renderLinkHearts(totalHearts) {
-    if (!linkHeartsContainer) return;
-    linkHeartsContainer.innerHTML = '';
-    for (let i = 0; i < 20; i++) {
+    const container = dom.linkHeartsContainer;
+    if (!container) return;
+    container.innerHTML = '';
+
+    const maxHeartsPerRow = 10;
+
+    // Create first row
+    const row1 = document.createElement('div');
+    row1.className = 'heart-row';
+    container.appendChild(row1);
+
+    for (let i = 0; i < Math.min(totalHearts, maxHeartsPerRow); i++) {
         const heart = document.createElement('div');
-        heart.className = 'link-heart';
-        if (i < totalHearts) {
-            heart.classList.add('full');
+        heart.className = 'link-heart full';
+        row1.appendChild(heart);
+    }
+
+    if (totalHearts > maxHeartsPerRow) {
+        // Create second row only if needed
+        const row2 = document.createElement('div');
+        row2.className = 'heart-row';
+        container.appendChild(row2);
+
+        for (let i = maxHeartsPerRow; i < totalHearts; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'link-heart full';
+            row2.appendChild(heart);
         }
-        linkHeartsContainer.appendChild(heart);
     }
 }
+
 
 function setVersion(version) {
     currentVersion = version;
@@ -135,20 +173,15 @@ function setVersion(version) {
 }
 
 export function populateHeartsView() {
-    if (!dom.heartContainersContent) return;
+    if (!dom.heartContainersContent) {
+        console.error("heartContainersContent not found");
+        return;
+    }
     
     loadState();
 
     dom.versionToggle3dsHearts.addEventListener('click', () => setVersion('3ds'));
     dom.versionToggleN64Hearts.addEventListener('click', () => setVersion('n64'));
-
-    // Add the container for Link's hearts to the DOM
-    const heartsDisplay = document.createElement('div');
-    heartsDisplay.id = 'link-hearts-container';
-    heartsDisplay.className = 'link-hearts-container';
-    dom.heartContainersContent.querySelector('.main-container > header').after(heartsDisplay);
-    linkHeartsContainer = heartsDisplay;
-
 
     setVersion('n64'); // Default to N64
 }
