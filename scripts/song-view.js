@@ -116,7 +116,6 @@ export function populateSongGrid() {
         button.className = 'btn-song text-xl p-6 font-zelda';
         button.textContent = song.name;
         button.addEventListener('click', (event) => {
-            button.addEventListener('click', (event) => {
             ui.triggerHapticFeedback();
             lastClickedButtonRect = event.currentTarget.getBoundingClientRect();
             showSongDetails(key);
