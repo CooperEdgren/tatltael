@@ -108,7 +108,7 @@ export const items = {
         {
             "id": "romani-mask",
             "name": "Romani Mask",
-            "hylian_name": "romani mask",
+            "hylian_name": "Romani Mask",
             "image": "images/items/Masks/Romani_Mask.png",
             "description": "Allows Link to interact with Romani, the ranch owner's daughter, and helps in the fight against the aliens.",
             "acquisition": "Given by Romani in the Romani Ranch after completing the Anju and Kafei side quest."
@@ -116,15 +116,15 @@ export const items = {
         {
             "id": "mask-of-truth",
             "name": "Mask of Truth",
-            "hylian_name": "mask of truth",
+            "hylian_name": "Mask of Truth",
             "image": "images/items/Masks/Mask_of_Truth.png",
             "description": "Allows Link to read the minds of certain characters and animals, revealing hidden information.",
             "acquisition": "Found in the Stone Tower Temple after collecting all 15 Stray Fairies."
         },
         {
             "id": "couples-mask",
-            "name": "Couples Mask",
-            "hylian_name": "couples mask",
+            "name": "Couple's Mask",
+            "hylian_name": "Couple's Mask",
             "image": "images/items/Masks/Couples_Mask.png",
             "description": "A mask that symbolizes the love between Anju and Kafei, allowing Link to complete their side quest.",
             "acquisition": "Given by Anju after completing the Anju and Kafei side quest."

@@ -42,7 +42,7 @@ function renderItems(category, searchTerm = '') {
  * Shows the detailed view for a specific item.
  * @param {object} item - The item object to display.
  */
-function showItemDetailView(item) {
+export function showItemDetailView(item) {
     dom.itemDetailTitle.innerHTML = `${item.name}<span class="hylian-name">${item.hylian_name || ''}</span>`;
     dom.itemDetailImage.src = item.image;
     dom.itemDetailDescription.textContent = item.description;

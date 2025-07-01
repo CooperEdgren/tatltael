@@ -1,5 +1,7 @@
 import { notebookData } from './data-notebook.js';
 import * as dom from './dom.js';
+import { items } from './data-items.js'; // Import items data
+import { showItemDetailView } from './items-view.js'; // Import item detail view function
 
 let questData = {};
 let activeQuestId = null;
@@ -117,10 +119,18 @@ function renderQuestDetail() {
     quest.rewards.forEach(rewardText => {
         const rewardEl = document.createElement('div');
         rewardEl.className = 'reward-item';
+        
+        const item = items.All.find(i => i.name === rewardText);
+
         let icon = '';
-        if (rewardText.toLowerCase().includes('mask')) icon = 'images/masks_icon.png';
-        else if (rewardText.toLowerCase().includes('heart')) icon = 'images/heart_container_icon.png';
-        else if (rewardText.toLowerCase().includes('song')) icon = 'images/songs_icon.png';
+        if (item) {
+            icon = item.image;
+            rewardEl.addEventListener('click', () => showItemDetailView(item));
+        } else if (rewardText.toLowerCase().includes('heart')) {
+            icon = 'images/heart_container_icon.png';
+        } else if (rewardText.toLowerCase().includes('song')) {
+            icon = 'images/songs_icon.png';
+        }
         
         rewardEl.innerHTML = icon ? `<img src="${icon}" alt="reward">` : '';
         rewardEl.innerHTML += `<span>${rewardText}</span>`;

@@ -648,6 +648,15 @@ html, body {
 
 
 /* --- Stray Fairy Tracker Styles --- */
+#fairy-temple-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+#fairy-temple-tabs::-webkit-scrollbar { 
+    display: none; /* Safari and Chrome */
+}
+
 .fairy-temple-tab {
     padding: 0.75rem 1.25rem;
     border-radius: 8px;
@@ -726,9 +735,10 @@ html, body {
 #controller-modal-image { max-width: 80vw; max-height: 80vh; filter: drop-shadow(0 5px 25px rgba(167, 139, 250, 0.4)); }
 
 .notebook-bg-texture {
-    background-color: #fdf6e3;
+    background-color: #d2b48c; /* A more readable tan color */
     border: 8px solid #6b462a;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    flex-grow: 1; /* Allow it to grow */
 }
 
 .notebook-paper-texture {
@@ -780,14 +790,14 @@ html, body {
 .notebook-tab:last-child { border-radius: 0 8px 0 0; }
 
 .notebook-tab.active {
-    background-color: #fdecc8;
-    color: #854d0e;
+    background-color: #d2b48c;
+    color: #6b462a;
 }
 
 .quest-category-title {
     font-family: 'ReggaeOne', sans-serif;
     font-size: 1.5rem;
-    color: #854d0e;
+    color: #6b462a;
     padding: 0.5rem 1rem;
     background-color: rgba(0,0,0,0.1);
     border-radius: 6px;
@@ -874,8 +884,14 @@ html, body {
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.875rem;
-    color: #374151;
+    color: #6b462a;
     border: 1px solid #c2a578;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.reward-item:hover {
+    background-color: rgba(0,0,0,0.2);
+    border-color: #854d0e;
 }
 
 .reward-item img {
