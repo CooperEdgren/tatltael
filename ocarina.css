@@ -99,3 +99,60 @@ body {
     background-color: #a78bfa;
     color: #1e1b4b;
 }
+
+#settings-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.settings-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: rgba(10, 5, 20, 0.6);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    color: #e9d5ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-button:hover {
+    transform: scale(1.1);
+    border-color: rgba(216, 180, 254, 1);
+}
+
+.settings-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 240px;
+    background: rgba(12, 10, 24, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform-origin: top right;
+    transform: scale(0.95);
+}
+
+.settings-menu.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.settings-section {
+    margin-bottom: 1rem;
+}
+.settings-section:last-child {
+    margin-bottom: 0;
+}
