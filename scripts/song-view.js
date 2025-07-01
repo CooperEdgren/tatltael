@@ -38,7 +38,10 @@ const createNoteElement = (note, platformKey) => {
     const div = document.createElement('div');
     div.className = `note-icon ${mapping.class}`;
     div.innerHTML = `<img src="${mapping.icon}" alt="${note} button" draggable="false">`;
-    div.addEventListener('click', () => showControllerModal(platformKey));
+    div.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        showControllerModal(platformKey);
+    });
     return div;
 };
 
@@ -113,6 +116,8 @@ export function populateSongGrid() {
         button.className = 'btn-song text-xl p-6 font-zelda';
         button.textContent = song.name;
         button.addEventListener('click', (event) => {
+            button.addEventListener('click', (event) => {
+            ui.triggerHapticFeedback();
             lastClickedButtonRect = event.currentTarget.getBoundingClientRect();
             showSongDetails(key);
         });
@@ -153,6 +158,7 @@ export function showMainScreen() {
  * Cycles through the instrument images when clicked.
  */
 export function handleInstrumentClick() {
+    ui.triggerHapticFeedback();
     currentImageIndex = (currentImageIndex + 1) % data.instrumentImages.length;
     dom.instrumentImage.src = data.instrumentImages[currentImageIndex];
 }

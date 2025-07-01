@@ -1,5 +1,5 @@
 import { platforms, noteMappings } from './data.js';
-import { triggerHapticFeedback } from './ui.js';
+import * as ui from './ui.js';
 
 // --- Howler.js Audio Setup ---
 const noteSounds = {
@@ -83,7 +83,7 @@ const songBookContainer = document.getElementById('song-book-container');
 function playNote(note) {
     if (!note || activeNote) return;
 
-    triggerHapticFeedback();
+    ui.triggerHapticFeedback();
     activeNote = note;
     pressStartTime = Date.now();
 
@@ -213,7 +213,7 @@ document.addEventListener('keyup', (e) => {
 });
 
 platformSwitchButton.addEventListener('click', () => {
-    triggerHapticFeedback();
+    ui.triggerHapticFeedback();
     currentPlatformIndex = (currentPlatformIndex + 1) % platformIds.length;
     renderOcarina();
     if (songBookContainer.classList.contains('is-visible')) renderSongBook();
@@ -221,17 +221,17 @@ platformSwitchButton.addEventListener('click', () => {
 
 settingsButton.addEventListener('click', (e) => {
     e.stopPropagation();
-    triggerHapticFeedback(30);
+    ui.triggerHapticFeedback(30);
     settingsMenu.classList.toggle('is-active');
 });
 
 songCorrectToggle.addEventListener('change', (e) => {
-    triggerHapticFeedback();
+    ui.triggerHapticFeedback();
     songCorrectEnabled = e.target.checked;
 });
 
 songBookButton.addEventListener('click', () => {
-    triggerHapticFeedback();
+    ui.triggerHapticFeedback();
     body.classList.toggle('song-book-active');
     songBookContainer.classList.toggle('is-visible');
     if (songBookContainer.classList.contains('is-visible')) renderSongBook();

@@ -33,7 +33,10 @@ function renderItems(category, searchTerm = '') {
             <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=?'">
             <h3>${item.name}</h3>
         `;
-        card.addEventListener('click', () => showItemDetailView(item));
+        card.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
+            showItemDetailView(item);
+        });
         grid.appendChild(card);
     });
 }
@@ -64,6 +67,7 @@ export function showItemDetailView(item) {
         useButton.className = 'btn-back';
         useButton.textContent = 'Use';
         useButton.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
             window.location.href = 'ocarina.html';
         });
         container.appendChild(useButton);
@@ -96,6 +100,7 @@ export function populateItemsView() {
     // Add event listeners
     tabsContainer.addEventListener('click', (e) => {
         if (e.target.matches('.item-category-tab')) {
+            ui.triggerHapticFeedback();
             currentCategory = e.target.dataset.category;
             tabsContainer.querySelector('.active').classList.remove('active');
             e.target.classList.add('active');

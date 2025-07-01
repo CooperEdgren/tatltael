@@ -1,5 +1,6 @@
 import { fairyData } from './data-fairies.js';
 import * as dom from './dom.js';
+import * as ui from './ui.js';
 
 let fairyProgress = {};
 let activeTemple = 'Woodfall Temple';
@@ -50,6 +51,7 @@ function renderChecklist() {
             <p>${fairy.location}</p>
         `;
         item.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
             fairy.found = !fairy.found;
             saveProgress();
             renderChecklist();
@@ -75,6 +77,7 @@ function renderTempleTabs() {
             tab.classList.add('active');
         }
         tab.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
             activeTemple = templeName;
             tabsContainer.querySelector('.active').classList.remove('active');
             tab.classList.add('active');
@@ -99,6 +102,7 @@ export function populateFairiesView() {
     renderChecklist();
 
     dom.versionToggle3DS.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
         activeVersion = '3DS';
         dom.versionToggle3DS.classList.add('active');
         dom.versionToggleN64.classList.remove('active');
@@ -109,6 +113,7 @@ export function populateFairiesView() {
     });
 
     dom.versionToggleN64.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
         activeVersion = 'N64';
         dom.versionToggleN64.classList.add('active');
         dom.versionToggle3DS.classList.remove('active');

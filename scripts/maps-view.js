@@ -53,7 +53,10 @@ export function populateMapsGrid() {
         mapItem.className = 'map-item';
         mapItem.innerHTML = `<img src="${map.src}" alt="${map.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/400x300/0d0818/a78bfa?text=Map+Not+Found'"><h3>${map.name}</h3>`;
         // Pass the index to the click handler
-        mapItem.addEventListener('click', () => openMapModal(index));
+        mapItem.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
+            openMapModal(index);
+        });
         dom.mapGrid.appendChild(mapItem);
     });
 }
@@ -70,11 +73,13 @@ export function showMapsView() {
 // Listener for the previous map button
 dom.mapModalPrev.addEventListener('click', (e) => {
     e.stopPropagation();
+    ui.triggerHapticFeedback();
     showHdMap(currentMapIndex - 1);
 });
 
 // Listener for the next map button
 dom.mapModalNext.addEventListener('click', (e) => {
     e.stopPropagation();
+    ui.triggerHapticFeedback();
     showHdMap(currentMapIndex + 1);
 });

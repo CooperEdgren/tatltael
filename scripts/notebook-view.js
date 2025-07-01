@@ -2,6 +2,7 @@ import { notebookData } from './data-notebook.js';
 import * as dom from './dom.js';
 import { items } from './data-items.js'; // Import items data
 import { showItemDetailView } from './items-view.js'; // Import item detail view function
+import * as ui from './ui.js';
 
 let questData = {};
 let activeQuestId = null;
@@ -70,6 +71,7 @@ function renderQuestList() {
                 if (quest.completed) questItem.classList.add('completed');
 
                 questItem.addEventListener('click', () => {
+                    ui.triggerHapticFeedback();
                     activeQuestId = quest.id;
                     renderApp();
                 });
@@ -106,6 +108,7 @@ function renderQuestDetail() {
         if (step.completed) stepEl.classList.add('completed');
         stepEl.innerHTML = `<div class="checkbox"></div><p>${step.description}</p>`;
         stepEl.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
             step.completed = !step.completed;
             quest.completed = quest.steps.every(s => s.completed);
             saveProgress();
@@ -125,7 +128,10 @@ function renderQuestDetail() {
         let icon = '';
         if (item) {
             icon = item.image;
-            rewardEl.addEventListener('click', () => showItemDetailView(item));
+            rewardEl.addEventListener('click', () => {
+                ui.triggerHapticFeedback();
+                showItemDetailView(item);
+            });
         } else if (rewardText.toLowerCase().includes('heart')) {
             icon = 'images/heart_container_icon.png';
         } else if (rewardText.toLowerCase().includes('song')) {
@@ -158,6 +164,7 @@ export function populateBombersNotebook() {
     const tabs = document.querySelectorAll('.notebook-tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
             activeTab = tab.dataset.tab;
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');

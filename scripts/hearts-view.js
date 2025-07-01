@@ -1,5 +1,6 @@
 import { heartData } from './data-hearts.js';
 import * as dom from './dom.js';
+import * as ui from './ui.js';
 
 let currentVersion = 'n64';
 const heartState = {};
@@ -83,6 +84,7 @@ function renderHeartPieces() {
 }
 
 function toggleItem(id) {
+    ui.triggerHapticFeedback();
     heartState[id] = !heartState[id];
     saveState();
     renderHeartPieces();
@@ -166,6 +168,7 @@ function renderLinkHearts(totalHearts) {
 
 
 function setVersion(version) {
+    ui.triggerHapticFeedback();
     currentVersion = version;
     dom.versionToggle3dsHearts.classList.toggle('active', version === '3ds');
     dom.versionToggleN64Hearts.classList.toggle('active', version === 'n64');

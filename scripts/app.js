@@ -26,12 +26,14 @@ function main() {
 
     // Main Nav listeners
     dom.mainTitleButton.addEventListener('click', (e) => {
+        ui.triggerHapticFeedback();
         e.stopPropagation(); // Prevent the body click listener from firing immediately
         ui.toggleMainNav();
     });
     
     dom.getNavItems().forEach(item => {
         item.addEventListener('click', (e) => {
+            ui.triggerHapticFeedback();
             e.stopPropagation();
             const content = item.dataset.content;
 
@@ -52,32 +54,58 @@ function main() {
     });
 
     // Song Detail View Listeners
-    dom.backButton.addEventListener('click', songView.showMainScreen);
-    dom.instrumentImage.addEventListener('click', songView.handleInstrumentClick);
+    dom.backButton.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.showMainScreen();
+    });
+    dom.instrumentImage.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.handleInstrumentClick();
+    });
 
     // Item Detail View Listeners
-    dom.itemDetailBackButton.addEventListener('click', songView.showMainScreen);
+    dom.itemDetailBackButton.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.showMainScreen();
+    });
     
     // Controller Modal Listeners
-    dom.controllerModalClose.addEventListener('click', songView.closeControllerModal);
+    dom.controllerModalClose.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.closeControllerModal();
+    });
     dom.controllerModal.addEventListener('click', (e) => {
         if (e.target === dom.controllerModal) {
+            ui.triggerHapticFeedback();
             songView.closeControllerModal();
         }
     });
 
     // Tingle's Maps View Listeners
-    dom.tingleContainer.addEventListener('click', mapsView.showMapsView);
-    dom.mapsBackButton.addEventListener('click', songView.showMainScreen);
-    dom.mapModalClose.addEventListener('click', mapsView.closeMapModal);
+    dom.tingleContainer.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        mapsView.showMapsView();
+    });
+    dom.mapsBackButton.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.showMainScreen();
+    });
+    dom.mapModalClose.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        mapsView.closeMapModal();
+    });
     dom.mapModal.addEventListener('click', (e) => {
         if (e.target === dom.mapModal) {
+            ui.triggerHapticFeedback();
             mapsView.closeMapModal();
         }
     });
 
     // Termina Map View Listener
-    dom.terminaMapBackButton.addEventListener('click', songView.showMainScreen);
+    dom.terminaMapBackButton.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.showMainScreen();
+    });
     
     // General UI Listeners
     dom.toggleUiButton.addEventListener('click', ui.toggleControlsVisibility);
