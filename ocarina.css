@@ -23,6 +23,7 @@ body {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     pointer-events: none;
+    z-index: 20;
 }
 
 #song-title.is-visible {
@@ -46,7 +47,13 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    transition: transform 0.3s ease-in-out;
 }
+
+body.song-book-active #ocarina-container {
+    transform: scale(0.8) translateY(-10%);
+}
+
 
 #note-buttons {
     display: grid;
@@ -137,6 +144,7 @@ body {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    z-index: 30;
 }
 
 .settings-button {
@@ -194,27 +202,31 @@ body {
     position: absolute;
     top: 1rem;
     left: 1rem;
+    z-index: 10;
 }
 
 #song-book-container {
     position: absolute;
-    top: 6rem;
+    bottom: 1rem;
     left: 1rem;
-    width: 300px;
-    max-height: calc(100vh - 7rem);
+    right: 1rem;
+    max-height: 40vh;
     overflow-y: auto;
     background-color: rgba(10, 5, 20, 0.8);
     padding: 1rem;
     border-radius: 1rem;
     border: 2px solid rgba(167, 139, 250, 0.3);
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
     pointer-events: none;
+    transform: translateY(100%);
+    z-index: 10;
 }
 
 #song-book-container.is-visible {
     opacity: 1;
     pointer-events: auto;
+    transform: translateY(0);
 }
 
 .song-book-entry {

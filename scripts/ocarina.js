@@ -1,35 +1,32 @@
 import { platforms, noteMappings } from './data.js';
+import { triggerHapticFeedback } from './ui.js';
 
+// --- Howler.js Audio Setup ---
 const noteSounds = {
     'CU': {
-        short: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_short.wav'),
-        med: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_med.wav'),
-        long: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_long.wav'),
-        loop: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_loop.wav')
+        short: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_short.wav'] }),
+        med: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_med.wav'] }),
+        loop: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_loop.wav'], loop: true })
     },
     'CD': {
-        short: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_short.wav'),
-        med: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_med.wav'),
-        long: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_long.wav'),
-        loop: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_loop.wav')
+        short: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_short.wav'] }),
+        med: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_med.wav'] }),
+        loop: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_F_loop.wav'], loop: true })
     },
     'CL': {
-        short: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_short.wav'),
-        med: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_med.wav'),
-        long: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_long.wav'),
-        loop: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_loop.wav')
+        short: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_short.wav'] }),
+        med: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_med.wav'] }),
+        loop: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_B_loop.wav'], loop: true })
     },
     'CR': {
-        short: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_short.wav'),
-        med: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_med.wav'),
-        long: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_long.wav'),
-        loop: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_loop.wav')
+        short: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_short.wav'] }),
+        med: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_med.wav'] }),
+        loop: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_A_loop.wav'], loop: true })
     },
     'A': {
-        short: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_short.wav'),
-        med: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_med.wav'),
-        long: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_long.wav'),
-        loop: new Audio('../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_loop.wav')
+        short: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_short.wav'] }),
+        med: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_med.wav'] }),
+        loop: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_loop.wav'], loop: true })
     },
 };
 
@@ -57,16 +54,21 @@ const songs = {
     'OathToOrder': { name: "Oath to Order", hylian_name: "oath to order", notes: ['CR', 'CD', 'A', 'CD', 'CR', 'CU'] }
 };
 
-const songCorrectSound = new Audio('../music/sounds/OOTSounds/Menus/OOT_Song_Correct.wav');
+const songCorrectSound = new Howl({ src: ['../music/sounds/OOTSounds/Menus/OOT_Song_Correct.wav'] });
+
+// --- State Management ---
 let songCorrectEnabled = true;
 let playedNotes = [];
-let pressStartTime;
-let loopInterval;
+let pressStartTime = null;
+let activeNote = null;
+let loopSoundId = null;
 let songTitleFadeTimeout;
-
 const platformIds = Object.keys(platforms);
 let currentPlatformIndex = 0;
+let keysPressed = {};
 
+// --- DOM Elements ---
+const body = document.body;
 const noteButtonsContainer = document.getElementById('note-buttons');
 const platformSwitchButton = document.getElementById('platform-switch');
 const settingsButton = document.getElementById('settings-button');
@@ -76,73 +78,50 @@ const songTitleElement = document.getElementById('song-title');
 const songBookButton = document.getElementById('song-book-button');
 const songBookContainer = document.getElementById('song-book-container');
 
-function renderOcarina() {
-    noteButtonsContainer.innerHTML = '';
-    const platform = platformIds[currentPlatformIndex];
-    const mapping = noteMappings[platform];
+// --- Core Functions ---
 
-    const noteOrder = ['CU', 'CL', 'A', 'CR', 'CD'];
+function playNote(note) {
+    if (!note || activeNote) return;
 
-    const positions = {
-        'CU': { row: 1, col: 2 },
-        'CL': { row: 2, col: 1 },
-        'A': { row: 2, col: 2 },
-        'CR': { row: 2, col: 3 },
-        'CD': { row: 3, col: 2 },
-    };
+    triggerHapticFeedback();
+    activeNote = note;
+    pressStartTime = Date.now();
 
-    noteOrder.forEach(note => {
-        const button = document.createElement('button');
-        button.className = `note-button ${mapping[note].class}`;
-        button.dataset.note = note;
-        button.innerHTML = `<img src="../${mapping[note].icon}" alt="${note}">`;
-        button.style.gridRow = positions[note].row;
-        button.style.gridColumn = positions[note].col;
+    loopSoundId = noteSounds[note].loop.play();
+    noteSounds[note].loop.fade(0, 0.7, 100, loopSoundId);
+}
 
-        button.addEventListener('mousedown', () => {
-            pressStartTime = Date.now();
-            loopInterval = setInterval(() => {
-                noteSounds[note].loop.currentTime = 0;
-                noteSounds[note].loop.play();
-            }, noteSounds[note].loop.duration * 1000);
-        });
+function stopNote(note) {
+    if (!note || note !== activeNote) return;
 
-        button.addEventListener('mouseup', () => {
-            clearInterval(loopInterval);
-            const pressDuration = Date.now() - pressStartTime;
-            let soundToPlay;
-            if (pressDuration < 200) {
-                soundToPlay = noteSounds[note].short;
-            } else if (pressDuration < 500) {
-                soundToPlay = noteSounds[note].med;
-            } else {
-                soundToPlay = noteSounds[note].long;
-            }
-            soundToPlay.currentTime = 0;
-            soundToPlay.play();
-            playedNotes.push(note);
-            checkSong();
-        });
+    const pressDuration = Date.now() - pressStartTime;
 
-        noteButtonsContainer.appendChild(button);
-    });
+    if (loopSoundId) {
+        noteSounds[note].loop.fade(0.7, 0, 100, loopSoundId);
+        noteSounds[note].loop.once('fade', (id) => noteSounds[note].loop.stop(id), loopSoundId);
+    }
+
+    const soundToPlay = pressDuration < 200 ? noteSounds[note].short : noteSounds[note].med;
+    soundToPlay.play();
+
+    playedNotes.push(note);
+    checkSong();
+    
+    activeNote = null;
+    pressStartTime = null;
+    loopSoundId = null;
 }
 
 function checkSong() {
-    if (playedNotes.length > 8) {
-        playedNotes.shift();
-    }
+    if (playedNotes.length > 8) playedNotes.shift();
 
     for (const songKey in songs) {
         const song = songs[songKey];
         if (JSON.stringify(song.notes) === JSON.stringify(playedNotes.slice(-song.notes.length))) {
-            if (songCorrectEnabled) {
-                songCorrectSound.currentTime = 0;
-                songCorrectSound.play();
-            }
+            if (songCorrectEnabled) songCorrectSound.play();
             displaySongTitle(song.name, song.hylian_name);
             playedNotes = [];
-            break;
+            return;
         }
     }
 }
@@ -154,9 +133,36 @@ function displaySongTitle(name, hylianName) {
         <span class="song-name-hylian">${hylianName}</span>
     `;
     songTitleElement.classList.add('is-visible');
-    songTitleFadeTimeout = setTimeout(() => {
-        songTitleElement.classList.remove('is-visible');
-    }, 3000);
+    songTitleFadeTimeout = setTimeout(() => songTitleElement.classList.remove('is-visible'), 3000);
+}
+
+function renderOcarina() {
+    noteButtonsContainer.innerHTML = '';
+    const platform = platformIds[currentPlatformIndex];
+    const mapping = noteMappings[platform];
+    const noteOrder = ['CU', 'CL', 'A', 'CR', 'CD'];
+    const positions = {
+        'CU': { row: 1, col: 2 }, 'CL': { row: 2, col: 1 },
+        'A':  { row: 2, col: 2 }, 'CR': { row: 2, col: 3 },
+        'CD': { row: 3, col: 2 },
+    };
+
+    noteOrder.forEach(note => {
+        const button = document.createElement('button');
+        button.className = `note-button ${mapping[note].class}`;
+        button.dataset.note = note;
+        button.innerHTML = `<img src="../${mapping[note].icon}" alt="${note}">`;
+        button.style.gridRow = positions[note].row;
+        button.style.gridColumn = positions[note].col;
+
+        button.addEventListener('mousedown', () => playNote(note));
+        button.addEventListener('mouseup', () => stopNote(note));
+        button.addEventListener('mouseleave', () => { if (activeNote === note) stopNote(note); });
+        button.addEventListener('touchstart', (e) => { e.preventDefault(); playNote(note); });
+        button.addEventListener('touchend', () => stopNote(note));
+
+        noteButtonsContainer.appendChild(button);
+    });
 }
 
 function renderSongBook() {
@@ -164,10 +170,10 @@ function renderSongBook() {
     const platform = platformIds[currentPlatformIndex];
     const mapping = noteMappings[platform];
 
-    for (const songKey in songs) {
-        const song = songs[songKey];
+    Object.values(songs).forEach((song, index) => {
         const songElement = document.createElement('div');
         songElement.className = 'song-book-entry';
+        songElement.style.animationDelay = `${index * 50}ms`;
         songElement.innerHTML = `
             <div class="song-book-title">
                 <span class="song-name-main">${song.name}</span>
@@ -178,35 +184,61 @@ function renderSongBook() {
             </div>
         `;
         songBookContainer.appendChild(songElement);
-    }
+    });
 }
 
+const keyMap = {
+    'KeyW': 'CU', 'ArrowUp': 'CU',
+    'KeyA': 'CL', 'ArrowLeft': 'CL',
+    'KeyS': 'CD', 'ArrowDown': 'CD',
+    'KeyD': 'CR', 'ArrowRight': 'CR',
+    'Space': 'A', 'Enter': 'A'
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+    const note = keyMap[e.code];
+    if (note && !keysPressed[e.code]) {
+        keysPressed[e.code] = true;
+        playNote(note);
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    const note = keyMap[e.code];
+    if (note) {
+        keysPressed[e.code] = false;
+        stopNote(note);
+    }
+});
+
 platformSwitchButton.addEventListener('click', () => {
+    triggerHapticFeedback();
     currentPlatformIndex = (currentPlatformIndex + 1) % platformIds.length;
     renderOcarina();
-    if (songBookContainer.classList.contains('is-visible')) {
-        renderSongBook();
-    }
+    if (songBookContainer.classList.contains('is-visible')) renderSongBook();
 });
 
 settingsButton.addEventListener('click', (e) => {
     e.stopPropagation();
+    triggerHapticFeedback(30);
     settingsMenu.classList.toggle('is-active');
 });
 
 songCorrectToggle.addEventListener('change', (e) => {
+    triggerHapticFeedback();
     songCorrectEnabled = e.target.checked;
 });
 
 songBookButton.addEventListener('click', () => {
+    triggerHapticFeedback();
+    body.classList.toggle('song-book-active');
     songBookContainer.classList.toggle('is-visible');
-    if (songBookContainer.classList.contains('is-visible')) {
-        renderSongBook();
-    }
+    if (songBookContainer.classList.contains('is-visible')) renderSongBook();
 });
 
 document.addEventListener('click', (e) => {
-    if (!settingsMenu.contains(e.target) && e.target !== settingsButton) {
+    if (settingsMenu.classList.contains('is-active') && !settingsMenu.contains(e.target) && e.target !== settingsButton) {
         settingsMenu.classList.remove('is-active');
     }
 });

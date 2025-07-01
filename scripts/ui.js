@@ -9,6 +9,16 @@ let isSettingsMenuOpen = false;
 let exploreInterval = null;
 
 /**
+ * Triggers haptic feedback on supported devices.
+ * @param {number} [duration=50] - The vibration duration in milliseconds.
+ */
+export function triggerHapticFeedback(duration = 50) {
+    if (navigator.vibrate) {
+        navigator.vibrate(duration);
+    }
+}
+
+/**
  * Provides the current state of the navigation pill.
  * @returns {boolean} - True if the nav is open.
  */
@@ -20,6 +30,7 @@ export function getNavState() {
  * Toggles the visibility of the main navigation pill and its associated states.
  */
 export function toggleMainNav() {
+    triggerHapticFeedback(30);
     isNavOpen = !isNavOpen;
 
     if (isNavOpen) {
@@ -35,6 +46,8 @@ export function toggleMainNav() {
     dom.navPill.classList.toggle('is-visible', isNavOpen);
     dom.mainNavContainer.classList.toggle('nav-is-open', isNavOpen);
     
+    updateTingleVisibility();
+
     if (isNavOpen) {
         setTimeout(() => document.body.addEventListener('click', closeNavOnClickOutside), 0);
     } else {
@@ -46,6 +59,7 @@ export function toggleMainNav() {
  * Toggles the visibility of the settings menu.
  */
 function toggleSettingsMenu() {
+    triggerHapticFeedback(30);
     isSettingsMenuOpen = !isSettingsMenuOpen;
     dom.settingsMenu.classList.toggle('is-active', isSettingsMenuOpen);
 }
@@ -72,6 +86,7 @@ export function initializeSettings() {
     });
 
     dom.muteToggle.addEventListener('click', () => {
+        triggerHapticFeedback();
         const isMuted = toggleMute();
         dom.iconVolumeOn.classList.toggle('hidden', isMuted);
         dom.iconVolumeOff.classList.toggle('hidden', !isMuted);
@@ -85,7 +100,8 @@ export function initializeSettings() {
     dom.appIconOptions.addEventListener('click', (e) => {
         const button = e.target.closest('.app-icon-option');
         if (!button) return;
-
+        
+        triggerHapticFeedback();
         const iconName = button.dataset.icon;
         // Here you would implement the logic to change the app icon
         // This might involve updating the manifest.json or link tags
@@ -119,46 +135,49 @@ function closeNavOnClickOutside(event) {
  * @param {string} newContent - The 'data-content' attribute value of the clicked nav item.
  */
 export function showContentForNav(newContent) {
+    triggerHapticFeedback();
     const newActiveItem = document.querySelector(`.nav-item[data-content="${newContent}"]`);
 
     if (newContent === activeContent) {
         hideAllContent();
         activeContent = null;
-        return;
-    }
+    } else {
+        hideAllContent();
+        activeContent = newContent;
 
-    hideAllContent();
-    activeContent = newContent;
+        if (newActiveItem) {
+            newActiveItem.classList.add('active');
+        }
 
-    if (newActiveItem) {
-        newActiveItem.classList.add('active');
-    }
-
-    let contentToShow;
-    switch (newContent) {
-        case 'songs':
-            contentToShow = dom.songsContent;
-            showSongGridWithAnimation();
-            break;
-        case 'notebook':
-            contentToShow = dom.notebookContent;
-            break;
-        case 'items':
-            contentToShow = dom.itemsContent;
-            break;
-        case 'fairies':
-            contentToShow = dom.fairiesContent;
-            break;
-        case 'heart-containers':
-            contentToShow = dom.heartContainersContent;
-            break;
-        default:
-            return;
+        let contentToShow;
+        switch (newContent) {
+            case 'songs':
+                contentToShow = dom.songsContent;
+                showSongGridWithAnimation();
+                break;
+            case 'notebook':
+                contentToShow = dom.notebookContent;
+                break;
+            case 'items':
+                contentToShow = dom.itemsContent;
+                break;
+            case 'fairies':
+                contentToShow = dom.fairiesContent;
+                break;
+            case 'heart-containers':
+                contentToShow = dom.heartContainersContent;
+                break;
+            default:
+                return;
+        }
+        
+        if (contentToShow) {
+            contentToShow.classList.remove('hidden');
+        }
     }
     
-    if (contentToShow) {
-        contentToShow.classList.remove('hidden');
-    }
+    document.body.classList.toggle('content-active', !!activeContent);
+    updateTingleVisibility();
 }
 
 /**
@@ -180,9 +199,8 @@ export function switchView(viewToShow) {
     }
     const isMainScreen = viewToShow === dom.mainScreen;
     
-    dom.tingleContainer.style.opacity = isMainScreen ? '1' : '0';
-    dom.tingleContainer.style.pointerEvents = isMainScreen ? 'auto' : 'none';
     dom.toggleUiButton.style.display = isMainScreen ? 'flex' : 'none';
+    updateTingleVisibility();
 
     if (isMainScreen) {
         resetHideUiTimeout();
@@ -190,6 +208,12 @@ export function switchView(viewToShow) {
         clearTimeout(hideUiTimeout);
         if(isNavOpen) toggleMainNav();
     }
+}
+
+function updateTingleVisibility() {
+    const isTingleVisible = !isNavOpen && !activeContent;
+    dom.tingleContainer.style.opacity = isTingleVisible ? '1' : '0';
+    dom.tingleContainer.style.pointerEvents = isTingleVisible ? 'auto' : 'none';
 }
 
 /**
@@ -221,6 +245,7 @@ export function resetHideUiTimeout() {
  * Toggles the visibility of the main screen controls and fairy states.
  */
 export function toggleControlsVisibility() {
+    triggerHapticFeedback();
     const isHidden = dom.mainScreen.classList.toggle('controls-hidden');
     dom.iconEyeOpen.classList.toggle('hidden', isHidden);
     dom.iconEyeClosed.classList.toggle('hidden', !isHidden);
