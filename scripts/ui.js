@@ -30,7 +30,7 @@ export function getNavState() {
  * Toggles the visibility of the main navigation pill and its associated states.
  */
 export function toggleMainNav() {
-    ui.triggerHapticFeedback(30);
+    triggerHapticFeedback(30);
     isNavOpen = !isNavOpen;
 
     if (isNavOpen) {
@@ -59,7 +59,7 @@ export function toggleMainNav() {
  * Toggles the visibility of the settings menu.
  */
 function toggleSettingsMenu() {
-    ui.triggerHapticFeedback(30);
+    triggerHapticFeedback(30);
     isSettingsMenuOpen = !isSettingsMenuOpen;
     dom.settingsMenu.classList.toggle('is-active', isSettingsMenuOpen);
 }
@@ -135,7 +135,7 @@ function closeNavOnClickOutside(event) {
  * @param {string} newContent - The 'data-content' attribute value of the clicked nav item.
  */
 export function showContentForNav(newContent) {
-    ui.triggerHapticFeedback();
+    triggerHapticFeedback();
     const newActiveItem = document.querySelector(`.nav-item[data-content="${newContent}"]`);
 
     if (newContent === activeContent) {
@@ -245,7 +245,7 @@ export function resetHideUiTimeout() {
  * Toggles the visibility of the main screen controls and fairy states.
  */
 export function toggleControlsVisibility() {
-    ui.triggerHapticFeedback();
+    triggerHapticFeedback();
     const isHidden = dom.mainScreen.classList.toggle('controls-hidden');
     dom.iconEyeOpen.classList.toggle('hidden', isHidden);
     dom.iconEyeClosed.classList.toggle('hidden', !isHidden);

@@ -26,14 +26,14 @@ function main() {
 
     // Main Nav listeners
     dom.mainTitleButton.addEventListener('click', (e) => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         e.stopPropagation(); // Prevent the body click listener from firing immediately
         ui.toggleMainNav();
     });
     
     dom.getNavItems().forEach(item => {
         item.addEventListener('click', (e) => {
-            triggerHapticFeedback();
+            ui.triggerHapticFeedback();
             e.stopPropagation();
             const content = item.dataset.content;
 
@@ -55,55 +55,55 @@ function main() {
 
     // Song Detail View Listeners
     dom.backButton.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         songView.showMainScreen();
     });
     dom.instrumentImage.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         songView.handleInstrumentClick();
     });
 
     // Item Detail View Listeners
     dom.itemDetailBackButton.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         songView.showMainScreen();
     });
     
     // Controller Modal Listeners
     dom.controllerModalClose.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         songView.closeControllerModal();
     });
     dom.controllerModal.addEventListener('click', (e) => {
         if (e.target === dom.controllerModal) {
-            triggerHapticFeedback();
+            ui.triggerHapticFeedback();
             songView.closeControllerModal();
         }
     });
 
     // Tingle's Maps View Listeners
     dom.tingleContainer.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         mapsView.showMapsView();
     });
     dom.mapsBackButton.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         songView.showMainScreen();
     });
     dom.mapModalClose.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         mapsView.closeMapModal();
     });
     dom.mapModal.addEventListener('click', (e) => {
         if (e.target === dom.mapModal) {
-            triggerHapticFeedback();
+            ui.triggerHapticFeedback();
             mapsView.closeMapModal();
         }
     });
 
     // Termina Map View Listener
     dom.terminaMapBackButton.addEventListener('click', () => {
-        triggerHapticFeedback();
+        ui.triggerHapticFeedback();
         songView.showMainScreen();
     });
     

@@ -23,8 +23,8 @@ const urlsToCache = [
   // Key UI Images & Icons
   'images/moon.png',
   'images/tinglemyboy.png',
-  'images/Tatl.png',
-  'images/Tael.png',
+  'images/tatl.png',
+  'images/tael.png',
   'images/linkOcarina.webp',
   // Nav Icons
   'images/songs_icon.png',
