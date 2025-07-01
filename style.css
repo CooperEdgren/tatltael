@@ -472,6 +472,117 @@ html, body {
 .btn-toggle-ui:hover { transform: scale(1.1); border-color: rgba(216, 180, 254, 1); }
 .btn-toggle-ui.fade-out { opacity: 0; pointer-events: none; }
 
+
+/* --- Heart Piece Tracker Styles --- */
+.title-glow-pink {
+    text-shadow: 0 0 8px rgba(251, 146, 181, 0.5), 0 0 20px rgba(233, 139, 255, 0.4);
+    animation: pulse-glow-pink 3s infinite ease-in-out;
+}
+@keyframes pulse-glow-pink {
+    0%, 100% { text-shadow: 0 0 8px rgba(251, 146, 181, 0.5), 0 0 20px rgba(233, 139, 255, 0.4); }
+    50% { text-shadow: 0 0 16px rgba(251, 146, 181, 0.8), 0 0 40px rgba(233, 139, 255, 0.6); }
+}
+
+#version-toggle-3ds-hearts, #version-toggle-n64-hearts {
+    border-color: #f472b6;
+    color: #f472b6;
+}
+#version-toggle-3ds-hearts:hover, #version-toggle-n64-hearts:hover {
+    background-color: #f472b6;
+    color: #1e1b4b;
+    box-shadow: 0 0 20px rgba(244, 114, 182, 0.7);
+}
+#version-toggle-3ds-hearts.active, #version-toggle-n64-hearts.active {
+    background-color: #f472b6;
+    color: #1e1b4b;
+}
+
+.heart-piece-graphic {
+    width: 32px;
+    height: 32px;
+    background-image: url('../images/heart_piece_sprites.png');
+    background-repeat: no-repeat;
+    transform: scale(1.5);
+    image-rendering: pixelated;
+}
+.heart-piece-graphic.pieces-0 { background-position: 0 0; }
+.heart-piece-graphic.pieces-1 { background-position: -32px 0; }
+.heart-piece-graphic.pieces-2 { background-position: -64px 0; }
+.heart-piece-graphic.pieces-3 { background-position: -96px 0; }
+
+.heart-checklist-item {
+    padding: 0.75rem 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(244, 114, 182, 0.2);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.heart-checklist-item:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: rgba(244, 114, 182, 0.4);
+}
+.heart-checklist-item.found {
+    background-color: rgba(251, 146, 181, 0.1);
+    opacity: 0.7;
+}
+.heart-checklist-item .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f472b6;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+}
+.heart-checklist-item.found .checkbox {
+    background-color: #f472b6;
+}
+.heart-checklist-item .location {
+    font-weight: bold;
+    color: #f9a8d4;
+}
+.heart-checklist-item p {
+    margin: 0;
+    color: #fbcfe8;
+}
+
+.link-hearts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 1rem;
+    justify-content: center;
+}
+
+.link-heart {
+    width: 32px;
+    height: 32px;
+    background-image: url('../images/SS_Heart_Model.png');
+    background-size: cover;
+    background-position: -32px 0; /* Empty heart */
+}
+
+.link-heart.full {
+    background-position: 0 0; /* Full heart */
+}
+
+.heart-section-title {
+    font-family: 'Almendra', serif;
+    font-size: 1.5rem;
+    color: #f9a8d4;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 6px;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #f472b6;
+}
+
+
 /* --- Stray Fairy Tracker Styles --- */
 .fairy-temple-tab {
     padding: 0.75rem 1.25rem;

@@ -16,13 +16,16 @@ const urlsToCache = [
   'scripts/items-view.js',
   'scripts/maps-view.js',
   'scripts/notebook-view.js',
-  'scripts/song-view.js',
+  'scripts/song-view..js',
   'scripts/ui.js',
+  'scripts/data-hearts.js',
+  'scripts/hearts-view.js',
   // Key UI Images & Icons
   'images/moon.png',
   'images/tinglemyboy.png',
-  'images/Tatl.png', // FIX: Added Tatl to cache
-  'images/Tael.png', // FIX: Added Tael to cache
+  'images/Tatl.png',
+  'images/Tael.png',
+  'images/linkOcarina.webp',
   // Nav Icons
   'images/songs_icon.png',
   'images/items_icon.png',
@@ -31,14 +34,8 @@ const urlsToCache = [
   'images/heart_container_icon.png',
   'images/map_icon.png',
   'images/maps/InteractMap/fulltermina.png',
-  // Item Images (add more as needed for full offline support)
-  'images/items/inventory/Ocarina_of_Time_3D.png',
-  'images/items/inventory/Heros_Bow_3D.png',
-  'images/items/equipment/Heros_Shield_3D.png',
-  'images/items/masks/Deku_Mask_3D.png',
-  'images/items/masks/Goron_Mask_3D.png',
-  'images/items/masks/Zora_Mask_3D.png',
-  'images/items/bottled/Empty_Bottle_3D.png'
+  'images/SS_Heart_Model.png',
+  'images/heart_piece_sprites.png'
 ];
 
 // Event listener for the 'install' event

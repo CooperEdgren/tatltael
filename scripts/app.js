@@ -6,6 +6,7 @@ import * as mapsView from './maps-view.js';
 import * as notebookView from './notebook-view.js';
 import * as itemsView from './items-view.js';
 import * as fairiesView from './fairies-view.js';
+import * as heartsView from './hearts-view.js';
 
 /**
  * Main application initialization function.
@@ -17,6 +18,7 @@ function main() {
     notebookView.populateBombersNotebook();
     itemsView.populateItemsView();
     fairiesView.populateFairiesView();
+    heartsView.populateHeartsView();
     audio.initializeAudio();
     ui.initializeSettings();
 

@@ -100,6 +100,16 @@ export const itemDetailDescription = document.getElementById('item-detail-descri
 export const itemDetailAcquisition = document.getElementById('item-detail-acquisition');
 export const itemDetailBackButton = document.getElementById('item-detail-back-button');
 
+// --- Heart Piece Tracker Elements ---
+export const versionToggle3dsHearts = document.getElementById('version-toggle-3ds-hearts');
+export const versionToggleN64Hearts = document.getElementById('version-toggle-n64-hearts');
+export const heartContainerCounter = document.getElementById('heart-container-counter');
+export const heartPieceCounter = document.getElementById('heart-piece-counter');
+export const heartPieceGraphic = document.getElementById('heart-piece-graphic');
+export const heartChecklistContainer = document.getElementById('heart-checklist-container');
+export let linkHeartsContainer = document.getElementById('link-hearts-container');
+
+
 
 // --- Audio Elements ---
 export const backgroundAudio = document.getElementById('background-audio');

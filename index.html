@@ -38,7 +38,7 @@
         <div id="stars1"></div>
         <div id="stars2"></div>
         <div id="stars3"></div>
-        <img src="images/moon.png" alt="The Moon" id="moon-image" onerror="this.onerror=null;this.src='https://placehold.co/150x150/090a0f/ffffff?text=Moon'">
+        <img src="images/moon.png" alt="The Moon" id="moon-image">
         
         <!-- Animated Clock Town Layers -->
         <div id="animated-background">
@@ -78,29 +78,29 @@
                         <div class="flex items-center justify-between w-full">
                              <div class="nav-wing flex items-center" id="nav-wing-left">
                                 <button class="nav-item" data-content="songs">
-                                    <img src="images/songs_icon.png" alt="Songs" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Songs'">
+                                    <img src="images/songs_icon.png" alt="Songs">
                                     <span>Songs</span>
                                 </button>
                                 <button class="nav-item" data-content="items">
-                                    <img src="images/items_icon.png" alt="Items" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Items'">
+                                    <img src="images/items_icon.png" alt="Items">
                                     <span>Items</span>
                                 </button>
                                 <button class="nav-item" data-content="heart-containers">
-                                    <img src="images/heart_container_icon.png" alt="Heart Containers" onerror="this.onerror=null;this.src='https://placehold.co/80x80/ef4444/fee2e2?text=Hearts'">
+                                    <img src="images/heart_container_icon.png" alt="Heart Containers">
                                     <span>Hearts</span>
                                 </button>
                             </div>
                              <div class="nav-wing flex items-center" id="nav-wing-right">
                                 <button class="nav-item" data-content="notebook">
-                                    <img src="images/bombers-notebook.png" alt="Bomber's Notebook" onerror="this.onerror=null;this.src='https://placehold.co/80x80/a16207/fdecc8?text=Notebook'">
+                                    <img src="images/bombers-notebook.png" alt="Bomber's Notebook">
                                     <span>Notebook</span>
                                 </button>
                                 <button class="nav-item" data-content="fairies">
-                                    <img src="images/stray_fairy_icon.webp" alt="Fairies" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Fairies'">
+                                    <img src="images/stray_fairy_icon.webp" alt="Fairies">
                                     <span>Fairies</span>
                                 </button>
                                 <button class="nav-item" data-content="termina">
-                                    <img src="images/map_icon.png" alt="Termina" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=Termina'">
+                                    <img src="images/map_icon.png" alt="Termina">
                                     <span>Termina</span>
                                 </button>
                             </div>
@@ -137,8 +137,8 @@
             </header>
             
             <div id="fairy-container" class="pointer-events-none">
-                <img src="images/Tatl.png" class="fairy" id="tatl-fairy" alt="Tatl" onerror="this.onerror=null;this.src='https://placehold.co/30x30/fef08a/000000?text=T'">
-                <img src="images/Tael.png" class="fairy" id="tael-fairy" alt="Tael" onerror="this.onerror=null;this.src='https://placehold.co/30x30/c084fc/000000?text=T'">
+                <img src="images/Tatl.png" class="fairy" id="tatl-fairy" alt="Tatl">
+                <img src="images/Tael.png" class="fairy" id="tael-fairy" alt="Tael">
             </div>
 
             <!-- Content Area for Nav Items -->
@@ -218,7 +218,26 @@
                         </main>
                     </div>
                 </div>
-                <div id="heart-containers-content" class="main-content hidden text-center text-2xl font-zelda text-purple-200">Heart Containers Content Here</div>
+                <div id="heart-containers-content" class="main-content hidden">
+                    <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
+                        <header class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b border-pink-400/30 pb-3 flex-shrink-0">
+                            <h2 class="text-3xl md:text-4xl font-zelda text-pink-200 title-glow-pink">Heart Pieces</h2>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2">
+                                    <button id="version-toggle-3ds-hearts" class="btn-back text-sm">3DS</button>
+                                    <button id="version-toggle-n64-hearts" class="btn-back text-sm active">N64</button>
+                                </div>
+                                <div class="flex items-center gap-2 text-lg font-bold text-pink-200">
+                                    <img src="images/heart_container_icon.png" class="w-8 h-8">
+                                    <span id="heart-container-counter">0</span>
+                                    <div id="heart-piece-graphic" class="heart-piece-graphic pieces-0"></div>
+                                    <span id="heart-piece-counter">0/0</span>
+                                </div>
+                            </div>
+                        </header>
+                        <main id="heart-checklist-container" class="flex-grow overflow-y-auto p-2"></main>
+                    </div>
+                </div>
             </div>
 
             <button id="toggle-ui-button" class="btn-toggle-ui">
@@ -252,7 +271,7 @@
                 <header class="flex justify-between items-center mb-6 border-b border-purple-400/30 pb-4 flex-shrink-0">
                     <div class="flex items-center gap-4">
                         <h2 id="song-title" class="text-4xl md:text-5xl font-zelda text-yellow-200 title-glow"></h2>
-                        <img id="instrument-image" src="linkOcarina.webp" alt="Instrument" class="h-16 object-contain">
+                        <img id="instrument-image" src="images/linkOcarina.webp" alt="Instrument" class="h-16 object-contain">
                     </div>
                     <button id="back-button" class="btn-back">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
