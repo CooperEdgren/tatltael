@@ -109,19 +109,20 @@ export const maps = [
     { name: "Pirates' Fortress", src: "maps/Pirate-Fortress.png" },
     { name: "Pirates' Fortress 2", src: "maps/Pirate-Fortress-2.png" },
     { name: "Romani Ranch", src: "maps/Romani-Ranch.png" },
-    { name: "Sakon's Hideout", src: "maps/Sakon's_Hideout.jpg" },
-    { name: "Snowhead", src: "maps/Snowhead.jpg" },
-    { name: "Snowhead Temple", src: "maps/Snowhead_Temple.jpg" },
-    { name: "Southern Swamp", src: "maps/Southern_Swamp.jpg" },
-    { name: "Stock Pot Inn", src: "maps/Stock_Pot_Inn.jpg" },
-    { name: "Stone Tower", src: "maps/Stone_Tower.jpg" },
-    { name: "Stone Tower Temple", src: "maps/Stone_Tower_Temple.jpg" },
-    { name: "Swamp Spider House", src: "maps/Swamp_Spider_House.jpg" },
-    { name: "Termina Field", src: "maps/Termina_Field.jpg" },
-    { name: "The Moon", src: "maps/The_Moon.jpg" },
-    { name: "Woodfall", src: "maps/Woodfall.jpg" },
-    { name: "Woodfall Temple", src: "maps/Woodfall_Temple.jpg" },
-    { name: "Zora Hall", src: "maps/Zora_Hall.jpg" }
+    { name: "Snowhead Temple", src: "maps/Snowhead-Temple.png" },
+    { name: "Snowhead Temple Fairy Finder", src: "maps/Snowhead-Temple-Fairy-Finder.png"},
+    { name: "Southern Swamp", src: "maps/Southern-Swamp-Map.png" },
+    { name: "Stone Tower", src: "maps/Stone-Tower.png" },
+    { name: "Stone Tower Temple", src: "maps/Stone-Tower-Temple.png" },
+    { name: "Stone Tower Temple Fairy Finder", src: "maps/Stone-Tower-Temple-Fairy-Finder.png"},
+    { name: "Swamp Spider House", src: "maps/Swamp-Spider-House.png" },
+    { name: "Termina Field", src: "maps/Termina-Field.png" },
+    { name: "Woodfall", src: "maps/Woodfall.png" },
+    { name: "Woodfall Temple Exit", src: "maps/Wood-Fall-Temple-Exit.png" },
+    { name: "Woodfall Temple Fairy Finder", src: "maps/WoodFall-Temple-Floors-1-2-2.png"},
+    { name: "Woodfall Temple Floors 1 & 2", src: "maps/WoodFall-Temple-Floors-1-2.png"},
+    { name: "Woods of Mystery", src: "maps/Woods-of-Mystery-Map.png"},
+    { name: "Zora Hall", src: "maps/Zora-Hall.png" }
 ];
 
 // --- BOMBER'S NOTEBOOK DATA ---
