@@ -1,3 +1,21 @@
+/* --- Font Definitions --- */
+@font-face {
+    font-family: 'HyliaSerifBeta';
+    src: url('../fonts/HyliaSerifBeta-Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'ReggaeOne';
+    src: url('../fonts/ReggaeOne-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'RocknRollOne';
+    src: url('../fonts/RocknRollOne-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'TPHylian';
+    src: url('../fonts/TPHylian-GCNRegular.otf') format('opentype');
+}
+
 /* --- Base and Thematic Styling --- */
 html, body {
     margin: 0;
@@ -5,10 +23,15 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden; /* Prevent scrolling on the body */
-    font-family: 'Inter', sans-serif;
+    font-family: 'RocknRollOne', sans-serif; /* Set default to RocknRollOne */
     background-color: #03000a;
     color: white;
 }
+
+.font-hylia { font-family: 'HyliaSerifBeta', serif; }
+.font-reggae { font-family: 'ReggaeOne', sans-serif; }
+.font-rocknroll { font-family: 'RocknRollOne', sans-serif; }
+.font-tphylian { font-family: 'TPHylian', sans-serif; }
 
 .font-zelda {
     font-family: 'Almendra', serif;
@@ -77,7 +100,11 @@ html, body {
 @keyframes float { 0% { transform: translate(0, 0px); } 50% { transform: translate(5px, 15px); } 100% { transform: translate(0, 0px); } }
 
 /* --- Title and Header Styling --- */
-.title-glow { text-shadow: 0 0 8px rgba(253, 224, 71, 0.5), 0 0 20px rgba(233, 139, 255, 0.4); animation: pulse-glow 3s infinite ease-in-out; }
+.title-glow { 
+    font-family: 'HyliaSerifBeta', serif;
+    text-shadow: 0 0 8px rgba(253, 224, 71, 0.5), 0 0 20px rgba(233, 139, 255, 0.4); 
+    animation: pulse-glow 3s infinite ease-in-out; 
+}
 @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 8px rgba(253, 224, 71, 0.5), 0 0 20px rgba(233, 139, 255, 0.4); } 50% { text-shadow: 0 0 16px rgba(253, 224, 71, 0.8), 0 0 40px rgba(233, 139, 255, 0.6); } }
 
 #main-nav-container {
@@ -88,14 +115,16 @@ html, body {
     transform: translateY(60px);
 }
 
-/* ENHANCEMENT: Larger Title Button */
 #main-title-button {
     background: transparent; border: 2px solid transparent; color: #e9d5ff;
     padding: 0.75rem 2.5rem;
-    font-size: 2.5rem; /* Was 2rem */
+    font-size: 2.5rem;
     line-height: 1.2; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border-radius: 9999px; cursor: pointer; position: relative; z-index: 10; 
 }
+#main-title-button .tatl { font-family: 'HyliaSerifBeta', serif; }
+#main-title-button .tael { font-family: 'ReggaeOne', sans-serif; }
+
 #main-title-button.nav-active {
     background: rgba(10, 5, 20, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     border-color: rgba(167, 139, 250, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.05);
@@ -315,12 +344,17 @@ html, body {
 /* --- Song & Map Button Styles --- */
 .btn-song, .map-item {
     background: rgba(10, 5, 20, 0.6); 
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); /* ENHANCEMENT: Added blur */
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
     border: 2px solid rgba(167, 139, 250, 0.3); border-radius: 16px; color: #e9d5ff;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.05);
 }
-.btn-song { text-shadow: 1px 1px 3px #000; opacity: 0; transform: translateY(20px); }
+.btn-song { 
+    text-shadow: 1px 1px 3px #000; 
+    opacity: 0; 
+    transform: translateY(20px);
+    font-family: 'HyliaSerifBeta', serif;
+}
 .btn-song:hover, .map-item:hover {
     transform: translateY(-8px) scale(1.03); box-shadow: 0 15px 30px rgba(124, 58, 237, 0.4);
     background: rgba(20, 10, 40, 0.8); color: #fff; border-color: rgba(216, 180, 254, 0.6);
@@ -329,9 +363,8 @@ html, body {
 @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 .map-item { padding: 1rem; text-align: center; cursor: pointer; }
 .map-item img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; margin-bottom: 0.75rem; background-color: rgba(0,0,0,0.3); }
-.map-item h3 { font-family: 'Almendra', serif; font-size: 1.25rem; color: #e9d5ff; }
+.map-item h3 { font-family: 'HyliaSerifBeta', serif; font-size: 1.25rem; color: #e9d5ff; }
 
-/* FIX: Restored Instrument Image Hover Glow */
 #instrument-image { 
     cursor: pointer; 
     transition: transform 0.3s ease, filter 0.3s ease; 
@@ -343,11 +376,16 @@ html, body {
 }
 
 /* --- Item View Styles --- */
+#item-category-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+}
 .item-category-tab {
     padding: 0.5rem 1rem;
     border-radius: 9999px;
     background-color: transparent;
     color: #e9d5ff;
+    font-family: 'ReggaeOne', sans-serif;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -360,6 +398,11 @@ html, body {
     background-color: #a78bfa;
     color: #1e1b4b;
     font-weight: bold;
+}
+
+#item-grid-container {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .item-card {
@@ -387,10 +430,20 @@ html, body {
     margin-bottom: 0.75rem;
 }
 .item-card h3 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'RocknRollOne', sans-serif;
     font-size: 0.875rem;
     font-weight: 500;
     color: #e9d5ff;
+}
+
+#item-detail-title {
+    font-family: 'HyliaSerifBeta', serif;
+}
+#item-detail-title .hylian-name {
+    font-family: 'TPHylian', sans-serif;
+    font-size: 0.7em;
+    opacity: 0.8;
+    display: block;
 }
 
 /* Item Detail Modal Styles */
@@ -475,6 +528,7 @@ html, body {
 
 /* --- Heart Piece Tracker Styles --- */
 .title-glow-pink {
+    font-family: 'HyliaSerifBeta', serif;
     text-shadow: 0 0 8px rgba(251, 146, 181, 0.5), 0 0 20px rgba(233, 139, 255, 0.4);
     animation: pulse-glow-pink 3s infinite ease-in-out;
 }
@@ -550,14 +604,13 @@ html, body {
     color: #fbcfe8;
 }
 
-/* FIX: Polished heart display styles */
 .link-hearts-container {
     display: flex;
-    flex-direction: column; /* Stack rows vertically */
-    align-items: center;     /* Center the rows horizontally */
+    flex-direction: column;
+    align-items: center;
     gap: 4px;
     padding: 1rem;
-    margin-bottom: 1rem; /* Add some space below the hearts */
+    margin-bottom: 1rem;
 }
 
 .link-heart {
@@ -582,7 +635,7 @@ html, body {
 }
 
 .heart-section-title {
-    font-family: 'Almendra', serif;
+    font-family: 'HyliaSerifBeta', serif;
     font-size: 1.5rem;
     color: #f9a8d4;
     padding: 0.5rem 1rem;
@@ -600,6 +653,7 @@ html, body {
     border-radius: 8px;
     background-color: rgba(0,0,0,0.2);
     color: #e9d5ff;
+    font-family: 'ReggaeOne', sans-serif;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -652,7 +706,6 @@ html, body {
 .platform-logo { height: 40px; margin-bottom: 0.75rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
 /* --- Hidden Controls Styling --- */
-/* This now only hides the header, not the fairy container */
 .controls-hidden #main-header,
 .controls-hidden #main-content-area,
 .controls-hidden .corner-icons-container {
@@ -714,7 +767,7 @@ html, body {
     background-color: #a16207;
     color: #fdecc8;
     border: none;
-    font-family: 'Almendra', serif;
+    font-family: 'ReggaeOne', sans-serif;
     font-size: 1.25rem;
     font-weight: bold;
     cursor: pointer;
@@ -732,7 +785,7 @@ html, body {
 }
 
 .quest-category-title {
-    font-family: 'Almendra', serif;
+    font-family: 'ReggaeOne', sans-serif;
     font-size: 1.5rem;
     color: #854d0e;
     padding: 0.5rem 1rem;
@@ -842,6 +895,16 @@ html, body {
 /* --- Video Player Styling --- */
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; }
 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+#song-title {
+    font-family: 'HyliaSerifBeta', serif;
+}
+#song-title .hylian-name {
+    font-family: 'TPHylian', sans-serif;
+    font-size: 0.7em;
+    opacity: 0.8;
+    display: block;
+}
 
 
 /* --- Mobile & Responsive Adjustments --- */

@@ -76,7 +76,7 @@ const showSongDetails = (songKey) => {
     if (!song || !lastClickedButtonRect) return;
 
     fadeAudio(0);
-    dom.songTitleEl.textContent = song.name;
+    dom.songTitleEl.innerHTML = `${song.name}<span class="hylian-name">${song.hylian_name || ''}</span>`;
 
     const getYouTubeID = (url) => { try { return new URL(url).searchParams.get('v'); } catch (e) { console.error('Invalid YouTube URL:', url); return null; } };
     const videoId = getYouTubeID(song.url);
