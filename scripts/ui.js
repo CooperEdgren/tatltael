@@ -31,14 +31,25 @@ export function getNavState() {
 export function toggleMainNav() {
     triggerHapticFeedback(30);
     isNavOpen = !isNavOpen;
+    
+    // Always disable the button when a toggle action starts.
+    dom.settingsButton.disabled = true;
 
     if (isNavOpen) {
         playNavOpenSound();
+        // If opening, re-enable the button only after the animation completes.
+        setTimeout(() => {
+            // Final check to ensure the nav wasn't closed again during the animation.
+            if (isNavOpen) {
+                dom.settingsButton.disabled = false;
+            }
+        }, 600); // Animation duration (400ms) + delay (200ms)
     } else {
         playNavCloseSound();
         if (isSettingsMenuOpen) {
             toggleSettingsMenu(); // Close settings if nav is closing
         }
+        // If closing, the button remains disabled.
     }
 
     dom.mainTitleButton.classList.toggle('nav-active', isNavOpen);
@@ -109,6 +120,15 @@ export function initializeSettings() {
         // Update active state
         dom.appIconOptions.querySelectorAll('.app-icon-option').forEach(opt => opt.classList.remove('active'));
         button.classList.add('active');
+    });
+
+    dom.clearDataButton.addEventListener('click', () => {
+        triggerHapticFeedback();
+        if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
+            localStorage.clear();
+            alert('Application data has been cleared. The page will now reload.');
+            location.reload();
+        }
     });
 
     // Set initial state

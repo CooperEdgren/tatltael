@@ -87,6 +87,7 @@ export const muteToggle = document.getElementById('mute-toggle');
 export const iconVolumeOn = document.getElementById('icon-volume-on');
 export const iconVolumeOff = document.getElementById('icon-volume-off');
 export const appIconOptions = document.getElementById('app-icon-options');
+export const clearDataButton = document.getElementById('clear-data-button');
 
 // --- Item Detail Modal ---
 export const itemDetailModal = document.getElementById('item-detail-modal');

@@ -125,50 +125,6 @@ export const maps = [
     { name: "Zora Hall", src: "maps/Zora-Hall.png" }
 ];
 
-// --- BOMBER'S NOTEBOOK DATA ---
-export const bombersNotebookData = [
-    {
-        id: 'anju', name: 'Anju', description: 'The anxious innkeeper of the Stock Pot Inn.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Anju',
-        events: [
-            { id: 'anju1', day: 1, time: '14:10', description: "The Postman delivers a letter from Kafei to Anju.", icon: 'event' },
-            { id: 'anju2', day: 1, time: '16:30', description: "Speak to Anju wearing the Kafei Mask to schedule a meeting in the kitchen at night.", icon: 'event' },
-            { id: 'anju3', day: 1, time: '23:30', description: "Meet Anju in the inn's kitchen. She gives you the Letter to Kafei.", icon: 'reward' },
-            { id: 'anju4', day: 2, time: '16:00', description: "Anju worries in her room. If you didn't meet her, she goes to Romani Ranch.", icon: 'event' },
-            { id: 'anju5', day: 3, time: '13:00', description: "Anju waits in her room for Kafei's return. Give her the Pendant of Memories to receive the Couple's Mask.", icon: 'reward' }
-        ]
-    },
-    {
-        id: 'kafei', name: 'Kafei', description: 'A resident of Clock Town who has mysteriously vanished.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Kafei',
-        events: [
-            { id: 'kafei1', day: 1, time: '15:15', description: "Mail the Letter to Kafei in a postbox.", icon: 'event' },
-            { id: 'kafei2', day: 2, time: '13:45', description: "The Postman delivers the letter to Kafei's hideout behind the Curiosity Shop.", icon: 'event' },
-            { id: 'kafei3', day: 2, time: '16:10', description: "Meet Kafei in his hideout. He gives you the Pendant of Memories.", icon: 'reward' },
-            { id: 'kafei4', day: 3, time: '13:00', description: "Confront Sakon in Ikana Canyon to retrieve the Sun's Mask. Kafei gives you the Keaton Mask and a letter for his mother.", icon: 'reward' },
-             { id: 'kafei5', day: 3, time: '16:30', description: "Kafei returns to the Stock Pot Inn to reunite with Anju.", icon: 'event' }
-        ]
-    },
-    {
-        id: 'romani', name: 'Romani', description: 'A young girl who runs Romani Ranch with her sister.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Romani',
-        events: [
-            { id: 'romani1', day: 1, time: '06:00', description: "Talk to Romani and agree to help her defend the barn from 'Them'.", icon: 'event' },
-            { id: 'romani2', day: 1, time: '02:30', description: "Defend the barn from the alien invaders until 5:15 AM.", icon: 'reward' },
-            { id: 'romani3', day: 2, time: '18:00', description: "If you succeeded, escort Cremia's milk delivery to Clock Town, defending it from the Gorman Brothers.", icon: 'reward' }
-        ]
-    },
-    {
-        id: 'gorman', name: 'Gorman Bros.', description: 'A shady pair of brothers who dislike Cremia.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Gorman',
-        events: [
-            { id: 'gorman1', day: 2, time: '18:00', description: "They will attempt to raid Cremia's milk cart on the way to Clock Town.", icon: 'event' }
-        ]
-    },
-     {
-        id: 'granny', name: 'Anju\'s Granny', description: 'An old woman at the Stock Pot Inn with stories to tell.', img: 'https://placehold.co/80x80/a78bfa/1e1b4b?text=Granny',
-        events: [
-            { id: 'granny1', day: 1, time: '08:00', description: "Listen to her 2-hour story 'Carnival of Time' with the All-Night Mask to get a Piece of Heart.", icon: 'reward' },
-            { id: 'granny2', day: 2, time: '08:00', description: "Listen to her 6-hour story 'The Four Giants' with the All-Night Mask to get another Piece of Heart.", icon: 'reward' },
-        ]
-    },
-];
 
 // --- INSTRUMENT & EVENT ICONS ---
 export const instrumentImages = [
