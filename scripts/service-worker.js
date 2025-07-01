@@ -1,6 +1,6 @@
 // A unique name for the cache, incremented to force an update.
 // Incrementing this version (e.g., to v3) forces the service worker to update and re-cache all files.
-const CACHE_NAME = 'tatltael-cache-v6';
+const CACHE_NAME = 'tatltael-cache-v7';
 
 // The list of all files to be cached for offline access.
 const urlsToCache = [
