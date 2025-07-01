@@ -69,7 +69,7 @@ export const noteMappings = {
         'CL': { icon: 'buttons/XBOX/Y.svg', class: 'xbox-y' },
         'CR': { icon: 'buttons/XBOX/B.svg', class: 'xbox-b' },
         'A': { icon: 'buttons/XBOX/A.svg', class: 'xbox-a' },
-        'B': { icon: 'buttons/XBOX/Y.svg', class: 'xbox-x' },
+        'B': { icon: 'buttons/XBOX/X.svg', class: 'xbox-x' },
     }
 };
 

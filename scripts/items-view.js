@@ -47,6 +47,28 @@ export function showItemDetailView(item) {
     dom.itemDetailImage.src = item.image;
     dom.itemDetailDescription.textContent = item.description;
     dom.itemDetailAcquisition.textContent = item.acquisition;
+
+    const actionsContainer = document.getElementById('item-actions');
+    if (!actionsContainer) {
+        const newActionsContainer = document.createElement('div');
+        newActionsContainer.id = 'item-actions';
+        newActionsContainer.className = 'mt-6';
+        dom.itemDetailView.querySelector('main').appendChild(newActionsContainer);
+    }
+    
+    const container = actionsContainer || document.getElementById('item-actions');
+    container.innerHTML = '';
+
+    if (item.name === 'Ocarina of Time') {
+        const useButton = document.createElement('button');
+        useButton.className = 'btn-back';
+        useButton.textContent = 'Use';
+        useButton.addEventListener('click', () => {
+            window.location.href = 'ocarina.html';
+        });
+        container.appendChild(useButton);
+    }
+
     ui.switchView(dom.itemDetailView);
 }
 

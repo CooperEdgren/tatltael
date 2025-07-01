@@ -1,0 +1,101 @@
+body {
+    background-color: #03000a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'RocknRollOne', sans-serif;
+}
+
+#ocarina-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+#note-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 240px; /* 3 * 80px */
+    height: 240px; /* 3 * 80px */
+    gap: 0;
+}
+
+.note-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 4px;
+    padding: 12px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -3px 3px rgba(0,0,0,0.4);
+    font-size: 1.4rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.note-button:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2), inset 0 -3px 3px rgba(0,0,0,0.4);
+}
+
+.note-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: scale(1.5);
+}
+
+/* Note Button Color Schemes */
+.n64-c { background-color: #facc15; }
+.n64-a { background-color: #3b82f6; }
+.n64-b { background-color: #4ade80; }
+.gc-a { background-color: #22c55e; }
+.gc-b { background-color: #ef4444; }
+.gc-c { background-color: #facc15; }
+.n3ds-y { background-color: #facc15; }
+.n3ds-x { background-color: #3b82f6; }
+.n3ds-a { background-color: #ef4444; }
+.n3ds-b { background-color: #fbbf24; }
+.n3ds-l, .n3ds-r { background-color: #a8a29e; }
+.ps-triangle { background-color: #1a2e24; border-color: #4ade80; }
+.ps-circle { background-color: #301c24; border-color: #f43f5e; }
+.ps-x { background-color: #1e293b; border-color: #60a5fa; }
+.ps-square { background-color: #2f1d2e; border-color: #f472b6; }
+.ps-r1, .ps-r3 { background-color: #374151; border-color: #9ca3af; }
+.xbox-a { background-color: #10892a; }
+.xbox-b { background-color: #da2128; }
+.xbox-x { background-color: #0e78c8; }
+.xbox-y { background-color: #feca0b; }
+.xbox-rb, .xbox-rs { background-color: #6b7280; }
+
+
+#controls {
+    display: flex;
+    gap: 1rem;
+}
+
+#platform-switch, #home-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    border: 2px solid #a78bfa;
+    background-color: transparent;
+    color: #a78bfa;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#platform-switch:hover, #home-button:hover {
+    background-color: #a78bfa;
+    color: #1e1b4b;
+}
