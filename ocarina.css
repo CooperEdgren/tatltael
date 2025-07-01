@@ -6,6 +6,39 @@ body {
     height: 100vh;
     margin: 0;
     font-family: 'RocknRollOne', sans-serif;
+    overflow: hidden;
+}
+
+#song-title {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(10, 5, 20, 0.8);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+}
+
+#song-title.is-visible {
+    opacity: 1;
+}
+
+.song-name-main {
+    font-family: 'HyliaSerifBeta', serif;
+    font-size: 2rem;
+    display: block;
+}
+
+.song-name-hylian {
+    font-family: 'TPHylian', sans-serif;
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
 #ocarina-container {
@@ -83,7 +116,7 @@ body {
     gap: 1rem;
 }
 
-#platform-switch, #home-button {
+#platform-switch, #home-button, #song-book-button {
     padding: 0.75rem 1.5rem;
     border-radius: 50px;
     border: 2px solid #a78bfa;
@@ -95,7 +128,7 @@ body {
     transition: all 0.3s ease;
 }
 
-#platform-switch:hover, #home-button:hover {
+#platform-switch:hover, #home-button:hover, #song-book-button:hover {
     background-color: #a78bfa;
     color: #1e1b4b;
 }
@@ -155,4 +188,51 @@ body {
 }
 .settings-section:last-child {
     margin-bottom: 0;
+}
+
+#song-book-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+#song-book-container {
+    position: absolute;
+    top: 6rem;
+    left: 1rem;
+    width: 300px;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    background-color: rgba(10, 5, 20, 0.8);
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+}
+
+#song-book-container.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.song-book-entry {
+    margin-bottom: 1rem;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.song-book-title {
+    margin-bottom: 0.5rem;
+}
+
+.note-icon-small {
+    width: 32px;
+    height: 32px;
+    margin-right: 0.25rem;
 }
