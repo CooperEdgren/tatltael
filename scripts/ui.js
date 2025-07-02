@@ -11,10 +11,30 @@ let exploreInterval = null;
  * Triggers haptic feedback on supported devices.
  * @param {number} [duration=50] - The vibration duration in milliseconds.
  */
-export function triggerHapticFeedback(duration = 50) {
+export function triggerHapticFeedback(duration = 1) {
+    // Check for navigator support and if the context is secure
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate(duration);
+        // Use a try-catch block to handle potential errors
+        try {
+            // A short, crisp vibration for subtle feedback
+            navigator.vibrate(duration);
+        } catch (error) {
+            console.warn("Haptic feedback failed:", error);
+        }
     }
+}
+
+/**
+ * Adds a temporary class to an element for visual tap feedback.
+ * @param {HTMLElement} element - The element to apply feedback to.
+ */
+export function addTapFeedback(element) {
+    if (!element) return;
+    element.classList.add('tapped');
+    // Remove the class after the animation completes
+    setTimeout(() => {
+        element.classList.remove('tapped');
+    }, 150); // Duration should match the CSS animation
 }
 
 /**

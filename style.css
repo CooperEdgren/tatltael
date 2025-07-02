@@ -1135,3 +1135,23 @@ html, body {
     .item-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 0.5rem;}
     .item-card { padding: 0.25rem; border-radius: 8px; }
 }
+
+/* --- Polish & Native Feel --- */
+.tapped {
+    transform: scale(0.96);
+    opacity: 0.8;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+html, body {
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.scrollable-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}

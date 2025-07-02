@@ -28,6 +28,7 @@ function main() {
     // Main Nav listeners
     dom.mainTitleButton.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         e.stopPropagation(); // Prevent the body click listener from firing immediately
         ui.toggleMainNav();
     });
@@ -35,6 +36,7 @@ function main() {
     dom.getNavItems().forEach(item => {
         item.addEventListener('click', (e) => {
             ui.triggerHapticFeedback();
+            ui.addTapFeedback(e.currentTarget);
             e.stopPropagation();
             const content = item.dataset.content;
 
@@ -55,24 +57,28 @@ function main() {
     });
 
     // Song Detail View Listeners
-    dom.backButton.addEventListener('click', () => {
+    dom.backButton.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.showMainScreen();
     });
-    dom.instrumentImage.addEventListener('click', () => {
+    dom.instrumentImage.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.handleInstrumentClick();
     });
 
     // Item Detail View Listeners
-    dom.itemDetailBackButton.addEventListener('click', () => {
+    dom.itemDetailBackButton.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.showMainScreen();
     });
     
     // Controller Modal Listeners
-    dom.controllerModalClose.addEventListener('click', () => {
+    dom.controllerModalClose.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.closeControllerModal();
     });
     dom.controllerModal.addEventListener('click', (e) => {
@@ -83,16 +89,19 @@ function main() {
     });
 
     // Tingle's Maps View Listeners
-    dom.tingleContainer.addEventListener('click', () => {
+    dom.tingleContainer.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         mapsView.showMapsView();
     });
-    dom.mapsBackButton.addEventListener('click', () => {
+    dom.mapsBackButton.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.showMainScreen();
     });
-    dom.mapModalClose.addEventListener('click', () => {
+    dom.mapModalClose.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         mapsView.closeMapModal();
     });
     dom.mapModal.addEventListener('click', (e) => {
@@ -103,18 +112,23 @@ function main() {
     });
 
     // Termina Map View Listener
-    dom.terminaMapBackButton.addEventListener('click', () => {
+    dom.terminaMapBackButton.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.showMainScreen();
     });
 
-    dom.characterDetailBackButton.addEventListener('click', () => {
+    dom.characterDetailBackButton.addEventListener('click', (e) => {
         ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
         songView.showMainScreen();
     });
     
     // General UI Listeners
-    dom.toggleUiButton.addEventListener('click', ui.toggleControlsVisibility);
+    dom.toggleUiButton.addEventListener('click', (e) => {
+        ui.addTapFeedback(e.currentTarget);
+        ui.toggleControlsVisibility();
+    });
     document.addEventListener('mousemove', ui.resetHideUiTimeout);
     document.addEventListener('keydown', ui.resetHideUiTimeout);
     document.addEventListener('click', ui.resetHideUiTimeout);
