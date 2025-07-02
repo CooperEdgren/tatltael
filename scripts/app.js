@@ -107,6 +107,11 @@ function main() {
         ui.triggerHapticFeedback();
         songView.showMainScreen();
     });
+
+    dom.characterDetailBackButton.addEventListener('click', () => {
+        ui.triggerHapticFeedback();
+        songView.showMainScreen();
+    });
     
     // General UI Listeners
     dom.toggleUiButton.addEventListener('click', ui.toggleControlsVisibility);

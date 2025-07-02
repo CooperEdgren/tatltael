@@ -53,7 +53,13 @@ export const mapModalNext = document.getElementById('map-modal-next');
 // --- Termina Map Elements ---
 export const terminaMapBackButton = document.getElementById('termina-map-back-button');
 
-
+// --- Character Detail View Elements ---
+export const characterDetailView = document.getElementById('character-detail-view');
+export const characterName = document.getElementById('character-name');
+export const characterIcon = document.getElementById('character-icon');
+export const characterDetailBackButton = document.getElementById('character-detail-back-button');
+export const characterDescription = document.getElementById('character-description');
+export const characterFullArt = document.getElementById('character-full-art');
 
 // --- New Bomber's Notebook Elements ---
 export const questListContainer = document.getElementById('quest-list-container');

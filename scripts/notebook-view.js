@@ -1,4 +1,4 @@
-import { notebookData } from './data-notebook.js';
+import { notebookData, characterScheduleData } from './data-notebook.js';
 import * as dom from './dom.js';
 import { items } from './data-items.js'; // Import items data
 import { songs } from './data.js';
@@ -8,7 +8,8 @@ import * as ui from './ui.js';
 
 let questData = {};
 let activeQuestId = null;
-let activeTab = 'scheduled'; // 'scheduled' or 'completed'
+let activeTab = 'scheduled'; // 'scheduled', 'completed', or 'characters'
+let activeCharacter = null;
 
 /**
  * Loads quest progress and Bomber's Code from local storage.
@@ -22,11 +23,23 @@ function loadProgress() {
     }
     // Ensure all quests have a completed property
     for (const category in questData) {
-        questData[category].quests.forEach(quest => {
-            if (quest.completed === undefined) {
-                quest.completed = quest.steps.every(s => s.completed);
+        if (category.quests) {
+            category.quests.forEach(quest => {
+                if (quest.completed === undefined) {
+                    quest.completed = quest.steps.every(s => s.completed);
+                }
+            });
+        }
+        if (category.subCategories) {
+            for (const subCategoryKey in category.subCategories) {
+                const subCategory = category.subCategories[subCategoryKey];
+                subCategory.quests.forEach(quest => {
+                    if (quest.completed === undefined) {
+                        quest.completed = quest.steps.every(s => s.completed);
+                    }
+                });
             }
-        });
+        }
     }
 
     const savedCode = localStorage.getItem('bomberCode');
@@ -53,34 +66,113 @@ function renderQuestList() {
 
     for (const categoryKey in questData) {
         const category = questData[categoryKey];
-        const questsToShow = category.quests.filter(q => 
-            activeTab === 'completed' ? q.completed : !q.completed
-        );
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.className = 'quest-category-title';
+        categoryTitle.textContent = category.title;
+        container.appendChild(categoryTitle);
 
-        if (questsToShow.length > 0) {
-            const categoryTitle = document.createElement('h3');
-            categoryTitle.className = 'quest-category-title';
-            categoryTitle.textContent = category.title;
-            container.appendChild(categoryTitle);
+        if (category.subCategories) {
+            for (const subCategoryKey in category.subCategories) {
+                const subCategory = category.subCategories[subCategoryKey];
+                const subCategoryTitle = document.createElement('h4');
+                subCategoryTitle.className = 'quest-subcategory-title';
+                subCategoryTitle.innerHTML = `<span class="toggle-arrow">▶</span> ${subCategoryKey}`;
+                container.appendChild(subCategoryTitle);
 
-            questsToShow.forEach(quest => {
-                const questItem = document.createElement('div');
-                questItem.className = 'quest-list-item';
-                questItem.innerHTML = `<span class="quest-name">${quest.name}</span>`;
-                questItem.dataset.questId = quest.id;
+                const questList = document.createElement('div');
+                questList.className = 'quest-list-collapsible';
+                renderQuestItems(subCategory.quests, questList);
+                container.appendChild(questList);
 
-                if (quest.id === activeQuestId) questItem.classList.add('active');
-                if (quest.completed) questItem.classList.add('completed');
-
-                questItem.addEventListener('click', () => {
-                    ui.triggerHapticFeedback();
-                    activeQuestId = quest.id;
-                    renderApp();
+                subCategoryTitle.addEventListener('click', () => {
+                    questList.classList.toggle('open');
+                    subCategoryTitle.querySelector('.toggle-arrow').classList.toggle('rotate-90');
                 });
-                container.appendChild(questItem);
-            });
+            }
+        }
+
+        if (category.quests) {
+            renderQuestItems(category.quests, container);
         }
     }
+}
+
+function renderQuestItems(quests, container) {
+    const questsToShow = quests.filter(q => 
+        activeTab === 'completed' ? q.completed : !q.completed
+    );
+
+    questsToShow.forEach(quest => {
+        const questItem = document.createElement('div');
+        questItem.className = 'quest-list-item';
+        questItem.innerHTML = `<span class="quest-name">${quest.name}</span>`;
+        questItem.dataset.questId = quest.id;
+
+        if (quest.id === activeQuestId) questItem.classList.add('active');
+        if (quest.completed) questItem.classList.add('completed');
+
+        questItem.addEventListener('click', () => {
+            ui.triggerHapticFeedback();
+            activeQuestId = quest.id;
+            renderApp();
+        });
+        container.appendChild(questItem);
+    });
+}
+
+function renderCharacterSchedule() {
+    const container = document.getElementById('character-schedule-container');
+    container.innerHTML = '';
+
+    const characterList = document.createElement('div');
+    characterList.className = 'character-icon-list';
+    
+    for (const charName in characterScheduleData) {
+        const charData = characterScheduleData[charName];
+        const charIcon = document.createElement('img');
+        charIcon.src = charData.icon;
+        charIcon.className = 'character-icon';
+        charIcon.dataset.character = charName;
+        if (charName === activeCharacter) {
+            charIcon.classList.add('active');
+        }
+        charIcon.addEventListener('click', () => {
+            activeCharacter = charName;
+            showCharacterDetailView(charName);
+        });
+        characterList.appendChild(charIcon);
+    }
+    container.appendChild(characterList);
+
+    const scheduleGrid = document.createElement('div');
+    scheduleGrid.className = 'schedule-grid';
+    
+    const days = ['Day 1', 'Day 2', 'Final Day'];
+    const dayIcons = ['images/CharIcons/FirstDayIcon.png', 'images/CharIcons/DayTwoIcon.png', 'images/CharIcons/FinalDayIcon.png'];
+
+    days.forEach((day, index) => {
+        const dayColumn = document.createElement('div');
+        dayColumn.className = 'schedule-day-column';
+        
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'schedule-day-header';
+        dayHeader.innerHTML = `<img src="${dayIcons[index]}" alt="${day}">`;
+        dayColumn.appendChild(dayHeader);
+
+        if (activeCharacter) {
+            const charEvents = characterScheduleData[activeCharacter].events[day];
+            if (charEvents) {
+                for (const time in charEvents) {
+                    const eventSlot = document.createElement('div');
+                    eventSlot.className = 'schedule-time-slot';
+                    eventSlot.innerHTML = `<strong>${time}:</strong> ${charEvents[time]}`;
+                    dayColumn.appendChild(eventSlot);
+                }
+            }
+        }
+        scheduleGrid.appendChild(dayColumn);
+    });
+    container.appendChild(scheduleGrid);
 }
 
 /**
@@ -93,7 +185,7 @@ function renderQuestDetail() {
         return;
     }
 
-    const quest = Object.values(questData).flatMap(c => c.quests).find(q => q.id === activeQuestId);
+    const quest = findQuestById(activeQuestId);
     if (!quest) return;
 
     dom.notebookPlaceholderView.classList.add('hidden');
@@ -175,12 +267,52 @@ function renderQuestDetail() {
     });
 }
 
+function showCharacterDetailView(characterName) {
+    const charData = characterScheduleData[characterName];
+    if (!charData) return;
+
+    dom.characterName.innerHTML = `${characterName}<span class="hylian-name">${charData.hylian_name || ''}</span>`;
+    dom.characterIcon.src = charData.icon;
+    dom.characterDescription.textContent = charData.description;
+    dom.characterFullArt.src = charData.full_art;
+
+    ui.switchView(dom.characterDetailView);
+}
+
+function findQuestById(questId) {
+    for (const categoryKey in questData) {
+        const category = questData[categoryKey];
+        if (category.quests) {
+            const foundQuest = category.quests.find(q => q.id === questId);
+            if (foundQuest) return foundQuest;
+        }
+        if (category.subCategories) {
+            for (const subCategoryKey in category.subCategories) {
+                const subCategory = category.subCategories[subCategoryKey];
+                const foundQuest = subCategory.quests.find(q => q.id === questId);
+                if (foundQuest) return foundQuest;
+            }
+        }
+    }
+    return null;
+}
+
 /**
  * Main render function for the notebook.
  */
 function renderApp() {
-    renderQuestList();
-    renderQuestDetail();
+    if (activeTab === 'characters') {
+        dom.questListContainer.classList.add('hidden');
+        document.getElementById('character-schedule-container').classList.remove('hidden');
+        dom.notebookDetailContainer.classList.add('hidden');
+        renderCharacterSchedule();
+    } else {
+        dom.questListContainer.classList.remove('hidden');
+        document.getElementById('character-schedule-container').classList.add('hidden');
+        dom.notebookDetailContainer.classList.remove('hidden');
+        renderQuestList();
+        renderQuestDetail();
+    }
 }
 
 /**
@@ -188,6 +320,7 @@ function renderApp() {
  */
 export function populateBombersNotebook() {
     loadProgress();
+    activeCharacter = Object.keys(characterScheduleData)[0]; // Select the first character by default
     renderApp();
 
     dom.bomberCodeInput.addEventListener('input', saveProgress);
@@ -204,3 +337,4 @@ export function populateBombersNotebook() {
         });
     });
 }
+
