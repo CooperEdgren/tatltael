@@ -1,4 +1,16 @@
-import { fairyData } from './data-fairies.js';
+let fairyData = {};
+
+async function loadFairyData() {
+    try {
+        const response = await fetch('../data/fairies.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        fairyData = await response.json();
+    } catch (error) {
+        console.error("Could not load fairy data:", error);
+    }
+}
 import * as dom from './dom.js';
 import * as ui from './ui.js';
 
@@ -90,7 +102,8 @@ function renderTempleTabs() {
 /**
  * Initializes the Stray Fairy tracker view.
  */
-export function populateFairiesView() {
+export async function populateFairiesView() {
+    await loadFairyData();
     loadProgress();
 
     // Set initial active temple if not already set (e.g., on first load)

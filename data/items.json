@@ -1,4 +1,4 @@
-export const items = {
+{
     "All": [],
     "Masks": [
         {
@@ -648,6 +648,22 @@ export const items = {
             "image": "images/items/Quest/Special_Delivery_to_Mama.png",
             "description": "A special delivery item that can be used to complete the Anju and Kafei side quest.",
             "acquisition": "Obtained from the Postman after completing the Anju and Kafei side quest."
+        },
+        {
+            "id": "piece-of-heart",
+            "name": "Piece of Heart",
+            "hylian_name": "piece of heart",
+            "image": "images/heart_piece_sprites.png",
+            "description": "Collect four of these to assemble a full Heart Container, increasing your maximum health.",
+            "acquisition": "Found all over Termina by completing side quests, winning mini-games, and exploring hidden areas."
+        },
+        {
+            "id": "heart-container",
+            "name": "Heart Container",
+            "hylian_name": "heart container",
+            "image": "images/heart_container_icon.png",
+            "description": "Increases your maximum health by one full heart.",
+            "acquisition": "Obtained by defeating the main bosses of the four temples."
         }
     ],
     "Boss Remains": [
@@ -684,11 +700,4 @@ export const items = {
             "acquisition": "Obtained after defeating Twinmold in the Stone Tower Temple."
         }
     ]
-};
-
-// Populate the "All" category with all items from other categories
-for (const category in items) {
-    if (category !== "All") {
-        items.All.push(...items[category]);
-    }
 }

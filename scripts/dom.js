@@ -70,6 +70,7 @@ export const questTitle = document.getElementById('quest-title');
 export const questRegion = document.getElementById('quest-region');
 export const questStepsList = document.getElementById('quest-steps-list');
 export const questRewardsList = document.getElementById('quest-rewards-list');
+export const questCharactersList = document.getElementById('quest-characters-list');
 export const bomberCodeInput = document.getElementById('bomber-code-input');
 
 // --- Stray Fairy Tracker Elements ---
@@ -118,7 +119,6 @@ export const heartContainerCounter = document.getElementById('heart-container-co
 export const heartPieceCounter = document.getElementById('heart-piece-counter');
 export const heartPiecePreview = document.getElementById('heart-piece-preview');
 export const linkHeartsContainer = document.getElementById('link-hearts-container');
-// FIX: Added the missing export for the heart checklist container
 export const heartChecklistContainer = document.getElementById('heart-checklist-container');
 
 

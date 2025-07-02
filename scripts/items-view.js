@@ -1,4 +1,25 @@
-import { items } from './data-items.js';
+let items = {};
+
+async function loadItemsData() {
+    try {
+        const response = await fetch('../data/items.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        items = await response.json();
+        // Populate the "All" category after fetching
+        if (items.All) {
+            items.All = [];
+            for (const category in items) {
+                if (category !== "All") {
+                    items.All.push(...items[category]);
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Could not load items data:", error);
+    }
+}
 import * as dom from './dom.js';
 import * as ui from './ui.js';
 
@@ -94,7 +115,8 @@ export function showItemDetailView(item, clickedElementRect) {
 /**
  * Populates the Items view, sets up tabs and search functionality.
  */
-export function populateItemsView() {
+export async function populateItemsView() {
+    await loadItemsData();
     const tabsContainer = dom.itemCategoryTabs;
     const searchInput = dom.itemSearchInput;
     if (!tabsContainer || !searchInput) return;

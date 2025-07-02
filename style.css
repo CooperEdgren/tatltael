@@ -29,7 +29,7 @@ html, body {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
-    touch-action: none; /* Disable all touch actions by default */
+    touch-action: manipulation; /* Allow taps to fire immediately, prevent default browser behaviors */
 }
 
 .enable-pinch-zoom {
@@ -533,6 +533,39 @@ html, body {
 .btn-toggle-ui:hover { transform: scale(1.1); border-color: rgba(216, 180, 254, 1); }
 .btn-toggle-ui.fade-out { opacity: 0; pointer-events: none; }
 
+
+.heart-checklist-item .walkthrough-toggle {
+    background: none;
+    border: none;
+    color: #f9a8d4;
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.heart-checklist-item .walkthrough {
+    display: none;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(244, 114, 182, 0.2);
+    margin-top: 0.5rem;
+}
+
+.heart-checklist-item .walkthrough.open {
+    display: block;
+}
+
+.heart-checklist-item .walkthrough p {
+    margin: 0;
+}
+
+.quest-characters-list {
+    margin-top: 1rem;
+}
+
+.quest-characters-list .reward-item {
+    cursor: pointer;
+}
 
 /* --- Heart Piece Tracker Styles --- */
 .title-glow-pink {

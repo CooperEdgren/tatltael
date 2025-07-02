@@ -1,4 +1,4 @@
-export const fairyData = {
+{
     "3DS": {
         "Woodfall Temple": {
             "reward": "Upgraded Magic Meter",

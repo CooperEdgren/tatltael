@@ -1,4 +1,16 @@
-import { heartData } from './data-hearts.js';
+let heartData = {};
+
+async function loadHeartData() {
+    try {
+        const response = await fetch('../data/hearts.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        heartData = await response.json();
+    } catch (error) {
+        console.error("Could not load heart data:", error);
+    }
+}
 import * as dom from './dom.js';
 import * as ui from './ui.js';
 
@@ -76,11 +88,34 @@ function renderHeartPieces() {
                 <span class="location">${piece.location}</span>
                 <p>${piece.description}</p>
             </div>
+            <button class="walkthrough-toggle">▼</button>
         `;
-        item.addEventListener('click', () => toggleItem(piece.id));
+        const walkthrough = document.createElement('div');
+        walkthrough.className = 'walkthrough';
+        walkthrough.innerHTML = `<p>${piece.walkthrough}</p>`;
+        item.appendChild(walkthrough);
+
+        item.querySelector('.checkbox').addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleItem(piece.id);
+        });
+
+        item.querySelector('.walkthrough-toggle').addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleWalkthrough(e.currentTarget);
+        });
+
         container.appendChild(item);
     });
     updateCounters();
+}
+
+function toggleWalkthrough(button) {
+    ui.triggerHapticFeedback();
+    const item = button.closest('.heart-checklist-item');
+    const walkthrough = item.querySelector('.walkthrough');
+    walkthrough.classList.toggle('open');
+    button.textContent = walkthrough.classList.contains('open') ? '▲' : '▼';
 }
 
 function toggleItem(id) {
@@ -181,12 +216,13 @@ function setVersion(version, triggerHaptics = false) {
     renderHeartPieces();
 }
 
-export function populateHeartsView() {
+export async function populateHeartsView() {
     if (!dom.heartContainersContent || !dom.versionToggle3dsHearts || !dom.versionToggleN64Hearts) {
         console.error("Heart view elements not found");
         return;
     }
     
+    await loadHeartData();
     loadState();
 
     dom.versionToggle3dsHearts.addEventListener('click', () => setVersion('3ds', true));

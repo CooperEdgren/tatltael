@@ -1,10 +1,46 @@
-import { notebookData, characterScheduleData } from './data-notebook.js';
 import * as dom from './dom.js';
-import { items } from './data-items.js'; // Import items data
-import { songs } from './data.js';
 import { showItemDetailView } from './items-view.js'; // Import item detail view function
 import { showSongDetails } from './song-view.js';
 import * as ui from './ui.js';
+
+let notebookData = {};
+let characterScheduleData = {};
+let items = {};
+let songs = {};
+
+async function loadNotebookData() {
+    try {
+        const [notebookRes, itemsRes, gameDataRes] = await Promise.all([
+            fetch('../data/notebook.json'),
+            fetch('../data/items.json'),
+            fetch('../data/game-data.json')
+        ]);
+
+        if (!notebookRes.ok) throw new Error(`HTTP error! status: ${notebookRes.status}`);
+        const notebookJson = await notebookRes.json();
+        notebookData = notebookJson.notebookData;
+        characterScheduleData = notebookJson.characterScheduleData;
+
+        if (!itemsRes.ok) throw new Error(`HTTP error! status: ${itemsRes.status}`);
+        items = await itemsRes.json();
+        // Populate the "All" category after fetching
+        if (items.All) {
+            items.All = [];
+            for (const category in items) {
+                if (category !== "All") {
+                    items.All.push(...items[category]);
+                }
+            }
+        }
+
+        if (!gameDataRes.ok) throw new Error(`HTTP error! status: ${gameDataRes.status}`);
+        const gameData = await gameDataRes.json();
+        songs = gameData.songs;
+
+    } catch (error) {
+        console.error("Could not load notebook data:", error);
+    }
+}
 
 let questData = {};
 let activeQuestId = null;
@@ -236,35 +272,80 @@ function renderQuestDetail() {
 
     const rewardsContainer = dom.questRewardsList;
     rewardsContainer.innerHTML = '';
-    quest.rewards.forEach(rewardText => {
-        const rewardEl = document.createElement('div');
-        rewardEl.className = 'reward-item';
-        
-        const item = items.All.find(i => i.name === rewardText);
-        const song = Object.entries(songs).find(([key, value]) => value.name === rewardText);
+    const charactersContainer = dom.questCharactersList;
+    charactersContainer.innerHTML = '';
 
-        let icon = '';
-        if (item) {
-            icon = item.image;
-            rewardEl.addEventListener('click', (e) => {
-                ui.triggerHapticFeedback();
-                showItemDetailView(item, e.currentTarget.getBoundingClientRect());
-            });
-        } else if (song) {
-            const [songKey, songData] = song;
-            icon = 'images/songs_icon.png';
-            rewardEl.addEventListener('click', (e) => {
-                ui.triggerHapticFeedback();
-                showSongDetails(songKey, e.currentTarget.getBoundingClientRect());
-            });
-        } else if (rewardText.toLowerCase().includes('heart')) {
-            icon = 'images/heart_container_icon.png';
+    if (quest.rewards) {
+        quest.rewards.forEach(rewardText => {
+            const rewardEl = document.createElement('div');
+            rewardEl.className = 'reward-item';
+            
+            let item = items.All.find(i => i.id === rewardText);
+            if (!item) {
+                item = items.All.find(i => i.name === rewardText);
+            }
+            const song = Object.entries(songs).find(([key, value]) => value.name === rewardText);
+
+            let icon = '';
+            if (item) {
+                icon = item.image;
+                rewardEl.addEventListener('click', (e) => {
+                    ui.triggerHapticFeedback();
+                    showItemDetailView(item, e.currentTarget.getBoundingClientRect());
+                });
+            } else if (song) {
+                const [songKey, songData] = song;
+                icon = 'images/songs_icon.png';
+                rewardEl.addEventListener('click', (e) => {
+                    ui.triggerHapticFeedback();
+                    showSongDetails(songKey, e.currentTarget.getBoundingClientRect());
+                });
+            } else if (rewardText.toLowerCase().includes('heart')) {
+                icon = 'images/heart_container_icon.png';
+            }
+            
+            rewardEl.innerHTML = icon ? `<img src="${icon}" alt="reward">` : '';
+            rewardEl.innerHTML += `<span>${rewardText}</span>`;
+            rewardsContainer.appendChild(rewardEl);
+        });
+    }
+
+    if (quest.characters) {
+        const charactersTitle = document.createElement('h4');
+        charactersTitle.className = 'font-zelda text-yellow-600 text-xl';
+        charactersTitle.textContent = 'Characters';
+        charactersContainer.appendChild(charactersTitle);
+
+        quest.characters.forEach(characterName => {
+            const charData = characterScheduleData[characterName];
+            if (charData) {
+                const charEl = document.createElement('div');
+                charEl.className = 'reward-item';
+                charEl.innerHTML = `<img src="${charData.icon}" alt="${characterName}"><span>${characterName}</span>`;
+                charEl.addEventListener('click', () => {
+                    ui.triggerHapticFeedback();
+                    showCharacterDetailView(characterName);
+                });
+                charactersContainer.appendChild(charEl);
+            }
+        });
+    }
+    // Append charactersContainer after rewardsContainer if it has content
+    if (rewardsContainer.children.length > 0 && charactersContainer.children.length > 0) {
+        rewardsContainer.after(charactersContainer);
+    } else if (charactersContainer.children.length > 0) {
+        // If rewardsContainer is empty but charactersContainer has content, append it after the rewards title
+        const rewardsTitle = rewardsContainer.previousElementSibling; // Assuming rewards title is the element before rewardsContainer
+        if (rewardsTitle && rewardsTitle.tagName === 'H4') { // Check if it's actually the rewards title
+            rewardsTitle.after(charactersContainer);
+        } else {
+            // Fallback if rewardsTitle is not found or not an H4
+            rewardsContainer.after(charactersContainer);
         }
-        
-        rewardEl.innerHTML = icon ? `<img src="${icon}" alt="reward">` : '';
-        rewardEl.innerHTML += `<span>${rewardText}</span>`;
-        rewardsContainer.appendChild(rewardEl);
-    });
+    } else {
+        // If charactersContainer is empty, ensure it's not displayed
+        charactersContainer.remove();
+    }
 }
 
 function showCharacterDetailView(characterName) {
@@ -318,7 +399,8 @@ function renderApp() {
 /**
  * Initializes the Bomber's Notebook view and its event listeners.
  */
-export function populateBombersNotebook() {
+export async function populateBombersNotebook() {
+    await loadNotebookData();
     loadProgress();
     activeCharacter = Object.keys(characterScheduleData)[0]; // Select the first character by default
     renderApp();
