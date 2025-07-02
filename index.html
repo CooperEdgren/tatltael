@@ -14,8 +14,13 @@
     <meta name="apple-mobile-web-app-title" content="TatlTael">
     
     <!-- App Icons -->
-    <link rel="apple-touch-icon" href="app-icon/icon-1024x1024.png">
-    <link rel="icon" href="app-icon/icon-192x192.png" type="image/png">
+    <link rel="apple-touch-icon" id="apple-touch-icon" href="app-icon/icon-1024x1024.png">
+    <link rel="icon" id="favicon" href="app-icon/icon-192x192.png" type="image/png">
+
+    <!-- Preloaded Icon Options -->
+    <link rel="preload" as="image" href="app-icon/icon-1024x1024.png">
+    <link rel="preload" as="image" href="images/moon.png">
+    <link rel="preload" as="image" href="images/bombers-notebook.png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -134,9 +139,6 @@
                                 <label class="text-sm font-medium text-purple-200">App Icon</label>
                                 <div id="app-icon-options" class="grid grid-cols-3 gap-2 pt-2">
                                     <!-- App icon options will be populated here by JS -->
-                                    <button class="app-icon-option" data-icon="default"><img src="app-icon/icon-192x192.png" alt="Default Icon"></button>
-                                    <button class="app-icon-option" data-icon="moon"><img src="images/moon.png" alt="Moon Icon"></button>
-                                    <button class="app-icon-option" data-icon="notebook"><img src="images/bombers-notebook.png" alt="Notebook Icon"></button>
                                 </div>
                             </div>
                             <div class="settings-section">
@@ -204,8 +206,8 @@
                                         <h3 id="quest-title" class="text-3xl font-zelda text-yellow-200 title-glow"></h3>
                                         <p id="quest-region" class="text-yellow-700 font-medium"></p>
                                     </header>
-                                    <div class="flex-grow overflow-y-auto pr-2">
-                                        <div id="quest-steps-list"></div>
+                                    <div id="quest-steps-container" class="flex-grow overflow-y-auto pr-2">
+                                        <!-- Quest steps will be populated here -->
                                     </div>
                                     <footer class="pt-3 mt-4 border-t-2 border-yellow-700/50">
                                         <h4 class="font-zelda text-yellow-600 text-xl">Rewards</h4>

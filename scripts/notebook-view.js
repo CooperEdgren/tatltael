@@ -1,7 +1,9 @@
 import { notebookData } from './data-notebook.js';
 import * as dom from './dom.js';
 import { items } from './data-items.js'; // Import items data
+import { songs } from './data.js';
 import { showItemDetailView } from './items-view.js'; // Import item detail view function
+import { showSongDetails } from './song-view.js';
 import * as ui from './ui.js';
 
 let questData = {};
@@ -100,21 +102,44 @@ function renderQuestDetail() {
     dom.questTitle.textContent = quest.name;
     dom.questRegion.textContent = quest.region;
 
-    const stepsContainer = dom.questStepsList;
+    const stepsContainer = document.getElementById('quest-steps-container');
     stepsContainer.innerHTML = '';
     quest.steps.forEach((step, index) => {
         const stepEl = document.createElement('div');
         stepEl.className = 'quest-step';
         if (step.completed) stepEl.classList.add('completed');
-        stepEl.innerHTML = `<div class="checkbox"></div><p>${step.description}</p>`;
-        stepEl.addEventListener('click', () => {
-            ui.triggerHapticFeedback();
-            step.completed = !step.completed;
-            quest.completed = quest.steps.every(s => s.completed);
-            saveProgress();
-            renderApp();
-        });
+
+        const header = document.createElement('div');
+        header.className = 'quest-step-header';
+        header.innerHTML = `
+            <div class="checkbox"></div>
+            <div class="quest-step-details">
+                <span class="quest-step-description">${step.description}</span>
+                <span class="quest-step-time">Day ${step.day}, ${step.time}</span>
+            </div>
+            <div class="toggle-arrow">▶</div>
+        `;
+
+        const walkthrough = document.createElement('div');
+        walkthrough.className = 'quest-step-walkthrough';
+        walkthrough.innerHTML = `<p>${step.walkthrough}</p>`;
+
+        stepEl.appendChild(header);
+        stepEl.appendChild(walkthrough);
         stepsContainer.appendChild(stepEl);
+
+        header.addEventListener('click', (e) => {
+            if (e.target.classList.contains('checkbox')) {
+                ui.triggerHapticFeedback();
+                step.completed = !step.completed;
+                quest.completed = quest.steps.every(s => s.completed);
+                saveProgress();
+                renderApp();
+            } else {
+                walkthrough.classList.toggle('open');
+                header.querySelector('.toggle-arrow').classList.toggle('rotate-90');
+            }
+        });
     });
 
     const rewardsContainer = dom.questRewardsList;
@@ -124,18 +149,24 @@ function renderQuestDetail() {
         rewardEl.className = 'reward-item';
         
         const item = items.All.find(i => i.name === rewardText);
+        const song = Object.entries(songs).find(([key, value]) => value.name === rewardText);
 
         let icon = '';
         if (item) {
             icon = item.image;
-            rewardEl.addEventListener('click', () => {
+            rewardEl.addEventListener('click', (e) => {
                 ui.triggerHapticFeedback();
-                showItemDetailView(item);
+                showItemDetailView(item, e.currentTarget.getBoundingClientRect());
+            });
+        } else if (song) {
+            const [songKey, songData] = song;
+            icon = 'images/songs_icon.png';
+            rewardEl.addEventListener('click', (e) => {
+                ui.triggerHapticFeedback();
+                showSongDetails(songKey, e.currentTarget.getBoundingClientRect());
             });
         } else if (rewardText.toLowerCase().includes('heart')) {
             icon = 'images/heart_container_icon.png';
-        } else if (rewardText.toLowerCase().includes('song')) {
-            icon = 'images/songs_icon.png';
         }
         
         rewardEl.innerHTML = icon ? `<img src="${icon}" alt="reward">` : '';

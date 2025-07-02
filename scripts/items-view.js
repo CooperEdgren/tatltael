@@ -34,9 +34,9 @@ function renderItems(category, searchTerm = '') {
             <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e1b4b/a78bfa?text=?'">
             <h3>${item.name}</h3>
         `;
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
             ui.triggerHapticFeedback();
-            showItemDetailView(item);
+            showItemDetailView(item, e.currentTarget.getBoundingClientRect());
         });
         fragment.appendChild(card);
     });
@@ -46,8 +46,9 @@ function renderItems(category, searchTerm = '') {
 /**
  * Shows the detailed view for a specific item.
  * @param {object} item - The item object to display.
+ * @param {DOMRect} clickedElementRect - The bounding rectangle of the element that was clicked.
  */
-export function showItemDetailView(item) {
+export function showItemDetailView(item, clickedElementRect) {
     dom.itemDetailTitle.innerHTML = `${item.name}<span class="hylian-name">${item.hylian_name || ''}</span>`;
     dom.itemDetailImage.src = item.image;
     dom.itemDetailDescription.textContent = item.description;
@@ -75,7 +76,19 @@ export function showItemDetailView(item) {
         container.appendChild(useButton);
     }
 
+    if (clickedElementRect) {
+        const startTransform = ui.getAnimationTransforms(clickedElementRect);
+        dom.itemDetailView.style.transform = startTransform;
+        dom.itemDetailView.style.transformOrigin = 'center';
+    }
+
     ui.switchView(dom.itemDetailView);
+
+    if (clickedElementRect) {
+        requestAnimationFrame(() => {
+            dom.itemDetailView.style.transform = 'translate(0, 0) scale(1)';
+        });
+    }
 }
 
 /**

@@ -750,7 +750,7 @@ html, body {
 }
 
 .notebook-paper-texture {
-    background-image: url('../images/paper-texture.png');
+    background-image: url('../images/CharIcons/paper-texture.png');
     background-size: cover;
     border: 2px solid #c2a578;
 }
@@ -841,30 +841,33 @@ html, body {
 }
 
 .quest-step {
-    padding: 0.75rem 1rem;
     background-color: rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 8px;
     margin-bottom: 0.75rem;
+    color: #374151;
+    overflow: hidden;
+}
+
+.quest-step-header {
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: #374151;
+    transition: background-color 0.2s ease;
 }
 
-.quest-step:hover {
+.quest-step-header:hover {
     background-color: rgba(0, 0, 0, 0.1);
-    border-color: rgba(0,0,0,0.2);
 }
 
 .quest-step.completed {
     background-color: rgba(74, 222, 128, 0.1);
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
-.quest-step .checkbox {
+.quest-step-header .checkbox {
     width: 24px;
     height: 24px;
     border: 2px solid #854d0e;
@@ -877,11 +880,49 @@ html, body {
     justify-content: center;
 }
 
-.quest-step.completed .checkbox::after {
+.quest-step.completed .quest-step-header .checkbox::after {
     content: '✔';
     color: #854d0e;
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+.quest-step-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.quest-step-description {
+    font-weight: bold;
+}
+
+.quest-step-time {
+    font-size: 0.8rem;
+    color: #a16207;
+}
+
+.quest-step-walkthrough {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    padding: 0 1rem;
+    background-color: rgba(0,0,0,0.05);
+}
+
+.quest-step-walkthrough.open {
+    max-height: 500px; /* Adjust as needed */
+    padding: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.quest-step-header .toggle-arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.quest-step-walkthrough.open + .quest-step-header .toggle-arrow {
+    transform: rotate(90deg);
 }
 
 .reward-item {

@@ -74,10 +74,60 @@ function toggleSettingsMenu() {
     dom.settingsMenu.classList.toggle('is-active', isSettingsMenuOpen);
 }
 
+const ICONS = [
+    { name: 'Default', path: 'app-icon/icon-1024x1024.png' },
+    { name: 'Tatl & Tael', path: 'app-icon/icon-t-var-1024x1024.jpg' },
+    { name: 'Moon', path: 'app-icon/icon-var-2-1024x1024.jpg' },
+    { name: 'Skull Kid', path: 'app-icon/app-icon-var-1-1024x1024.jpg' },
+];
+
+/**
+ * Populates the app icon options in the settings menu.
+ */
+function populateIconOptions() {
+    dom.appIconOptions.innerHTML = '';
+    ICONS.forEach(icon => {
+        const button = document.createElement('button');
+        button.className = 'app-icon-option';
+        button.dataset.path = icon.path;
+        button.innerHTML = `<img src="${icon.path}" alt="${icon.name} Icon">`;
+        dom.appIconOptions.appendChild(button);
+    });
+}
+
+/**
+ * Applies the selected app icon.
+ * @param {string} iconPath - The path to the selected icon.
+ */
+function applyIcon(iconPath) {
+    dom.appleTouchIcon.href = iconPath;
+    // Also update the favicon, using a smaller version if available
+    const faviconPath = iconPath.replace('1024x1024', '192x192');
+    dom.favicon.href = faviconPath;
+
+    // Update active state in settings
+    dom.appIconOptions.querySelectorAll('.app-icon-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.path === iconPath);
+    });
+}
+
+/**
+ * Loads and applies the saved app icon from localStorage.
+ */
+export function loadSavedIcon() {
+    const savedIconPath = localStorage.getItem('appIcon');
+    if (savedIconPath) {
+        applyIcon(savedIconPath);
+    }
+}
+
 /**
  * Initializes the settings menu event listeners.
  */
 export function initializeSettings() {
+    populateIconOptions();
+    loadSavedIcon();
+
     dom.settingsButton.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleSettingsMenu();
@@ -112,14 +162,9 @@ export function initializeSettings() {
         if (!button) return;
         
         triggerHapticFeedback();
-        const iconName = button.dataset.icon;
-        // Here you would implement the logic to change the app icon
-        // This might involve updating the manifest.json or link tags
-        console.log(`Selected app icon: ${iconName}`);
-
-        // Update active state
-        dom.appIconOptions.querySelectorAll('.app-icon-option').forEach(opt => opt.classList.remove('active'));
-        button.classList.add('active');
+        const iconPath = button.dataset.path;
+        applyIcon(iconPath);
+        localStorage.setItem('appIcon', iconPath);
     });
 
     dom.clearDataButton.addEventListener('click', () => {
@@ -132,8 +177,8 @@ export function initializeSettings() {
     });
 
     // Set initial state
-    dom.volumeSlider.value = 0.5;
-    dom.appIconOptions.querySelector('[data-icon="default"]').classList.add('active');
+    dom.volumeSlider.value = localStorage.getItem('volume') || 0.5;
+    setVolume(dom.volumeSlider.value);
 }
 
 

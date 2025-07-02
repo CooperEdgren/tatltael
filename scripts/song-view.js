@@ -73,10 +73,13 @@ const generateNotesSection = (platformKey, songNotes) => {
 /**
  * Displays the song detail view for a given song.
  * @param {string} songKey - The key of the song in the data object.
+ * @param {DOMRect} clickedElementRect - The bounding rectangle of the element that was clicked.
  */
-const showSongDetails = (songKey) => {
+export const showSongDetails = (songKey, clickedElementRect) => {
     const song = data.songs[songKey];
-    if (!song || !lastClickedButtonRect) return;
+    if (!song || !clickedElementRect) return;
+
+    lastClickedButtonRect = clickedElementRect; // Store for the return animation
 
     fadeAudio(0);
     dom.songTitleEl.innerHTML = `${song.name}<span class="hylian-name">${song.hylian_name || ''}</span>`;
@@ -117,8 +120,8 @@ export function populateSongGrid() {
         button.textContent = song.name;
         button.addEventListener('click', (event) => {
             ui.triggerHapticFeedback();
-            lastClickedButtonRect = event.currentTarget.getBoundingClientRect();
-            showSongDetails(key);
+            const clickedRect = event.currentTarget.getBoundingClientRect();
+            showSongDetails(key, clickedRect);
         });
         dom.songGrid.appendChild(button);
     });

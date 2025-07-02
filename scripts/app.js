@@ -21,6 +21,7 @@ function main() {
     heartsView.populateHeartsView();
     audio.initializeAudio();
     ui.initializeSettings();
+    ui.loadSavedIcon();
 
     // --- EVENT LISTENERS ---
 
