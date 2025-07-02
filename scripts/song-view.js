@@ -1,7 +1,6 @@
 import * as data from './data.js';
 import * as dom from './dom.js';
 import * as ui from './ui.js';
-import { fadeAudio } from './audio.js';
 
 let lastClickedButtonRect = null;
 let currentImageIndex = 0;
@@ -81,7 +80,7 @@ export const showSongDetails = (songKey, clickedElementRect) => {
 
     lastClickedButtonRect = clickedElementRect; // Store for the return animation
 
-    fadeAudio(0);
+    Howler.volume(0);
     dom.songTitleEl.innerHTML = `${song.name}<span class="hylian-name">${song.hylian_name || ''}</span>`;
 
     const getYouTubeID = (url) => { try { return new URL(url).searchParams.get('v'); } catch (e) { console.error('Invalid YouTube URL:', url); return null; } };
@@ -144,7 +143,7 @@ export function showSongGridWithAnimation() {
  * Returns to the main screen from a detail view.
  */
 export function showMainScreen() {
-    fadeAudio(0.5);
+    Howler.volume(0.5);
     dom.youtubePlayer.src = 'about:blank';
     
     if (lastClickedButtonRect) {
