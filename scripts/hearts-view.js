@@ -1,6 +1,6 @@
-let heartData = {};
+export let heartData = {};
 
-async function loadHeartData() {
+export async function loadHeartData() {
     try {
         const response = await fetch('../data/hearts.json');
         if (!response.ok) {
@@ -42,6 +42,22 @@ function loadState() {
     }
 }
 
+export function render() {
+    renderHeartPieces();
+    updateCounters();
+}
+
+export function setHeartItemFound(itemId) {
+    if (heartState[itemId] !== undefined && !heartState[itemId]) {
+        heartState[itemId] = true;
+        saveState();
+        // If the hearts view is active, re-render it to show the change immediately
+        if (dom.heartContainersContent.classList.contains('main-content') && !dom.heartContainersContent.classList.contains('hidden')) {
+            render();
+        }
+    }
+}
+
 function renderHeartPieces() {
     const container = dom.heartChecklistContainer;
     if (!container) return;
@@ -70,43 +86,53 @@ function renderHeartPieces() {
         container.appendChild(item);
     });
 
-    // Render Heart Pieces
-    const piecesTitle = document.createElement('h3');
-    piecesTitle.className = 'heart-section-title';
-    piecesTitle.textContent = 'Heart Pieces';
-    container.appendChild(piecesTitle);
-    
-    const piecesToRender = data.pieces;
-    piecesToRender.forEach(piece => {
-        const isFound = heartState[piece.id] || false;
-        const item = document.createElement('div');
-        item.className = `heart-checklist-item ${isFound ? 'found' : ''}`;
-        item.dataset.id = piece.id;
-        item.innerHTML = `
-            <div class="checkbox"></div>
-            <div class="description">
-                <span class="location">${piece.location}</span>
-                <p>${piece.description}</p>
-            </div>
-            <button class="walkthrough-toggle">▼</button>
-        `;
-        const walkthrough = document.createElement('div');
-        walkthrough.className = 'walkthrough';
-        walkthrough.innerHTML = `<p>${piece.walkthrough}</p>`;
-        item.appendChild(walkthrough);
+    // Group pieces by location
+    const piecesByLocation = data.pieces.reduce((acc, piece) => {
+        const location = piece.location;
+        if (!acc[location]) {
+            acc[location] = [];
+        }
+        acc[location].push(piece);
+        return acc;
+    }, {});
 
-        item.querySelector('.checkbox').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleItem(piece.id);
+    // Render Heart Pieces by location
+    for (const location in piecesByLocation) {
+        const locationTitle = document.createElement('h3');
+        locationTitle.className = 'heart-section-title';
+        locationTitle.textContent = location;
+        container.appendChild(locationTitle);
+
+        piecesByLocation[location].forEach(piece => {
+            const isFound = heartState[piece.id] || false;
+            const item = document.createElement('div');
+            item.className = `heart-checklist-item ${isFound ? 'found' : ''}`;
+            item.dataset.id = piece.id;
+            item.innerHTML = `
+                <div class="checkbox"></div>
+                <div class="description">
+                    <p>${piece.description}</p>
+                </div>
+                <button class="walkthrough-toggle">▼</button>
+            `;
+            const walkthrough = document.createElement('div');
+            walkthrough.className = 'walkthrough';
+            walkthrough.innerHTML = `<p>${piece.walkthrough}</p>`;
+            item.appendChild(walkthrough);
+
+            item.querySelector('.checkbox').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleItem(piece.id);
+            });
+
+            item.querySelector('.walkthrough-toggle').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleWalkthrough(e.currentTarget);
+            });
+
+            container.appendChild(item);
         });
-
-        item.querySelector('.walkthrough-toggle').addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleWalkthrough(e.currentTarget);
-        });
-
-        container.appendChild(item);
-    });
+    }
     updateCounters();
 }
 
@@ -122,7 +148,7 @@ function toggleItem(id) {
     ui.triggerHapticFeedback();
     heartState[id] = !heartState[id];
     saveState();
-    renderHeartPieces();
+    render();
 }
 
 function updateCounters() {
@@ -213,7 +239,7 @@ function setVersion(version, triggerHaptics = false) {
     if (dom.versionToggleN64Hearts) {
         dom.versionToggleN64Hearts.classList.toggle('active', version === 'n64');
     }
-    renderHeartPieces();
+    render();
 }
 
 export async function populateHeartsView() {

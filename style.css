@@ -1155,3 +1155,24 @@ img {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+.heart-checklist-item .walkthrough p {
+    color: #fbcfe8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.quest-list-item.indented {
+    margin-left: 1rem;
+}
+
+.version-toggle-quest {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.version-toggle-quest .btn-back {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+}

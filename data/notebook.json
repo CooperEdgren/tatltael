@@ -659,9 +659,13 @@
                 {
                     "id": "ikana-graveyard",
                     "name": "Ikana Graveyard Secret",
-                    "rewards": ["Piece of Heart"],
+                    "rewards": ["Bottle"],
+                    "rewards_3ds": ["Piece of Heart"],
                     "characters": ["Link", "Captain Keeta", "Dampe"],
                     "steps": [
+                        { "day": "Night 2", "time": "Any", "description": "Have the Stalchildren open a grave.", "walkthrough": "Wear the Captain's Hat and have the Stalchildren open a grave on the second night. Inside is a mini-dungeon with a Bottle.", "completed": false }
+                    ],
+                    "steps_3ds": [
                         { "day": "Night 2", "time": "Any", "description": "Have the Stalchildren open a grave.", "walkthrough": "Wear the Captain's Hat and have the Stalchildren open a grave on the second night. Inside is a mini-dungeon with a Piece of Heart.", "completed": false }
                     ]
                 },

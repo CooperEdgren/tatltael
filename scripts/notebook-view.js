@@ -1,19 +1,56 @@
 import * as dom from './dom.js';
-import { showItemDetailView } from './items-view.js'; // Import item detail view function
+import { showItemDetailView } from './items-view.js';
 import { showSongDetails } from './song-view.js';
 import * as ui from './ui.js';
+import { setHeartItemFound, render as renderHearts, loadHeartData as loadHeartDataFromHearts } from './hearts-view.js';
 
 let notebookData = {};
 let characterScheduleData = {};
 let items = {};
 let songs = {};
 
+// Maps quest IDs to heart piece/container IDs
+const questHeartMap = {
+    'main-quest-2': 'n64-hc-1', // Odolwa's Remains
+    'main-quest-3': 'n64-hc-2', // Goht's Remains
+    'main-quest-4': 'n64-hc-3', // Gyorg's Remains
+    'main-quest-5': 'n64-hc-4', // Twinmold's Remains
+    'deku-playground': 'n64-p-3',
+    'shooting-gallery': 'n64-p-5',
+    'honey-darling': 'n64-p-6',
+    'treasure-chest-shop': 'n64-p-11', // Assuming this is the swordsman's school
+    'postmans-timing-game': 'n64-p-12',
+    'hand-in-toilet': 'n64-p-10',
+    'keaton-quiz': 'n64-p-4',
+    'swordsmans-school': 'n64-p-11',
+    'rosa-sisters': 'n64-p-13',
+    'bank-reward': 'n64-p-14',
+    'mailbox-reward': 'n64-p-15',
+    'peahat-grotto': 'n64-p-16',
+    'dodongo-grotto': 'n64-p-20',
+    'gossip-stones-grotto': 'n64-p-18',
+    'swamp-shooting-gallery': 'n64-p-22',
+    'swamp-photo-contest': 'n64-p-23',
+    'deku-palace-maze': 'n64-p-24',
+    'frog-choir': 'n64-p-29',
+    'dog-races': 'n64-p-32',
+    'pinnacle-rock': 'n64-p-34',
+    'zora-band': 'n64-p-35',
+    'beaver-races': 'n64-p-39',
+    'ikana-castle': 'n64-p-42',
+    'ikana-graveyard': 'n64-p-47',
+    'secret-shrine': 'n64-p-45',
+    'ghost-hut': 'n64-p-45', // This is the same as secret shrine
+};
+
+
 async function loadNotebookData() {
     try {
-        const [notebookRes, itemsRes, gameDataRes] = await Promise.all([
+        const [notebookRes, itemsRes, gameDataRes, _] = await Promise.all([
             fetch('../data/notebook.json'),
             fetch('../data/items.json'),
-            fetch('../data/game-data.json')
+            fetch('../data/game-data.json'),
+            loadHeartDataFromHearts()
         ]);
 
         if (!notebookRes.ok) throw new Error(`HTTP error! status: ${notebookRes.status}`);
@@ -46,6 +83,7 @@ let questData = {};
 let activeQuestId = null;
 let activeTab = 'scheduled'; // 'scheduled', 'completed', or 'characters'
 let activeCharacter = null;
+let questVersion = 'n64'; // 'n64' or '3ds'
 
 /**
  * Loads quest progress and Bomber's Code from local storage.
@@ -58,7 +96,8 @@ function loadProgress() {
         questData = JSON.parse(JSON.stringify(notebookData)); // Deep copy
     }
     // Ensure all quests have a completed property
-    for (const category in questData) {
+    for (const categoryKey in questData) {
+        const category = questData[categoryKey];
         if (category.quests) {
             category.quests.forEach(quest => {
                 if (quest.completed === undefined) {
@@ -117,7 +156,7 @@ function renderQuestList() {
 
                 const questList = document.createElement('div');
                 questList.className = 'quest-list-collapsible';
-                renderQuestItems(subCategory.quests, questList);
+                renderQuestItems(subCategory.quests, questList, true); // Pass true for indented
                 container.appendChild(questList);
 
                 subCategoryTitle.addEventListener('click', () => {
@@ -128,12 +167,12 @@ function renderQuestList() {
         }
 
         if (category.quests) {
-            renderQuestItems(category.quests, container);
+            renderQuestItems(category.quests, container, false); // Not indented
         }
     }
 }
 
-function renderQuestItems(quests, container) {
+function renderQuestItems(quests, container, isIndented) {
     const questsToShow = quests.filter(q => 
         activeTab === 'completed' ? q.completed : !q.completed
     );
@@ -141,6 +180,9 @@ function renderQuestItems(quests, container) {
     questsToShow.forEach(quest => {
         const questItem = document.createElement('div');
         questItem.className = 'quest-list-item';
+        if (isIndented) {
+            questItem.style.marginLeft = '1rem';
+        }
         questItem.innerHTML = `<span class="quest-name">${quest.name}</span>`;
         questItem.dataset.questId = quest.id;
 
@@ -224,15 +266,49 @@ function renderQuestDetail() {
     const quest = findQuestById(activeQuestId);
     if (!quest) return;
 
+    const hasVersionDifferences = quest.rewards_3ds || quest.steps_3ds;
+
     dom.notebookPlaceholderView.classList.add('hidden');
     dom.questDetailView.classList.remove('hidden');
+
+    const titleContainer = dom.questTitle.parentElement;
+    let versionToggle = titleContainer.querySelector('.version-toggle-quest');
+    if (hasVersionDifferences) {
+        if (!versionToggle) {
+            versionToggle = document.createElement('div');
+            versionToggle.className = 'version-toggle-quest';
+            versionToggle.innerHTML = `
+                <button class="btn-back text-sm" data-version="n64">N64</button>
+                <button class="btn-back text-sm" data-version="3ds">3DS</button>
+            `;
+            titleContainer.appendChild(versionToggle);
+
+            versionToggle.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    questVersion = e.target.dataset.version;
+                    renderQuestDetail();
+                }
+            });
+        }
+        versionToggle.style.display = 'flex';
+        versionToggle.querySelectorAll('button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.version === questVersion);
+        });
+    } else if (versionToggle) {
+        versionToggle.style.display = 'none';
+    }
+
 
     dom.questTitle.textContent = quest.name;
     dom.questRegion.textContent = quest.region;
 
+    const steps = questVersion === '3ds' && quest.steps_3ds ? quest.steps_3ds : quest.steps;
+    const rewards = questVersion === '3ds' && quest.rewards_3ds ? quest.rewards_3ds : quest.rewards;
+
+
     const stepsContainer = document.getElementById('quest-steps-container');
     stepsContainer.innerHTML = '';
-    quest.steps.forEach((step, index) => {
+    steps.forEach((step, index) => {
         const stepEl = document.createElement('div');
         stepEl.className = 'quest-step';
         if (step.completed) stepEl.classList.add('completed');
@@ -261,6 +337,13 @@ function renderQuestDetail() {
                 ui.triggerHapticFeedback();
                 step.completed = !step.completed;
                 quest.completed = quest.steps.every(s => s.completed);
+                if (quest.completed) {
+                    const heartId = questHeartMap[quest.id];
+                    if (heartId) {
+                        setHeartItemFound(heartId);
+                        renderHearts(); // Re-render the hearts view
+                    }
+                }
                 saveProgress();
                 renderApp();
             } else {
@@ -275,8 +358,8 @@ function renderQuestDetail() {
     const charactersContainer = dom.questCharactersList;
     charactersContainer.innerHTML = '';
 
-    if (quest.rewards) {
-        quest.rewards.forEach(rewardText => {
+    if (rewards) {
+        rewards.forEach(rewardText => {
             const rewardEl = document.createElement('div');
             rewardEl.className = 'reward-item';
             
