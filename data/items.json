@@ -296,8 +296,8 @@
             "name": "Giant Wallet",
             "hylian_name": "giant wallet",
             "image": "images/items/Equipment/Giant_Wallet.png",
-            "description": "The maximum capacity for rupees, allowing Link to carry up to 5,000 rupees.",
-            "acquisition": "Obtained from the Bank in Clock Town after depositing 5,000 rupees."
+            "description": "The maximum capacity for rupees, allowing Link to carry up to 500 rupees.",
+            "acquisition": "Obtained from the Oceanside Spider House after defeating all 30 Gold Skulltulas."
         }
     ],
     "Inventory": [
