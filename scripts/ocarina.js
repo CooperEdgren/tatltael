@@ -2,6 +2,7 @@ import { platforms, noteMappings } from './data.js';
 import * as ui from './ui.js';
 
 // --- Howler.js Audio Setup ---
+// We MUST instantiate the Howl objects first. This action creates the Howler.ctx.
 const noteSounds = {
     'CU': {
         short: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D2_short.wav'] }),
@@ -29,6 +30,48 @@ const noteSounds = {
         loop: new Howl({ src: ['../music/sounds/MMsounds/Instruments/Ocarina/OOT_Notes_Ocarina_D_loop.wav'], loop: true })
     },
 };
+
+// --- Web Audio API Setup ---
+// Now that Howls are created, Howler.ctx is available.
+const audioCtx = Howler.ctx;
+
+// Create a limiter to prevent clipping
+const limiter = audioCtx.createDynamicsCompressor();
+limiter.threshold.setValueAtTime(-10, audioCtx.currentTime);
+limiter.knee.setValueAtTime(0, audioCtx.currentTime);
+limiter.ratio.setValueAtTime(20, audioCtx.currentTime);
+limiter.attack.setValueAtTime(0.005, audioCtx.currentTime);
+limiter.release.setValueAtTime(0.05, audioCtx.currentTime);
+limiter.connect(audioCtx.destination); // End of the chain connects to speakers
+
+// Create a bandpass filter for a more breathy sound
+const bandpassFilter = audioCtx.createBiquadFilter();
+bandpassFilter.type = 'bandpass';
+bandpassFilter.frequency.value = 880;
+bandpassFilter.Q.value = 1.5;
+bandpassFilter.connect(limiter); // Filter connects to limiter
+
+/**
+ * Connects a Howl sound's underlying Web Audio node to our custom effects chain.
+ * This uses an undocumented property (_soundById) but is the most effective way
+ * to apply effects to individual Howls without global manipulation.
+ * @param {Howl} howl - The Howl instance to connect.
+ */
+function connectToWebAudio(howl) {
+    howl.on('play', function(soundId) {
+        const soundNode = howl._soundById(soundId);
+        if (soundNode && soundNode._node) {
+            // Disconnect from Howler's masterGain and connect to our filter chain
+            soundNode._node.disconnect();
+            soundNode._node.connect(bandpassFilter);
+        }
+    });
+}
+
+// Connect all our note sounds to the effects chain
+Object.values(noteSounds).forEach(noteType => {
+    Object.values(noteType).forEach(connectToWebAudio);
+});
 
 const songs = {
     'ZeldasLullaby': { name: "Zelda's Lullaby", hylian_name: "hylia's blessing", notes: ['CL', 'CU', 'CR', 'CL', 'CU', 'CR'] },
