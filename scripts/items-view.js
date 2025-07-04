@@ -1,8 +1,10 @@
 let items = {};
+let currentGame = 'majoras-mask';
 
 async function loadItemsData() {
+    const itemsPath = currentGame === 'ocarina-of-time' ? '../data/oot-items.json' : '../data/items.json';
     try {
-        const response = await fetch('../data/items.json');
+        const response = await fetch(itemsPath);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -115,7 +117,8 @@ export function showItemDetailView(item, clickedElementRect) {
 /**
  * Populates the Items view, sets up tabs and search functionality.
  */
-export async function populateItemsView() {
+export async function populateItemsView(game = 'majoras-mask') {
+    currentGame = game;
     await loadItemsData();
     const tabsContainer = dom.itemCategoryTabs;
     const searchInput = dom.itemSearchInput;

@@ -8,22 +8,37 @@ import * as itemsView from './items-view.js';
 import * as fairiesView from './fairies-view.js';
 import * as heartsView from './hearts-view.js';
 
+let currentGame = 'majoras-mask';
+
 /**
  * Main application initialization function.
  */
 function main() {
     // --- INITIAL POPULATION ---
-    songView.populateSongGrid();
-    mapsView.populateMapsGrid();
-    notebookView.populateBombersNotebook();
-    itemsView.populateItemsView();
-    fairiesView.populateFairiesView();
-    heartsView.populateHeartsView();
+    loadGameData(currentGame);
     audio.initializeAudio();
     ui.initializeSettings();
     ui.loadSavedIcon();
 
     // --- EVENT LISTENERS ---
+
+    // Game Switcher
+    dom.gameSwitcherPill.addEventListener('click', (e) => {
+        ui.triggerHapticFeedback();
+        ui.addTapFeedback(e.currentTarget);
+        dom.gameSwitcher.classList.toggle('is-open');
+    });
+
+    dom.gameSwitcher.addEventListener('click', (e) => {
+        const choice = e.target.closest('.game-choice');
+        if (choice) {
+            const game = choice.dataset.game;
+            if (game !== currentGame) {
+                switchGame(game);
+            }
+            dom.gameSwitcher.classList.remove('is-open');
+        }
+    });
 
     // Main Nav listeners
     dom.mainTitleButton.addEventListener('click', (e) => {
@@ -146,6 +161,25 @@ function main() {
             });
         });
     }
+}
+
+function loadGameData(game) {
+    songView.populateSongGrid(game);
+    mapsView.populateMapsGrid(game);
+    notebookView.populateBombersNotebook(game);
+    itemsView.populateItemsView(game);
+    fairiesView.populateFairiesView(game);
+    heartsView.populateHeartsView(game);
+}
+
+function switchGame(game) {
+    currentGame = game;
+    document.body.classList.toggle('oot-mode', game === 'ocarina-of-time');
+    dom.diagonalWipe.classList.add('is-active');
+    setTimeout(() => {
+        loadGameData(game);
+        dom.diagonalWipe.classList.remove('is-active');
+    }, 1000);
 }
 
 // Run the application once the DOM is fully loaded.

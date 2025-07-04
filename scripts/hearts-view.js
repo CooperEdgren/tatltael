@@ -1,8 +1,10 @@
 export let heartData = {};
+let currentGame = 'majoras-mask';
 
 export async function loadHeartData() {
+    const heartDataPath = currentGame === 'ocarina-of-time' ? '../data/oot-hearts.json' : '../data/hearts.json';
     try {
-        const response = await fetch('../data/hearts.json');
+        const response = await fetch(heartDataPath);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -242,7 +244,8 @@ function setVersion(version, triggerHaptics = false) {
     render();
 }
 
-export async function populateHeartsView() {
+export async function populateHeartsView(game = 'majoras-mask') {
+    currentGame = game;
     if (!dom.heartContainersContent || !dom.versionToggle3dsHearts || !dom.versionToggleN64Hearts) {
         console.error("Heart view elements not found");
         return;

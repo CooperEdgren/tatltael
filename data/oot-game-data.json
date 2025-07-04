@@ -1,0 +1,16 @@
+{
+    "songs": {
+        "zeldas-lullaby": { "name": "Zelda's Lullaby", "hylian_name": "hylia's blessing", "url": "https://www.youtube.com/watch?v=zGv-pWfLwCs", "n64": ["CL", "CU", "CR", "CL", "CU", "CR"] },
+        "eponas-song": { "name": "Epona's Song", "hylian_name": "epona's song", "url": "https://www.youtube.com/watch?v=N30xku_IUj8", "n64": ["CU", "CL", "CR", "CU", "CL", "CR"] },
+        "sarias-song": { "name": "Saria's Song", "hylian_name": "saria's song", "url": "https://www.youtube.com/watch?v=43t3sf8A-pE", "n64": ["CD", "CR", "CL", "CD", "CR", "CL"] },
+        "suns-song": { "name": "Sun's Song", "hylian_name": "sun's song", "url": "https://www.youtube.com/watch?v=kF2s2d3a2G8", "n64": ["CR", "CD", "CU", "CR", "CD", "CU"] },
+        "song-of-time": { "name": "Song of Time", "hylian_name": "temple of time", "url": "https://www.youtube.com/watch?v=ei6GYtQYaFE", "n64": ["CR", "A", "CD", "CR", "A", "CD"] },
+        "song-of-storms": { "name": "Song of Storms", "hylian_name": "song of storms", "url": "https://www.youtube.com/watch?v=YjGICZcOFBs", "n64": ["A", "CD", "CU", "A", "CD", "CU"] },
+        "minuet-of-forest": { "name": "Minuet of Forest", "hylian_name": "minuet of forest", "url": "https://www.youtube.com/watch?v=h57q_C5rC-4", "n64": ["A", "CU", "CL", "CR", "CL", "CR"] },
+        "bolero-of-fire": { "name": "Bolero of Fire", "hylian_name": "bolero of fire", "url": "https://www.youtube.com/watch?v=k2pP4J-F_5k", "n64": ["CD", "A", "CD", "A", "CR", "CD", "CR", "CD"] },
+        "serenade-of-water": { "name": "Serenade of Water", "hylian_name": "serenade of water", "url": "https://www.youtube.com/watch?v=gds4gT-FwJ4", "n64": ["A", "CD", "CR", "CR", "CL"] },
+        "requiem-of-spirit": { "name": "Requiem of Spirit", "hylian_name": "requiem of spirit", "url": "https://www.youtube.com/watch?v=T_iN5Y_S2T4", "n64": ["A", "CD", "A", "CR", "CD", "A"] },
+        "nocturne-of-shadow": { "name": "Nocturne of Shadow", "hylian_name": "nocturne of shadow", "url": "https://www.youtube.com/watch?v=r0q34a1a_dI", "n64": ["CL", "CR", "CR", "A", "CL", "CR", "CD"] },
+        "prelude-of-light": { "name": "Prelude of Light", "hylian_name": "prelude of light", "url": "https://www.youtube.com/watch?v=b4v_vYso2pA", "n64": ["CU", "CR", "CU", "CR", "CL", "CU"] }
+    }
+}

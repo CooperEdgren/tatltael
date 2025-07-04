@@ -4,6 +4,7 @@ import * as ui from './ui.js';
 
 let lastClickedButtonRect = null;
 let currentImageIndex = 0;
+let songs = {};
 
 /**
  * Shows the modal with the full controller image for a given platform.
@@ -75,7 +76,7 @@ const generateNotesSection = (platformKey, songNotes) => {
  * @param {DOMRect} clickedElementRect - The bounding rectangle of the element that was clicked.
  */
 export const showSongDetails = (songKey, clickedElementRect) => {
-    const song = data.songs[songKey];
+    const song = songs[songKey];
     if (!song || !clickedElementRect) return;
 
     lastClickedButtonRect = clickedElementRect; // Store for the return animation
@@ -110,10 +111,20 @@ export const showSongDetails = (songKey, clickedElementRect) => {
 /**
  * Populates the main grid with song buttons.
  */
-export function populateSongGrid() {
+export async function populateSongGrid(game = 'majoras-mask') {
+    const gameDataPath = game === 'ocarina-of-time' ? '../data/oot-game-data.json' : '../data/game-data.json';
+    try {
+        const response = await fetch(gameDataPath);
+        const gameData = await response.json();
+        songs = gameData.songs;
+    } catch (error) {
+        console.error('Failed to load game data:', error);
+        songs = {};
+    }
+
     dom.songGrid.innerHTML = '';
-    Object.keys(data.songs).forEach((key) => {
-        const song = data.songs[key];
+    Object.keys(songs).forEach((key) => {
+        const song = songs[key];
         const button = document.createElement('button');
         button.className = 'btn-song text-xl p-6 font-zelda';
         button.textContent = song.name;

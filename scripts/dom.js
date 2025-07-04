@@ -121,7 +121,11 @@ export const heartPiecePreview = document.getElementById('heart-piece-preview');
 export const linkHeartsContainer = document.getElementById('link-hearts-container');
 export const heartChecklistContainer = document.getElementById('heart-checklist-container');
 
-
+// --- Game Switcher Elements ---
+export const gameSwitcherContainer = document.getElementById('game-switcher-container');
+export const gameSwitcher = document.getElementById('game-switcher');
+export const gameSwitcherPill = document.getElementById('game-switcher-pill');
+export const diagonalWipe = document.getElementById('diagonal-wipe');
 
 // --- Audio Elements ---
 export const backgroundAudio = document.getElementById('background-audio');

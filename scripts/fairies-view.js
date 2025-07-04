@@ -1,8 +1,10 @@
 let fairyData = {};
+let currentGame = 'majoras-mask';
 
 async function loadFairyData() {
+    const fairyDataPath = currentGame === 'ocarina-of-time' ? '../data/oot-fairies.json' : '../data/fairies.json';
     try {
-        const response = await fetch('../data/fairies.json');
+        const response = await fetch(fairyDataPath);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -102,9 +104,21 @@ function renderTempleTabs() {
 /**
  * Initializes the Stray Fairy tracker view.
  */
-export async function populateFairiesView() {
+export async function populateFairiesView(game = 'majoras-mask') {
+    currentGame = game;
     await loadFairyData();
     loadProgress();
+
+    const fairiesTitle = document.getElementById('fairies-title');
+    const fairiesLabel = document.getElementById('fairies-label');
+
+    if (game === 'ocarina-of-time') {
+        fairiesTitle.textContent = 'Gold Skulltulas';
+        fairiesLabel.textContent = 'Skulltulas';
+    } else {
+        fairiesTitle.textContent = 'Stray Fairy Locations';
+        fairiesLabel.textContent = 'Fairies';
+    }
 
     // Set initial active temple if not already set (e.g., on first load)
     if (!fairyProgress[activeVersion][activeTemple]) {

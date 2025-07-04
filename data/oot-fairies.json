@@ -1,0 +1,450 @@
+{
+    "N64": {
+        "Kokiri Forest": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the back of the Know-It-All Brothers' house.", "found": false },
+                { "location": "In the patch of soft soil near the Kokiri Shop; release bugs to make it appear.", "found": false },
+                { "location": "At night, on the back of the House of Twins.", "found": false }
+            ]
+        },
+        "Lost Woods": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "From the entrance, go right, left, right, left, left. Release bugs in the soft soil patch.", "found": false },
+                { "location": "From the entrance, go left and find a soft soil patch to release bugs in.", "found": false },
+                { "location": "At night, in the area with the two bridges, look for it on a wall.", "found": false }
+            ]
+        },
+        "Inside the Great Deku Tree": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the compass, near a small treasure chest.", "found": false },
+                { "location": "After falling to the lower level, it's on the grate.", "found": false },
+                { "location": "In the same room as the previous one, on the vines.", "found": false },
+                { "location": "Bomb the wall in the room with the Gohma Larvae.", "found": false }
+            ]
+        },
+        "Hyrule Field": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "Near the entrance to Kakariko Village, place a bomb by the tree to open a grotto.", "found": false },
+                { "location": "Near the entrance to Gerudo Valley, use the Megaton Hammer on the large rock in the center of the circle of rocks, then bomb the ground to find a grotto.", "found": false }
+            ]
+        },
+        "Hyrule Castle & Ganon's Castle": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the guardhouse at the entrance to Hyrule Castle Town, roll into the crate.", "found": false },
+                { "location": "In the area where you sneak into the castle, roll into the first tree you see.", "found": false },
+                { "location": "Play the Song of Storms near the tree in the corner of the castle moat to reveal a grotto. Bomb the back wall inside.", "found": false }
+            ]
+        },
+        "Kakariko Village": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "Roll into the tree near the entrance.", "found": false },
+                { "location": "On the side of the House of Skulltula.", "found": false },
+                { "location": "On the house under construction.", "found": false },
+                { "location": "On the side of the house near the Death Mountain trail gate.", "found": false },
+                { "location": "On the lookout tower's ladder; use the slingshot to kill it.", "found": false },
+                { "location": "On the roof of Impa's house; use the Hookshot to get up there.", "found": false }
+            ]
+        },
+        "Graveyard": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the soft soil patch on the left side; release bugs.", "found": false },
+                { "location": "At night, on the back wall of the graveyard. Use the Boomerang.", "found": false }
+            ]
+        },
+        "Death Mountain Trail": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In a breakable wall at the bottom of the trail near the Kakariko Village entrance.", "found": false },
+                { "location": "In the soft soil patch in front of Dodongo's Cavern; release bugs.", "found": false },
+                { "location": "Behind a large boulder on the path where boulders were falling. Requires Megaton Hammer.", "found": false },
+                { "location": "Above Dodongo's Cavern, behind a breakable boulder. Requires Megaton Hammer.", "found": false }
+            ]
+        },
+        "Goron City": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the back of the city, break the crate in the spinning pot room.", "found": false },
+                { "location": "On the back of the pedestal where the Spiritual Stone of Fire was.", "found": false }
+            ]
+        },
+        "Dodongo's Cavern": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In a room off the main hall, behind a bombable wall.", "found": false },
+                { "location": "In the room with the large staircase, on the vines.", "found": false },
+                { "location": "In the room with the exploding Dodongo larvae, play the Scarecrow's Song.", "found": false },
+                { "location": "On the webbing near the exit in the room with the stairs surrounded by bomb flowers.", "found": false },
+                { "location": "In a room on the right in the final area, behind a bombable wall.", "found": false }
+            ]
+        },
+        "Zora's River": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the ladder near the entrance.", "found": false },
+                { "location": "In a tree at the top of the river. Roll into it.", "found": false },
+                { "location": "High on the southern wall.", "found": false },
+                { "location": "Play the Scarecrow's Song near the top of the waterfall.", "found": false }
+            ]
+        },
+        "Zora's Domain": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "To the left of the frozen waterfall, use the Hookshot.", "found": false }
+            ]
+        },
+        "Zora's Fountain": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the wall near the log.", "found": false },
+                { "location": "In the tree on the island. Roll into it.", "found": false },
+                { "location": "Inside a grotto under a grey boulder. Use the Silver Gauntlets to lift it.", "found": false }
+            ]
+        },
+        "Inside Jabu-Jabu's Belly": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the vines in the room where you raise the water level.", "found": false },
+                { "location": "In the room after falling through the long pit.", "found": false },
+                { "location": "In the same room as the previous one.", "found": false },
+                { "location": "On the vines before the boss room.", "found": false }
+            ]
+        },
+        "Lake Hylia": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the soft soil patch near the laboratory.", "found": false },
+                { "location": "On the side of the laboratory.", "found": false },
+                { "location": "On the small island with the two pillars.", "found": false },
+                { "location": "At the bottom of the laboratory's water tank.", "found": false },
+                { "location": "Use the Scarecrow's Song to reach a Skulltula on top of the laboratory.", "found": false }
+            ]
+        },
+        "Gerudo Valley": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "Over the small waterfall to the right of the plank bridge.", "found": false },
+                { "location": "Use a Cucco to fly to the ledge with the cow and release bugs in the soft soil.", "found": false },
+                { "location": "Behind the carpenter's tent.", "found": false },
+                { "location": "On the stone pillar across from the tent.", "found": false }
+            ]
+        },
+        "Forest Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the first room, on the vines to the right.", "found": false },
+                { "location": "In the room with the four Poe paintings, on the wall.", "found": false },
+                { "location": "In the twisted corridor, on the wall.", "found": false },
+                { "location": "In the room with the falling ceiling, on the wall.", "found": false },
+                { "location": "In the final large room before the boss, on a high wall.", "found": false }
+            ]
+        },
+        "Fire Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the large lava room, play the Scarecrow's Song.", "found": false },
+                { "location": "In the room with the rolling boulders, behind a bombable wall.", "found": false },
+                { "location": "In another part of the boulder room, higher up.", "found": false },
+                { "location": "In the room with the Goron prisoners, behind a cell.", "found": false },
+                { "location": "In the room before the boss, on the wall.", "found": false }
+            ]
+        },
+        "Ice Cavern": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the spinning scythe.", "found": false },
+                { "location": "In the room with the frozen heart piece.", "found": false },
+                { "location": "In the final room before the Serenade of Water.", "found": false }
+            ]
+        },
+        "Water Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the central pillar room, when the water is at its lowest level.", "found": false },
+                { "location": "In the room with the moving platforms.", "found": false },
+                { "location": "Behind a waterfall in the room with the rolling boulders.", "found": false },
+                { "location": "In the long corridor you float down.", "found": false },
+                { "location": "Use the Longshot to reach a hidden area in the central room.", "found": false }
+            ]
+        },
+        "Bottom of the Well": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the central room, behind a locked door.", "found": false },
+                { "location": "In the room with the Like Likes.", "found": false },
+                { "location": "In the easternmost room.", "found": false }
+            ]
+        },
+        "Shadow Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the invisible spinning scythes.", "found": false },
+                { "location": "In a cage in the room with the falling spikes.", "found": false },
+                { "location": "Behind the single giant skull head.", "found": false },
+                { "location": "Near the ghost ship, play the Scarecrow's Song.", "found": false },
+                { "location": "Behind the three large rotating skull heads.", "found": false }
+            ]
+        },
+        "Gerudo's Fortress": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the wall of the fortress.", "found": false },
+                { "location": "On the target for the archery range.", "found": false }
+            ]
+        },
+        "Haunted Wasteland": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the underground building with the Poe guide.", "found": false }
+            ]
+        },
+        "Desert Colossus": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the soft soil patch near the Spirit Temple entrance.", "found": false },
+                { "location": "On a palm tree.", "found": false },
+                { "location": "On a rock near the dried-up oasis.", "found": false }
+            ]
+        },
+        "Spirit Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the rolling boulders.", "found": false },
+                { "location": "In the room with the Silver Gauntlets.", "found": false },
+                { "location": "In the main chamber, on the large statue.", "found": false },
+                { "location": "In the room with the moving wall.", "found": false },
+                { "location": "Play the Scarecrow's Song in the room with the large mirror.", "found": false }
+            ]
+        }
+    },
+    "3DS": {
+        "Kokiri Forest": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the back of the Know-It-All Brothers' house.", "found": false },
+                { "location": "In the patch of soft soil near the Kokiri Shop; release bugs to make it appear.", "found": false },
+                { "location": "At night, on the back of the House of Twins.", "found": false }
+            ]
+        },
+        "Lost Woods": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "From the entrance, go right, left, right, left, left. Release bugs in the soft soil patch.", "found": false },
+                { "location": "From the entrance, go left and find a soft soil patch to release bugs in.", "found": false },
+                { "location": "At night, in the area with the two bridges, look for it on a wall.", "found": false }
+            ]
+        },
+        "Inside the Great Deku Tree": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the compass, near a small treasure chest.", "found": false },
+                { "location": "After falling to the lower level, it's on the grate.", "found": false },
+                { "location": "In the same room as the previous one, on the vines.", "found": false },
+                { "location": "Bomb the wall in the room with the Gohma Larvae.", "found": false }
+            ]
+        },
+        "Hyrule Field": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "Near the entrance to Kakariko Village, place a bomb by the tree to open a grotto.", "found": false },
+                { "location": "Near the entrance to Gerudo Valley, use the Megaton Hammer on the large rock in the center of the circle of rocks, then bomb the ground to find a grotto.", "found": false }
+            ]
+        },
+        "Hyrule Castle & Ganon's Castle": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the guardhouse at the entrance to Hyrule Castle Town, roll into the crate.", "found": false },
+                { "location": "In the area where you sneak into the castle, roll into the first tree you see.", "found": false },
+                { "location": "Play the Song of Storms near the tree in the corner of the castle moat to reveal a grotto. Bomb the back wall inside.", "found": false }
+            ]
+        },
+        "Kakariko Village": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "Roll into the tree near the entrance.", "found": false },
+                { "location": "On the side of the House of Skulltula.", "found": false },
+                { "location": "On the house under construction.", "found": false },
+                { "location": "On the side of the house near the Death Mountain trail gate.", "found": false },
+                { "location": "On the lookout tower's ladder; use the slingshot to kill it.", "found": false },
+                { "location": "On the roof of Impa's house; use the Hookshot to get up there.", "found": false }
+            ]
+        },
+        "Graveyard": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the soft soil patch on the left side; release bugs.", "found": false },
+                { "location": "At night, on the back wall of the graveyard. Use the Boomerang.", "found": false }
+            ]
+        },
+        "Death Mountain Trail": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In a breakable wall at the bottom of the trail near the Kakariko Village entrance.", "found": false },
+                { "location": "In the soft soil patch in front of Dodongo's Cavern; release bugs.", "found": false },
+                { "location": "Behind a large boulder on the path where boulders were falling. Requires Megaton Hammer.", "found": false },
+                { "location": "Above Dodongo's Cavern, behind a breakable boulder. Requires Megaton Hammer.", "found": false }
+            ]
+        },
+        "Goron City": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the back of the city, break the crate in the spinning pot room.", "found": false },
+                { "location": "On the back of the pedestal where the Spiritual Stone of Fire was.", "found": false }
+            ]
+        },
+        "Dodongo's Cavern": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In a room off the main hall, behind a bombable wall.", "found": false },
+                { "location": "In the room with the large staircase, on the vines.", "found": false },
+                { "location": "In the room with the exploding Dodongo larvae, play the Scarecrow's Song.", "found": false },
+                { "location": "On the webbing near the exit in the room with the stairs surrounded by bomb flowers.", "found": false },
+                { "location": "In a room on the right in the final area, behind a bombable wall.", "found": false }
+            ]
+        },
+        "Zora's River": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the ladder near the entrance.", "found": false },
+                { "location": "In a tree at the top of the river. Roll into it.", "found": false },
+                { "location": "High on the southern wall.", "found": false },
+                { "location": "Play the Scarecrow's Song near the top of the waterfall.", "found": false }
+            ]
+        },
+        "Zora's Domain": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "To the left of the frozen waterfall, use the Hookshot.", "found": false }
+            ]
+        },
+        "Zora's Fountain": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the wall near the log.", "found": false },
+                { "location": "In the tree on the island. Roll into it.", "found": false },
+                { "location": "Inside a grotto under a grey boulder. Use the Silver Gauntlets to lift it.", "found": false }
+            ]
+        },
+        "Inside Jabu-Jabu's Belly": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the vines in the room where you raise the water level.", "found": false },
+                { "location": "In the room after falling through the long pit.", "found": false },
+                { "location": "In the same room as the previous one.", "found": false },
+                { "location": "On the vines before the boss room.", "found": false }
+            ]
+        },
+        "Lake Hylia": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the soft soil patch near the laboratory.", "found": false },
+                { "location": "On the side of the laboratory.", "found": false },
+                { "location": "On the small island with the two pillars.", "found": false },
+                { "location": "At the bottom of the laboratory's water tank.", "found": false },
+                { "location": "Use the Scarecrow's Song to reach a Skulltula on top of the laboratory.", "found": false }
+            ]
+        },
+        "Gerudo Valley": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "Over the small waterfall to the right of the plank bridge.", "found": false },
+                { "location": "Use a Cucco to fly to the ledge with the cow and release bugs in the soft soil.", "found": false },
+                { "location": "Behind the carpenter's tent.", "found": false },
+                { "location": "On the stone pillar across from the tent.", "found": false }
+            ]
+        },
+        "Forest Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the first room, on the vines to the right.", "found": false },
+                { "location": "In the room with the four Poe paintings, on the wall.", "found": false },
+                { "location": "In the twisted corridor, on the wall.", "found": false },
+                { "location": "In the room with the falling ceiling, on the wall.", "found": false },
+                { "location": "In the final large room before the boss, on a high wall.", "found": false }
+            ]
+        },
+        "Fire Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the large lava room, play the Scarecrow's Song.", "found": false },
+                { "location": "In the room with the rolling boulders, behind a bombable wall.", "found": false },
+                { "location": "In another part of the boulder room, higher up.", "found": false },
+                { "location": "In the room with the Goron prisoners, behind a cell.", "found": false },
+                { "location": "In the room before the boss, on the wall.", "found": false }
+            ]
+        },
+        "Ice Cavern": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the spinning scythe.", "found": false },
+                { "location": "In the room with the frozen heart piece.", "found": false },
+                { "location": "In the final room before the Serenade of Water.", "found": false }
+            ]
+        },
+        "Water Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the central pillar room, when the water is at its lowest level.", "found": false },
+                { "location": "In the room with the moving platforms.", "found": false },
+                { "location": "Behind a waterfall in the room with the rolling boulders.", "found": false },
+                { "location": "In the long corridor you float down.", "found": false },
+                { "location": "Use the Longshot to reach a hidden area in the central room.", "found": false }
+            ]
+        },
+        "Bottom of the Well": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the central room, behind a locked door.", "found": false },
+                { "location": "In the room with the Like Likes.", "found": false },
+                { "location": "In the easternmost room.", "found": false }
+            ]
+        },
+        "Shadow Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the invisible spinning scythes.", "found": false },
+                { "location": "In a cage in the room with the falling spikes.", "found": false },
+                { "location": "Behind the single giant skull head.", "found": false },
+                { "location": "Near the ghost ship, play the Scarecrow's Song.", "found": false },
+                { "location": "Behind the three large rotating skull heads.", "found": false }
+            ]
+        },
+        "Gerudo's Fortress": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "On the wall of the fortress.", "found": false },
+                { "location": "On the target for the archery range.", "found": false }
+            ]
+        },
+        "Haunted Wasteland": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the underground building with the Poe guide.", "found": false }
+            ]
+        },
+        "Desert Colossus": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the soft soil patch near the Spirit Temple entrance.", "found": false },
+                { "location": "On a palm tree.", "found": false },
+                { "location": "On a rock near the dried-up oasis.", "found": false }
+            ]
+        },
+        "Spirit Temple": {
+            "reward": "Gold Skulltula Token",
+            "fairies": [
+                { "location": "In the room with the rolling boulders.", "found": false },
+                { "location": "In the room with the Silver Gauntlets.", "found": false },
+                { "location": "In the main chamber, on the large statue.", "found": false },
+                { "location": "In the room with the moving wall.", "found": false },
+                { "location": "Play the Scarecrow's Song in the room with the large mirror.", "found": false }
+            ]
+        }
+    }
+}

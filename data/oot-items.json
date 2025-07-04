@@ -1,0 +1,237 @@
+{
+    "All": [],
+    "Equipment": [
+        {
+            "id": "kokiri-sword",
+            "name": "Kokiri Sword",
+            "image": "images/items/Equipment/Kokiri_Sword.png",
+            "description": "A sword passed down by the Kokiri. It's said to have been forged by the great Deku Tree himself.",
+            "acquisition": "Found in a treasure chest in the Kokiri Forest, in the training area."
+        },
+        {
+            "id": "master-sword",
+            "name": "Master Sword",
+            "image": "images/items/oot/master-sword.png",
+            "description": "The legendary Blade of Evil's Bane. Only one with a hero's spirit can wield it.",
+            "acquisition": "Pulled from the Pedestal of Time in the Temple of Time."
+        },
+        {
+            "id": "deku-shield",
+            "name": "Deku Shield",
+            "image": "images/items/oot/deku-shield.png",
+            "description": "A small, wooden shield. It's light and easy to use, but it will burn if it touches fire.",
+            "acquisition": "Can be purchased from the Kokiri Shop for 40 Rupees."
+        },
+        {
+            "id": "hylian-shield",
+            "name": "Hylian Shield",
+            "image": "images/items/Equipment/Heros_Shield.png",
+            "description": "A sturdy, metal shield bearing the crest of the Royal Family of Hyrule. It can withstand fire.",
+            "acquisition": "Can be purchased from the Bazaar in Hyrule Castle Town Market for 80 Rupees, or found for free in a grave in the Kakariko Village Graveyard."
+        },
+        {
+            "id": "mirror-shield",
+            "name": "Mirror Shield",
+            "image": "images/items/Equipment/Mirror_Shield.png",
+            "description": "A highly polished shield that can reflect light and certain energy-based projectiles.",
+            "acquisition": "Found in a treasure chest within the Spirit Temple."
+        },
+        {
+            "id": "kokiri-tunic",
+            "name": "Kokiri Tunic",
+            "image": "images/items/oot/kokiri-tunic.png",
+            "description": "The traditional green garb of the Kokiri, the children of the forest.",
+            "acquisition": "Default tunic worn by Link at the start of the game."
+        },
+        {
+            "id": "goron-tunic",
+            "name": "Goron Tunic",
+            "image": "images/items/oot/goron-tunic.png",
+            "description": "A heat-resistant tunic made by the Gorons. It protects the wearer from extreme heat.",
+            "acquisition": "Given by a young Goron in Goron City who shares Link's name."
+        },
+        {
+            "id": "zora-tunic",
+            "name": "Zora Tunic",
+            "image": "images/items/oot/zora-tunic.png",
+            "description": "A tunic woven by the Zora. It allows the wearer to breathe underwater.",
+            "acquisition": "Given by King Zora after unfreezing him with Blue Fire."
+        },
+        {
+            "id": "kokiri-boots",
+            "name": "Kokiri Boots",
+            "image": "images/items/oot/kokiri-boots.png",
+            "description": "Standard leather boots. Comfortable and reliable for any journey.",
+            "acquisition": "Default boots worn by Link at the start of the game."
+        },
+        {
+            "id": "iron-boots",
+            "name": "Iron Boots",
+            "image": "images/items/oot/iron-boots.png",
+            "description": "Extremely heavy boots that allow the wearer to walk on the bottom of bodies of water.",
+            "acquisition": "Found in the Ice Cavern."
+        },
+        {
+            "id": "hover-boots",
+            "name": "Hover Boots",
+            "image": "images/items/oot/hover-boots.png",
+            "description": "Mysterious boots that allow the wearer to hover for a short time, but offer poor traction.",
+            "acquisition": "Found in a treasure chest within the Shadow Temple."
+        }
+    ],
+    "Items": [
+        {
+            "id": "deku-stick",
+            "name": "Deku Stick",
+            "image": "images/items/Inventory/Deku_Stick.png",
+            "description": "A long, thin stick from the Great Deku Tree. It can be used as a weapon or to light torches, but it's flammable.",
+            "acquisition": "Dropped by Deku Babas or purchased from some shops."
+        },
+        {
+            "id": "deku-nut",
+            "name": "Deku Nut",
+            "image": "images/items/Inventory/Deku_Nut.png",
+            "description": "A hard nut that explodes with a blinding flash when thrown, stunning nearby enemies.",
+            "acquisition": "Dropped by various enemies or found in chests and under rocks."
+        },
+        {
+            "id": "bombs",
+            "name": "Bombs",
+            "image": "images/items/Inventory/Bombs.png",
+            "description": "Explosives that can be used to defeat enemies or destroy cracked walls and boulders.",
+            "acquisition": "Obtained in Dodongo's Cavern. Can be purchased from the Goron City shop or the Bazaar."
+        },
+        {
+            "id": "bombchu",
+            "name": "Bombchu",
+            "image": "images/items/Inventory/Bombchu.png",
+            "description": "A mouse-shaped bomb that travels along the ground and up walls before exploding.",
+            "acquisition": "Found in various treasure chests or can be purchased at the Bombchu Bowling Alley or from a Carpet Merchant."
+        },
+        {
+            "id": "fairy-slingshot",
+            "name": "Fairy Slingshot",
+            "image": "images/items/oot/fairy-slingshot.png",
+            "description": "A slingshot used by the Kokiri. It shoots Deku Seeds.",
+            "acquisition": "Found in a treasure chest inside the Deku Tree."
+        },
+        {
+            "id": "fairy-bow",
+            "name": "Fairy Bow",
+            "image": "images/items/Inventory/Heros_Bow.png",
+            "description": "A more powerful bow that shoots arrows. Essential for an adult hero.",
+            "acquisition": "Found in a treasure chest within the Forest Temple."
+        },
+        {
+            "id": "fire-arrows",
+            "name": "Fire Arrows",
+            "image": "images/items/Inventory/Fire_Arrow.png",
+            "description": "Magical arrows imbued with the power of fire. Can light torches and burn enemies.",
+            "acquisition": "Obtained by shooting at the morning sun from the island in Lake Hylia after completing the Water Temple."
+        },
+        {
+            "id": "ice-arrows",
+            "name": "Ice Arrows",
+            "image": "images/items/Inventory/Ice_Arrow.png",
+            "description": "Magical arrows imbued with the power of ice. Can freeze enemies.",
+            "acquisition": "Obtained by completing the Gerudo Training Ground."
+        },
+        {
+            "id": "light-arrows",
+            "name": "Light Arrows",
+            "image": "images/items/Inventory/Light_Arrow.png",
+            "description": "Sacred arrows imbued with the power of light. The only weapon that can defeat Ganondorf.",
+            "acquisition": "Given by Zelda after awakening all the Sages."
+        },
+        {
+            "id": "dins-fire",
+            "name": "Din's Fire",
+            "image": "images/items/oot/dins-fire.png",
+            "description": "A magical attack that creates a dome of fire, igniting everything in its radius.",
+            "acquisition": "Obtained from a Great Fairy Fountain near Hyrule Castle."
+        },
+        {
+            "id": "farores-wind",
+            "name": "Farore's Wind",
+            "image": "images/items/oot/farores-wind.png",
+            "description": "A magical spell that allows you to create a warp point within a dungeon.",
+            "acquisition": "Obtained from a Great Fairy Fountain in Zora's Fountain."
+        },
+        {
+            "id": "nayrus-love",
+            "name": "Nayru's Love",
+            "image": "images/items/oot/nayrus-love.png",
+            "description": "A magical spell that creates a protective barrier around Link, making him invincible for a short time.",
+            "acquisition": "Obtained from a Great Fairy Fountain in the Desert Colossus."
+        }
+    ],
+    "Masks": [
+        {
+            "id": "keaton-mask",
+            "name": "Keaton Mask",
+            "hylian_name": "keaton mask",
+            "image": "images/items/Masks/Keaton_Mask.png",
+            "description": "A mask of the ghost-like Keaton. It's part of a trading sequence to get the Mask of Truth.",
+            "acquisition": "Given by the guard in Kakariko Village to deliver to the soldiers in Hyrule Field."
+        },
+        {
+            "id": "skull-mask",
+            "name": "Skull Mask",
+            "hylian_name": "skull mask",
+            "image": "images/items/Masks/Skull_Mask.png",
+            "description": "A creepy mask that makes you look like a Skull Kid. Some creatures might react differently to it.",
+            "acquisition": "Borrowed from the Happy Mask Shop after selling the Keaton Mask."
+        },
+        {
+            "id": "spooky-mask",
+            "name": "Spooky Mask",
+            "hylian_name": "spooky mask",
+            "image": "images/items/Masks/Spooky_Mask.png",
+            "description": "A mask that looks like a ReDead. It's sure to scare someone.",
+            "acquisition": "Borrowed from the Happy Mask Shop after selling the Skull Mask."
+        },
+        {
+            "id": "bunny-hood",
+            "name": "Bunny Hood",
+            "hylian_name": "bunny hood",
+            "image": "images/items/Masks/Bunny_Hood.png",
+            "description": "A mask with long, rabbit-like ears. It prevents Stalchildren from appearing in Hyrule Field at night.",
+            "acquisition": "Borrowed from the Happy Mask Shop after selling the Spooky Mask. Show it to the Running Man in Hyrule Field."
+        },
+        {
+            "id": "goron-mask",
+            "name": "Goron Mask",
+            "hylian_name": "goron mask",
+            "image": "images/items/Masks/Goron_Mask.png",
+            "description": "A mask that looks like a Goron. It's a novelty item.",
+            "acquisition": "Borrowed from the Happy Mask Shop after the Bunny Hood event."
+        },
+        {
+            "id": "zora-mask",
+            "name": "Zora Mask",
+            "hylian_name": "zora mask",
+            "image": "images/items/Masks/Zora_Mask.png",
+            "description": "A mask that looks like a Zora. It's a novelty item.",
+            "acquisition": "Borrowed from the Happy Mask Shop after the Goron Mask event."
+        },
+        {
+            "id": "gerudo-mask",
+            "name": "Gerudo Mask",
+            "hylian_name": "gerudo mask",
+            "image": "images/items/Masks/Gerudo_Mask.png",
+            "description": "A mask that looks like a Gerudo. It's a novelty item.",
+            "acquisition": "Borrowed from the Happy Mask Shop after the Zora Mask event."
+        },
+        {
+            "id": "mask-of-truth",
+            "name": "Mask of Truth",
+            "hylian_name": "mask of truth",
+            "image": "images/items/Masks/Mask_of_Truth.png",
+            "description": "Allows you to read the minds of people and animals, and understand Gossip Stones.",
+            "acquisition": "The final reward from the Happy Mask Shop trading sequence."
+        }
+    ],
+    "Bottled": [],
+    "Quest Items": [],
+    "Dungeon Items": []
+}

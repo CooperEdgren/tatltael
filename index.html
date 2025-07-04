@@ -39,6 +39,9 @@
 </head>
 <body class="bg-[#03000a]">
 
+    <!-- Diagonal Wipe for Game Change -->
+    <div id="diagonal-wipe" class="diagonal-wipe"></div>
+
     <!-- CSS Animated Background -->
     <div class="background-effects">
         <div id="stars1"></div>
@@ -47,7 +50,7 @@
         <img src="images/moon.png" alt="The Moon" id="moon-image" loading="lazy">
         
         <!-- Animated Clock Town Layers -->
-        <div id="animated-background">
+        <div id="animated-background-mm" class="animated-background">
             <img src="images/clocktown/clocktownBaseLayer.png" alt="Clock Town" id="clocktown-base" loading="lazy">
             <img src="images/clocktown/volcanocloudLayer.png" alt="Volcano Cloud" id="volcano-cloud" loading="lazy">
             <div id="middle-smoke-container">
@@ -62,6 +65,10 @@
                 <img src="images/clocktown/rightsmokingLayer4.png" alt="smoke" class="smoke-frame" loading="lazy">
             </div>
             <img src="images/clocktown/item-dekuLayer.png" alt="Flying Deku" id="flying-deku" loading="lazy">
+        </div>
+        <!-- Placeholder for Ocarina of Time Background -->
+        <div id="animated-background-oot" class="animated-background hidden">
+            <!-- Add OOT background layers here, e.g., Hyrule Field -->
         </div>
     </div>
     
@@ -104,11 +111,11 @@
                              <div class="nav-wing flex items-center" id="nav-wing-right">
                                 <button class="nav-item" data-content="notebook">
                                     <img src="images/bombers-notebook.png" alt="Bomber's Notebook" loading="lazy">
-                                    <span>Notebook</span>
+                                    <span id="notebook-label">Notebook</span>
                                 </button>
                                 <button class="nav-item" data-content="fairies">
                                     <img src="images/stray_fairy_icon.webp" alt="Fairies" loading="lazy">
-                                    <span>Fairies</span>
+                                    <span id="fairies-label">Fairies</span>
                                 </button>
                                 <button class="nav-item" data-content="termina">
                                     <img src="images/map_icon.png" alt="Termina" loading="lazy">
@@ -181,7 +188,7 @@
                 <div id="notebook-content" class="main-content hidden">
                      <div class="w-full h-full max-w-screen-2xl p-2 md:p-4 rounded-2xl main-container flex flex-col">
                         <div class="flex-shrink-0 flex justify-between items-center px-4 md:px-6 py-2 border-b-4 border-yellow-700/50">
-                            <h2 class="text-3xl md:text-4xl text-yellow-200 title-glow">Bomber's Notebook</h2>
+                            <h2 id="notebook-title" class="text-3xl md:text-4xl text-yellow-200 title-glow">Bomber's Notebook</h2>
                             <div class="flex items-center gap-2">
                                 <label for="bomber-code-input" class="font-zelda text-yellow-200 text-lg">Code:</label>
                                 <input type="text" id="bomber-code-input" class="bomber-code-input" maxlength="5" placeholder="_ _ _ _ _">
@@ -224,7 +231,7 @@
                 <div id="fairies-content" class="main-content hidden">
                     <div class="w-full h-full max-w-screen-xl p-4 md:p-6 rounded-2xl main-container flex flex-col">
                         <header class="flex justify-between items-center mb-4 border-b border-purple-400/30 pb-3 flex-shrink-0">
-                            <h2 class="text-3xl md:text-4xl text-yellow-200 title-glow">Stray Fairy Locations</h2>
+                            <h2 id="fairies-title" class="text-3xl md:text-4xl text-yellow-200 title-glow">Stray Fairy Locations</h2>
                             <div class="flex items-center gap-2">
                                 <button id="version-toggle-3ds" class="btn-back text-sm active">3DS</button>
                                 <button id="version-toggle-n64" class="btn-back text-sm">N64</button>
@@ -359,6 +366,17 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Game Switcher -->
+    <div id="game-switcher-container" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+        <div id="game-switcher" class="game-switcher">
+            <button data-game="majoras-mask" class="game-choice active">Majora's Mask</button>
+            <button data-game="ocarina-of-time" class="game-choice">Ocarina of Time</button>
+        </div>
+        <button id="game-switcher-pill" class="game-switcher-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
     </div>
 
     <!-- Modals -->

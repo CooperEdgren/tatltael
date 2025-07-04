@@ -1,0 +1,185 @@
+{
+    "notebookData": {
+        "main-quests": {
+            "title": "Main Quests",
+            "quests": [
+                {
+                    "id": "deku-tree",
+                    "name": "Inside the Deku Tree",
+                    "region": "Kokiri Forest",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Break the curse on the Great Deku Tree.", "walkthrough": "Obtain the Kokiri Sword and Deku Shield, then enter the Great Deku Tree. Navigate the dungeon and defeat Queen Gohma.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Kokiri's Emerald"],
+                    "completed": false
+                },
+                {
+                    "id": "dodongos-cavern",
+                    "name": "Dodongo's Cavern",
+                    "region": "Death Mountain",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Clear Dodongo's Cavern of the dodongos.", "walkthrough": "Use bombs to defeat the dodongos and solve the puzzles within the cavern. Defeat King Dodongo to obtain the Goron's Ruby.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Goron's Ruby"],
+                    "completed": false
+                },
+                {
+                    "id": "jabu-jabus-belly",
+                    "name": "Inside Jabu-Jabu's Belly",
+                    "region": "Zora's Domain",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Rescue Princess Ruto from inside Lord Jabu-Jabu.", "walkthrough": "Find a fish to offer to Lord Jabu-Jabu to gain entry. Navigate the dungeon's many passages and defeat Barinade.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Zora's Sapphire"],
+                    "completed": false
+                },
+                {
+                    "id": "forest-temple",
+                    "name": "Forest Temple",
+                    "region": "Lost Woods",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Conquer the Forest Temple.", "walkthrough": "As an adult, navigate the twisted corridors and haunted rooms of the Forest Temple. Defeat Phantom Ganon to awaken Saria as a Sage.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Forest Medallion"],
+                    "completed": false
+                },
+                {
+                    "id": "fire-temple",
+                    "name": "Fire Temple",
+                    "region": "Death Mountain Crater",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Brave the heat of the Fire Temple.", "walkthrough": "Rescue the imprisoned Gorons and navigate the lava-filled chambers. Defeat the fiery dragon Volvagia to awaken Darunia as a Sage.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Fire Medallion"],
+                    "completed": false
+                },
+                {
+                    "id": "water-temple",
+                    "name": "Water Temple",
+                    "region": "Lake Hylia",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Conquer the Water Temple.", "walkthrough": "Navigate the treacherous Ice Cavern to obtain the Iron Boots, then use them to conquer the Water Temple and defeat Morpha to awaken Ruto as a Sage.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Water Medallion"],
+                    "completed": false
+                },
+                {
+                    "id": "shadow-temple",
+                    "name": "Shadow Temple",
+                    "region": "Kakariko Graveyard",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Face the horrors of the Shadow Temple.", "walkthrough": "After a trip to the Bottom of the Well to obtain the Lens of Truth, you'll face the horrors of the Shadow Temple and its boss, Bongo Bongo, to awaken Impa as a Sage.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Shadow Medallion"],
+                    "completed": false
+                },
+                {
+                    "id": "spirit-temple",
+                    "name": "Spirit Temple",
+                    "region": "Desert Colossus",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Journey through the Spirit Temple.", "walkthrough": "Journey through the Gerudo Fortress and across the Haunted Wasteland to the Spirit Temple, where you'll battle the twin witches, Twinrova, to awaken Nabooru as a Sage.", "completed": false }
+                    ],
+                    "rewards": ["Heart Container", "Spirit Medallion"],
+                    "completed": false
+                },
+                {
+                    "id": "ganons-castle",
+                    "name": "Ganon's Castle",
+                    "region": "Hyrule Castle",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Storm Ganon's Castle and defeat the Great King of Evil.", "walkthrough": "In the final confrontation, you'll storm Ganon's Castle, overcome his trials, and face the Great King of Evil himself.", "completed": false }
+                    ],
+                    "rewards": ["The End"],
+                    "completed": false
+                }
+            ]
+        },
+        "side-quests": {
+            "title": "Side Quests",
+            "quests": [
+                {
+                    "id": "happy-mask-salesman",
+                    "name": "The Happy Mask Salesman",
+                    "region": "Hyrule Castle Town",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Borrow masks from the Happy Mask Salesman and sell them to various characters across Hyrule.", "walkthrough": "Completing this quest grants you the powerful Mask of Truth.", "completed": false }
+                    ],
+                    "rewards": ["Mask of Truth"],
+                    "completed": false
+                },
+                {
+                    "id": "biggorons-sword",
+                    "name": "Biggoron's Sword",
+                    "region": "Hyrule",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "This lengthy trading sequence involves delivering items across Hyrule.", "walkthrough": "Ultimately, you'll obtain the unbreakable and powerful Biggoron's Sword.", "completed": false }
+                    ],
+                    "rewards": ["Biggoron's Sword"],
+                    "completed": false
+                },
+                {
+                    "id": "eponas-song",
+                    "name": "Epona's Song",
+                    "region": "Lon Lon Ranch",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Learn Epona's Song and win a race against Ingo.", "walkthrough": "Visit Lon Lon Ranch to learn Epona's Song and win a race against Ingo to gain the trust and companionship of your loyal horse, Epona.", "completed": false }
+                    ],
+                    "rewards": ["Epona"],
+                    "completed": false
+                },
+                {
+                    "id": "gold-skulltulas",
+                    "name": "Gold Skulltulas",
+                    "region": "Hyrule",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Hunt down 100 Gold Skulltulas hidden throughout Hyrule.", "walkthrough": "Break a curse on a family in Kakariko Village and receive various rewards.", "completed": false }
+                    ],
+                    "rewards": ["Adult's Wallet", "Stone of Agony", "Giant's Wallet", "Piece of Heart", "200 Rupees"],
+                    "completed": false
+                },
+                {
+                    "id": "great-fairy-fountains",
+                    "name": "Great Fairy Fountains",
+                    "region": "Hyrule",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Seek out hidden Great Fairy Fountains.", "walkthrough": "Receive magical powers like Din's Fire, Nayru's Love, and upgrades to your magic meter and spin attack.", "completed": false }
+                    ],
+                    "rewards": ["Magic Meter Upgrade", "Din's Fire", "Farore's Wind", "Nayru's Love", "Enhanced Spin Attack"],
+                    "completed": false
+                },
+                {
+                    "id": "gerudo-training-grounds",
+                    "name": "Gerudo Training Grounds",
+                    "region": "Gerudo's Fortress",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Test your skills in the Gerudo Training Grounds.", "walkthrough": "Complete the trials to earn the valuable Ice Arrows.", "completed": false }
+                    ],
+                    "rewards": ["Ice Arrows"],
+                    "completed": false
+                },
+                {
+                    "id": "big-poe-hunter",
+                    "name": "Big Poe Hunter",
+                    "region": "Hyrule Field",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Hunt down ten Big Poes in Hyrule Field and sell them to a collector.", "walkthrough": "After obtaining Epona, you can hunt down ten Big Poes in Hyrule Field and sell them to a collector for a reward.", "completed": false }
+                    ],
+                    "rewards": ["100 Rupees", "Empty Bottle"],
+                    "completed": false
+                },
+                {
+                    "id": "scarecrows-song",
+                    "name": "The Scarecrow's Song",
+                    "region": "Lake Hylia",
+                    "steps": [
+                        { "day": 1, "time": "Any", "description": "Play a custom eight-note song to Bonooru the scarecrow at Lake Hylia.", "walkthrough": "Playing this 'Scarecrow's Song' in specific locations will summon his brother Pierre, allowing you to reach otherwise inaccessible areas.", "completed": false }
+                    ],
+                    "rewards": ["Access to hidden areas"],
+                    "completed": false
+                }
+            ]
+        }
+    },
+    "characterScheduleData": {}
+}

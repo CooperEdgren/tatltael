@@ -76,7 +76,7 @@ export function toggleMainNav() {
     dom.navPill.classList.toggle('is-visible', isNavOpen);
     dom.mainNavContainer.classList.toggle('nav-is-open', isNavOpen);
     
-    updateTingleVisibility();
+    updateUiComponentVisibility();
 
     if (isNavOpen) {
         setTimeout(() => document.body.addEventListener('click', closeNavOnClickOutside), 0);
@@ -278,7 +278,7 @@ export async function showContentForNav(newContent) {
     }
     
     document.body.classList.toggle('content-active', !!activeContent);
-    updateTingleVisibility();
+    updateUiComponentVisibility();
 }
 
 /**
@@ -309,7 +309,7 @@ export function switchView(viewToShow) {
     const isMainScreen = viewToShow === dom.mainScreen;
     
     dom.toggleUiButton.style.display = isMainScreen ? 'flex' : 'none';
-    updateTingleVisibility();
+    updateUiComponentVisibility();
 
     if (isMainScreen) {
         resetHideUiTimeout();
@@ -319,10 +319,12 @@ export function switchView(viewToShow) {
     }
 }
 
-function updateTingleVisibility() {
-    const isTingleVisible = !isNavOpen && !activeContent;
-    dom.tingleContainer.style.opacity = isTingleVisible ? '1' : '0';
-    dom.tingleContainer.style.pointerEvents = isTingleVisible ? 'auto' : 'none';
+function updateUiComponentVisibility() {
+    const isNavOrContentActive = isNavOpen || !!activeContent;
+    dom.tingleContainer.style.opacity = isNavOrContentActive ? '0' : '1';
+    dom.tingleContainer.style.pointerEvents = isNavOrContentActive ? 'none' : 'auto';
+    dom.gameSwitcherContainer.style.opacity = isNavOrContentActive ? '0' : '1';
+    dom.gameSwitcherContainer.style.pointerEvents = isNavOrContentActive ? 'none' : 'auto';
 }
 
 /**

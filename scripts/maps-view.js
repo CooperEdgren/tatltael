@@ -3,6 +3,7 @@ import * as dom from './dom.js';
 import * as ui from './ui.js';
 
 let currentMapIndex = 0;
+let maps = [];
 
 /**
  * Updates the map modal with a specific map's HD image and details.
@@ -11,9 +12,9 @@ let currentMapIndex = 0;
  */
 function showHdMap(index) {
     // Clamp the index to be within the bounds of the maps array
-    currentMapIndex = Math.max(0, Math.min(data.maps.length - 1, index));
+    currentMapIndex = Math.max(0, Math.min(maps.length - 1, index));
     
-    const map = data.maps[currentMapIndex];
+    const map = maps[currentMapIndex];
     if (!map) return;
 
     // Construct the path to the high-resolution image
@@ -24,7 +25,7 @@ function showHdMap(index) {
 
     // Show/hide navigation arrows based on the current index
     dom.mapModalPrev.classList.toggle('hidden', currentMapIndex === 0);
-    dom.mapModalNext.classList.toggle('hidden', currentMapIndex === data.maps.length - 1);
+    dom.mapModalNext.classList.toggle('hidden', currentMapIndex === maps.length - 1);
 }
 
 /**
@@ -47,9 +48,19 @@ export function closeMapModal() {
 /**
  * Populates the grid with map items.
  */
-export function populateMapsGrid() {
+export async function populateMapsGrid(game = 'majoras-mask') {
+    const gameDataPath = game === 'ocarina-of-time' ? '../data/oot-game-data.json' : '../data/game-data.json';
+    try {
+        const response = await fetch(gameDataPath);
+        const gameData = await response.json();
+        maps = gameData.maps || [];
+    } catch (error) {
+        console.error('Failed to load game data:', error);
+        maps = [];
+    }
+
     dom.mapGrid.innerHTML = '';
-    data.maps.forEach((map, index) => {
+    maps.forEach((map, index) => {
         const mapItem = document.createElement('div');
         mapItem.className = 'map-item';
         mapItem.innerHTML = `<img src="${map.src}" alt="${map.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/400x300/0d0818/a78bfa?text=Map+Not+Found'"><h3>${map.name}</h3>`;

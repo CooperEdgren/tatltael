@@ -8,6 +8,7 @@ let notebookData = {};
 let characterScheduleData = {};
 let items = {};
 let songs = {};
+let currentGame = 'majoras-mask';
 
 // Maps quest IDs to heart piece/container IDs
 const questHeartMap = {
@@ -45,11 +46,15 @@ const questHeartMap = {
 
 
 async function loadNotebookData() {
+    const notebookPath = currentGame === 'ocarina-of-time' ? '../data/oot-notebook.json' : '../data/notebook.json';
+    const itemsPath = currentGame === 'ocarina-of-time' ? '../data/oot-items.json' : '../data/items.json';
+    const gameDataPath = currentGame === 'ocarina-of-time' ? '../data/oot-game-data.json' : '../data/game-data.json';
+
     try {
         const [notebookRes, itemsRes, gameDataRes, _] = await Promise.all([
-            fetch('../data/notebook.json'),
-            fetch('../data/items.json'),
-            fetch('../data/game-data.json'),
+            fetch(notebookPath),
+            fetch(itemsPath),
+            fetch(gameDataPath),
             loadHeartDataFromHearts()
         ]);
 
@@ -482,10 +487,29 @@ function renderApp() {
 /**
  * Initializes the Bomber's Notebook view and its event listeners.
  */
-export async function populateBombersNotebook() {
+export async function populateBombersNotebook(game = 'majoras-mask') {
+    currentGame = game;
     await loadNotebookData();
     loadProgress();
-    activeCharacter = Object.keys(characterScheduleData)[0]; // Select the first character by default
+    if (characterScheduleData && Object.keys(characterScheduleData).length > 0) {
+        activeCharacter = Object.keys(characterScheduleData)[0]; // Select the first character by default
+    }
+
+    const notebookTitle = document.getElementById('notebook-title');
+    const notebookLabel = document.getElementById('notebook-label');
+    const charactersTab = document.querySelector('.notebook-tab[data-tab="characters"]');
+
+    if (game === 'ocarina-of-time') {
+        notebookTitle.textContent = 'Notebook';
+        notebookLabel.textContent = 'Notebook';
+        if (charactersTab) charactersTab.style.display = 'none';
+        if (activeTab === 'characters') activeTab = 'scheduled';
+    } else {
+        notebookTitle.textContent = "Bomber's Notebook";
+        notebookLabel.textContent = "Notebook";
+        if (charactersTab) charactersTab.style.display = 'flex';
+    }
+
     renderApp();
 
     dom.bomberCodeInput.addEventListener('input', saveProgress);
