@@ -5,6 +5,7 @@ const CACHE_NAME = 'tatltael-cache-v9';
 // The list of all files to be cached for offline access.
 const urlsToCache = [
   'index.html',
+  'oot.html',
   'style.css',
   // Scripts
   'scripts/app.js',

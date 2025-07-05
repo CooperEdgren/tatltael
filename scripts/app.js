@@ -8,18 +8,20 @@ import * as itemsView from './items-view.js';
 import * as fairiesView from './fairies-view.js';
 import * as heartsView from './hearts-view.js';
 
-let currentGame = 'majoras-mask';
+let currentGame;
 
 /**
  * Main application initialization function.
  */
 function main() {
     // --- INITIAL POPULATION ---
+    currentGame = document.body.dataset.game || 'majoras-mask';
     loadGameData(currentGame);
     audio.initializeAudio();
     ui.initializeSettings();
     ui.loadSavedIcon();
     handleSwipe();
+    updateGameSwitcherUI();
 
     // --- EVENT LISTENERS ---
 
@@ -35,7 +37,8 @@ function main() {
         if (choice) {
             const game = choice.dataset.game;
             if (game !== currentGame) {
-                switchGame(game);
+                const direction = game === 'ocarina-of-time' ? 'up' : 'down';
+                switchGame(game, direction);
             }
             dom.gameSwitcher.classList.remove('is-open');
         }
@@ -173,10 +176,17 @@ function loadGameData(game) {
     heartsView.populateHeartsView(game);
 }
 
+function updateGameSwitcherUI() {
+    const choices = dom.gameSwitcher.querySelectorAll('.game-choice');
+    choices.forEach(choice => {
+        choice.classList.toggle('active', choice.dataset.game === currentGame);
+    });
+    document.body.classList.toggle('oot-mode', currentGame === 'ocarina-of-time');
+}
+
 function switchGame(game, direction = 'down') {
     if (dom.diagonalWipe.classList.contains('is-active')) return;
 
-    currentGame = game;
     const wipe = dom.diagonalWipe;
 
     // Set animation direction
@@ -189,17 +199,12 @@ function switchGame(game, direction = 'down') {
     wipe.classList.add('is-active');
 
     setTimeout(() => {
-        document.body.classList.toggle('oot-mode', game === 'ocarina-of-time');
-        loadGameData(game);
-        
-        // Animate out
-        if (direction === 'up') {
-            wipe.style.transformOrigin = 'top';
+        if (game === 'ocarina-of-time') {
+            window.location.href = 'oot.html';
         } else {
-            wipe.style.transformOrigin = 'bottom';
+            window.location.href = 'index.html';
         }
-        wipe.classList.remove('is-active');
-    }, 1000);
+    }, 1000); // Wait for wipe animation to cover screen
 }
 
 function handleSwipe() {
