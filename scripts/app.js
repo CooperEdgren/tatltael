@@ -19,6 +19,7 @@ function main() {
     audio.initializeAudio();
     ui.initializeSettings();
     ui.loadSavedIcon();
+    handleSwipe();
 
     // --- EVENT LISTENERS ---
 
@@ -172,15 +173,78 @@ function loadGameData(game) {
     heartsView.populateHeartsView(game);
 }
 
-function switchGame(game) {
+function switchGame(game, direction = 'down') {
+    if (dom.diagonalWipe.classList.contains('is-active')) return;
+
     currentGame = game;
-    document.body.classList.toggle('oot-mode', game === 'ocarina-of-time');
-    dom.diagonalWipe.classList.add('is-active');
+    const wipe = dom.diagonalWipe;
+
+    // Set animation direction
+    if (direction === 'up') {
+        wipe.style.transformOrigin = 'bottom';
+    } else {
+        wipe.style.transformOrigin = 'top';
+    }
+
+    wipe.classList.add('is-active');
+
     setTimeout(() => {
+        document.body.classList.toggle('oot-mode', game === 'ocarina-of-time');
         loadGameData(game);
-        dom.diagonalWipe.classList.remove('is-active');
+        
+        // Animate out
+        if (direction === 'up') {
+            wipe.style.transformOrigin = 'top';
+        } else {
+            wipe.style.transformOrigin = 'bottom';
+        }
+        wipe.classList.remove('is-active');
     }, 1000);
 }
+
+function handleSwipe() {
+    let touchstartY = 0;
+    let touchendY = 0;
+
+    const gestureZone = document.body;
+
+    gestureZone.addEventListener('touchstart', function(event) {
+        // Allow swipe only if the main content is not scrolled
+        const mainContent = document.querySelector('.main-content.is-active');
+        if (!mainContent || mainContent.scrollTop === 0) {
+            touchstartY = event.changedTouches[0].screenY;
+        } else {
+            touchstartY = 0; // Reset if content is scrolled
+        }
+    }, { passive: true });
+
+    gestureZone.addEventListener('touchend', function(event) {
+        if (touchstartY === 0) return; // Don't handle swipe if it started on scrolled content
+        touchendY = event.changedTouches[0].screenY;
+        handleGesture();
+        touchstartY = 0; // Reset after gesture
+    }, { passive: true }); 
+
+    function handleGesture() {
+        const delY = touchendY - touchstartY;
+        const threshold = 50; // Minimum swipe distance
+
+        if (Math.abs(delY) > threshold) {
+            if (delY > 0) {
+                // Swipe Down
+                if (currentGame === 'ocarina-of-time') {
+                    switchGame('majoras-mask', 'down');
+                }
+            } else {
+                // Swipe Up
+                if (currentGame === 'majoras-mask') {
+                    switchGame('ocarina-of-time', 'up');
+                }
+            }
+        }
+    }
+}
+
 
 // Run the application once the DOM is fully loaded.
 document.addEventListener('DOMContentLoaded', main);
