@@ -185,7 +185,7 @@ function updateGameSwitcherUI() {
 }
 
 function switchGame(game, direction = 'down') {
-    if (dom.diagonalWipe.classList.contains('is-active')) return;
+    if (dom.diagonalWipe.classList.contains('is-active') || ui.isUiBlockingSwitch()) return;
 
     const wipe = dom.diagonalWipe;
 

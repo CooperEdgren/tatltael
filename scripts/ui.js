@@ -321,10 +321,16 @@ export function switchView(viewToShow) {
 
 function updateUiComponentVisibility() {
     const isNavOrContentActive = isNavOpen || !!activeContent;
-    dom.tingleContainer.style.opacity = isNavOrContentActive ? '0' : '1';
-    dom.tingleContainer.style.pointerEvents = isNavOrContentActive ? 'none' : 'auto';
-    dom.gameSwitcherContainer.style.opacity = isNavOrContentActive ? '0' : '1';
-    dom.gameSwitcherContainer.style.pointerEvents = isNavOrContentActive ? 'none' : 'auto';
+    const opacity = isNavOrContentActive ? '0' : '1';
+    const pointerEvents = isNavOrContentActive ? 'none' : 'auto';
+
+    dom.tingleContainer.style.opacity = opacity;
+    dom.tingleContainer.style.pointerEvents = pointerEvents;
+    
+    if (dom.gameSwitcherContainer) {
+        dom.gameSwitcherContainer.style.opacity = opacity;
+        dom.gameSwitcherContainer.style.pointerEvents = pointerEvents;
+    }
 }
 
 /**
@@ -373,6 +379,21 @@ export function toggleControlsVisibility() {
         dom.mainNavContainer.classList.remove('alt-explore');
     }
     resetHideUiTimeout();
+}
+
+export function isUiBlockingSwitch() {
+    const isAnyModalOpen = dom.mapModal.classList.contains('is-visible') || 
+                           dom.controllerModal.classList.contains('is-visible') ||
+                           dom.itemDetailModal.classList.contains('is-visible');
+    
+    const isAnyViewActive = ![dom.mainScreen, null, undefined].includes(document.querySelector('.view-container.is-active'));
+
+    return isNavOpen || 
+           !!activeContent || 
+           isSettingsMenuOpen || 
+           isAnyModalOpen ||
+           isAnyViewActive ||
+           dom.mainScreen.classList.contains('controls-hidden');
 }
 
 /**
