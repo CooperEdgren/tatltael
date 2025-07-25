@@ -307,7 +307,8 @@
             "hylian_name": "ocarina of time",
             "image": "images/items/Inventory/Ocarina_of_Time.png",
             "description": "A magical ocarina that allows Link to play songs to manipulate time and the environment.",
-            "acquisition": "Given to Link by Princess Zelda after Link collects all 3 Spiritual Stones, by the time Link had gotten to Hyrule Castle, Gannondorf had taken over. Link sees Zelada fleeing and she throws the Ocarina of Time to him, which he catches."
+            "acquisition": "Given to Link by Princess Zelda after Link collects all 3 Spiritual Stones, by the time Link had gotten to Hyrule Castle, Gannondorf had taken over. Link sees Zelada fleeing and she throws the Ocarina of Time to him, which he catches.",
+            "use_action": "ocarina.html"
         },
         {
             "id": "heros-bow",
@@ -664,6 +665,18 @@
             "image": "images/heart_container_icon.png",
             "description": "Increases your maximum health by one full heart.",
             "acquisition": "Obtained by defeating the main bosses of the four temples."
+        }
+    ],
+    "Hidden": [
+        {
+            "id": "pokedex",
+            "name": "Pokedex",
+            "hylian_name": "mysterious red box",
+            "image": "images/items/pokedex.png",
+            "description": "A peculiar device of unknown origin, humming with a mysterious energy. Its polished red surface is unlike any material found in Hyrule. One might guess it comes from another world, or perhaps another time. It seems to hold data on many strange creatures.",
+            "acquisition": "Its origins are a complete mystery, as if it simply appeared.",
+            "search_terms": ["pokemon", "pokedex", "pokeball", "pokémon", "pokédex", "pokéball"],
+            "use_action": "pokedexwebapp/pokedex.html"
         }
     ],
     "Boss Remains": [

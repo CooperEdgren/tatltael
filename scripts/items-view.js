@@ -9,11 +9,11 @@ async function loadItemsData() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         items = await response.json();
-        // Populate the "All" category after fetching
+        // Populate the "All" category after fetching, excluding "Hidden" items
         if (items.All) {
             items.All = [];
             for (const category in items) {
-                if (category !== "All") {
+                if (category !== "All" && category !== "Hidden") {
                     items.All.push(...items[category]);
                 }
             }
@@ -37,11 +37,25 @@ function renderItems(category, searchTerm = '') {
     if (!grid) return;
 
     grid.innerHTML = '';
-    const searchTermLower = searchTerm.toLowerCase();
+    const searchTermLower = searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    const itemsToRender = items[category].filter(item => 
-        item.name.toLowerCase().includes(searchTermLower)
-    );
+    let itemsToRender = [];
+
+    if (searchTermLower) {
+        // If there's a search term, create a comprehensive list of all items to search, including hidden ones.
+        const allItemsForSearch = Object.entries(items)
+            .filter(([key]) => key !== 'All') // Avoid duplicating items from the 'All' array
+            .flatMap(([, value]) => value); // Flatten all category arrays into one
+
+        itemsToRender = allItemsForSearch.filter(item => {
+            const nameMatch = item.name.toLowerCase().includes(searchTermLower);
+            const searchTermsMatch = item.search_terms && item.search_terms.some(term => term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchTermLower));
+            return nameMatch || searchTermsMatch;
+        });
+    } else {
+        // Otherwise, just show items from the current, non-hidden category
+        itemsToRender = items[category] || [];
+    }
 
     if (itemsToRender.length === 0) {
         grid.innerHTML = `<p class="col-span-full text-center text-purple-200">No items found.</p>`;
@@ -88,13 +102,14 @@ export function showItemDetailView(item, clickedElementRect) {
     const container = actionsContainer || document.getElementById('item-actions');
     container.innerHTML = '';
 
-    if (item.name === 'Ocarina of Time') {
+    // Generic "Use" button for items with a use_action
+    if (item.use_action) {
         const useButton = document.createElement('button');
         useButton.className = 'btn-back';
         useButton.textContent = 'Use';
         useButton.addEventListener('click', () => {
             ui.triggerHapticFeedback();
-            window.location.href = 'ocarina.html';
+            window.location.href = item.use_action;
         });
         container.appendChild(useButton);
     }
@@ -124,10 +139,11 @@ export async function populateItemsView(game = 'majoras-mask') {
     const searchInput = dom.itemSearchInput;
     if (!tabsContainer || !searchInput) return;
 
-    // Create category tabs
+    // Create category tabs, excluding "Hidden"
     tabsContainer.innerHTML = '';
     const fragment = document.createDocumentFragment();
     Object.keys(items).forEach(category => {
+        if (category === 'Hidden') return;
         const tab = document.createElement('button');
         tab.className = 'item-category-tab';
         tab.textContent = category;

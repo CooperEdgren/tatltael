@@ -79,6 +79,18 @@
             "acquisition": "Found in a treasure chest within the Shadow Temple."
         }
     ],
+    "Hidden": [
+        {
+            "id": "pokedex",
+            "name": "Pokedex",
+            "hylian_name": "mysterious red box",
+            "image": "images/items/pokedex.png",
+            "description": "A peculiar device of unknown origin, humming with a mysterious energy. Its polished red surface is unlike any material found in Hyrule. One might guess it comes from another world, or perhaps another time. It seems to hold data on many strange creatures.",
+            "acquisition": "Its origins are a complete mystery, as if it simply appeared.",
+            "search_terms": ["pokemon", "pokedex", "pokeball", "pokémon", "pokédex", "pokéball"],
+            "use_action": "pokedexwebapp/pokedex.html"
+        }
+    ],
     "Items": [
         {
             "id": "deku-stick",
@@ -163,6 +175,14 @@
             "image": "images/items/oot/nayrus-love.png",
             "description": "A magical spell that creates a protective barrier around Link, making him invincible for a short time.",
             "acquisition": "Obtained from a Great Fairy Fountain in the Desert Colossus."
+        },
+        {
+            "id": "ocarina-of-time",
+            "name": "Ocarina of Time",
+            "image": "images/items/Inventory/Ocarina_of_Time.png",
+            "description": "A mystical ocarina given to Link by Princess Zelda. It holds the power to control time itself.",
+            "acquisition": "After collecting the three Spiritual Stones, Princess Zelda entrusts it to Link as she flees from Hyrule Castle.",
+            "use_action": "ocarina.html"
         }
     ],
     "Masks": [
