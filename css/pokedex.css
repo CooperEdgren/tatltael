@@ -50,6 +50,7 @@ body {
     -webkit-user-select: none; /* For Safari */
 }
 
+html.modal-open,
 body.modal-open {
     overflow: hidden;
 }
@@ -329,9 +330,9 @@ header {
 
 #generation-filter-container {
     display: flex;
+    justify-content: center;
     overflow-x: auto;
     padding: 10px 0;
-    width: 100%;
 }
 
 .generation-filter-btn {
@@ -760,7 +761,7 @@ header {
     border: none;
     color: #fff;
     position: absolute;
-    top: 20px;
+    top: 35px;
     right: 30px;
     font-size: 40px;
     font-weight: 700;

@@ -120,6 +120,7 @@ export async function openModal(pokemon, species, encounters, evolutionChain, ty
 
         modal.style.visibility = 'visible';
         detailsPane.classList.add('show-content');
+        document.documentElement.classList.add('modal-open');
         body.classList.add('modal-open');
         ui.setHeaderTitle(pokemon.name);
         animatedSpriteContainer.innerHTML = '';
@@ -130,6 +131,7 @@ export async function openModal(pokemon, species, encounters, evolutionChain, ty
         const detailsPane = document.querySelector('.details-content-pane');
         detailsPane.classList.add('show-content');
         modal.style.display = 'block';
+        document.documentElement.classList.add('modal-open');
         body.classList.add('modal-open');
     }
     
@@ -211,6 +213,7 @@ export async function closeModal() {
     await sleep(500);
 
     modal.style.display = 'none';
+    document.documentElement.classList.remove('modal-open');
     body.classList.remove('modal-open');
     ui.setHeaderTitle(originalHeaderText);
     window.scrollTo(0, scrollPosition);
