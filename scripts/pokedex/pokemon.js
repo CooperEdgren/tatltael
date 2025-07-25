@@ -1,5 +1,6 @@
 import { POKEAPI_BASE_URL, SUPPORTED_GAMES } from './constants.js';
 import * as cache from './cache.js';
+import * as dbCache from './cache-db.js';
 
 class PokeApiError extends Error {
     constructor(message, status) {
@@ -65,6 +66,32 @@ export default class PokemonService {
             };
         });
         return Promise.all(pokemonDetailsPromises);
+    }
+
+    async getPokemonComplete(id) {
+        const cachedData = await dbCache.get(id);
+        if (cachedData) {
+            return cachedData;
+        }
+
+        const pokemon = await this.getPokemonDetails(id);
+        const species = await this.getPokemonSpecies(id);
+        const rawEncounters = await this.getPokemonEncounters(id);
+        const encounters = this.processEncounters(rawEncounters);
+        const evolutionChain = await this.getEvolutionChain(species.evolution_chain.url);
+        const typeEffectiveness = await this.getPokemonTypeEffectiveness(pokemon);
+
+        const completeData = {
+            pokemon,
+            species,
+            encounters,
+            evolutionChain,
+            typeEffectiveness,
+            isCatchableInWild: rawEncounters && rawEncounters.length > 0
+        };
+
+        await dbCache.set(id, completeData);
+        return completeData;
     }
 
     async getPokemonDetails(id) {

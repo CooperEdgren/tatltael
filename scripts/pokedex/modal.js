@@ -46,10 +46,10 @@ function animateElements(originCard, reverse = false) {
     });
 }
 
-export async function openModal(pokemon, species, encounters, evolutionChain, typeEffectiveness, card, isCatchableInWild) {
+export async function openModal(pokemonId, basicPokemonInfo, card) {
     if (isAnimating) return;
     isAnimating = true;
-    currentModalPokemonId = pokemon.id;
+    currentModalPokemonId = pokemonId;
 
     const modal = document.getElementById('pokemon-modal');
     const body = document.body;
@@ -68,7 +68,8 @@ export async function openModal(pokemon, species, encounters, evolutionChain, ty
         const cardImage = card.querySelector('img');
         const cardImageRect = cardImage.getBoundingClientRect();
 
-        ui.renderPokemonDetail(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild);
+        // Render the initial modal with only basic info and loading placeholders
+        ui.renderPokemonDetail(basicPokemonInfo, null, null, null, null, false, true);
         modal.style.display = 'block';
         modal.style.visibility = 'hidden';
 
@@ -122,12 +123,13 @@ export async function openModal(pokemon, species, encounters, evolutionChain, ty
         detailsPane.classList.add('show-content');
         document.documentElement.classList.add('modal-open');
         body.classList.add('modal-open');
-        ui.setHeaderTitle(pokemon.name);
+        ui.setHeaderTitle(basicPokemonInfo.name);
         animatedSpriteContainer.innerHTML = '';
         transitionOverlay.style.opacity = '0';
     } else {
-        ui.renderPokemonDetail(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild);
-        ui.setHeaderTitle(pokemon.name);
+        // This case is for when we don't have a card to animate from, e.g., evolution click
+        ui.renderPokemonDetail(basicPokemonInfo, null, null, null, null, false, true);
+        ui.setHeaderTitle(basicPokemonInfo.name);
         const detailsPane = document.querySelector('.details-content-pane');
         detailsPane.classList.add('show-content');
         modal.style.display = 'block';
@@ -315,6 +317,14 @@ export function initModal(headerText, uiInstance, pokemonServiceInstance) {
             } else {
                 closeModal();
             }
+        }
+    });
+
+    document.addEventListener('pokemonDetailsLoaded', (event) => {
+        const { pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild } = event.detail;
+        if (pokemon.id === currentModalPokemonId) {
+            // Re-render the detail view with the complete data
+            ui.renderPokemonDetail(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild, false);
         }
     });
 

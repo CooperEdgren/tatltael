@@ -215,23 +215,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (card) {
             if (comparisonList.length > 0) { handleCardSelection(card); return; }
-            const pokemonId = card.dataset.id;
-            ui.showLoader();
+            const pokemonId = parseInt(card.dataset.id, 10);
+            const pokemonFromList = allPokemon.find(p => p.id === pokemonId);
+            
+            // Open modal immediately with basic info
+            openModal(pokemonId, pokemonFromList, card);
+
+            // Fetch complete data in the background
             try {
-                const pokemon = await pokemonService.getPokemonDetails(pokemonId);
-                ui.setHeaderTitle(pokemon.name);
-                const species = await pokemonService.getPokemonSpecies(pokemonId);
-                const rawEncounters = await pokemonService.getPokemonEncounters(pokemonId);
-                const encounters = pokemonService.processEncounters(rawEncounters);
-                const evolutionChain = await pokemonService.getEvolutionChain(species.evolution_chain.url);
-                const typeEffectiveness = await pokemonService.getPokemonTypeEffectiveness(pokemon);
-                const isCatchableInWild = rawEncounters && rawEncounters.length > 0;
-                openModal(pokemon, species, encounters, evolutionChain, typeEffectiveness, card, isCatchableInWild);
+                const completeData = await pokemonService.getPokemonComplete(pokemonId);
+                // The modal is already open, so we just need to update it with the full data
+                document.dispatchEvent(new CustomEvent('pokemonDetailsLoaded', { detail: completeData }));
             } catch (error) {
-                console.error('Error opening modal:', error);
-                ui.showError('Failed to load Pokémon details.');
-            } finally {
-                ui.hideLoader();
+                console.error('Error fetching full Pokémon details:', error);
+                ui.showError('Failed to load all Pokémon details.');
+                // Optionally, close the modal or show an error inside it
             }
         }
     });
@@ -295,12 +293,25 @@ document.addEventListener('DOMContentLoaded', () => {
             setAllPokemon(pokemonData);
             ui.renderPokemonList(allPokemon, isShinyView);
             document.dispatchEvent(new Event('pokemonDataLoaded'));
+            // Start pre-fetching in the background
+            prefetchAllPokemonData();
         } catch (error) {
             console.error('Error in displayPokemon:', error);
             ui.showError('Failed to load Pokémon. Please try again later.');
         } finally {
             ui.hideLoader();
         }
+    };
+
+    const prefetchAllPokemonData = async () => {
+        console.log('Starting Pokémon data pre-fetch...');
+        for (const pokemon of allPokemon) {
+            // A small delay to prevent overwhelming the network
+            await sleep(50); 
+            // The getPokemonComplete function will fetch and cache if not already present
+            await pokemonService.getPokemonComplete(pokemon.id);
+        }
+        console.log('Pokémon data pre-fetch complete.');
     };
 
     const setupUploadModal = () => {

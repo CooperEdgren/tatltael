@@ -148,22 +148,25 @@ export class UI {
         return pokemonCard;
     }
 
-    renderPokemonDetail(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild) {
+    renderPokemonDetail(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild, isLoading = false) {
         this.hideError();
-        this.modalBody.innerHTML = this._createDetailMarkup(pokemon, species, typeEffectiveness, isCatchableInWild);
+        this.modalBody.innerHTML = this._createDetailMarkup(pokemon, species, typeEffectiveness, isCatchableInWild, isLoading);
 
         this._styleDetailsPane(pokemon.types);
-        this._animateSprite(pokemon.sprites);
-        if (isCatchableInWild) {
-            this._renderLocationEncounterSection(encounters);
-            this._renderCatchRateSection(pokemon, species);
+        
+        if (!isLoading) {
+            this._animateSprite(pokemon.sprites);
+            if (isCatchableInWild) {
+                this._renderLocationEncounterSection(encounters);
+                this._renderCatchRateSection(pokemon, species);
+            }
+            this._renderEvolutionSection(pokemon, evolutionChain);
         }
-        this._renderEvolutionSection(pokemon, evolutionChain);
     }
 
-    _createDetailMarkup(pokemon, species, typeEffectiveness, isCatchableInWild) {
-        const sprite = pokemon.sprites.versions['generation-v']['black-white'].animated.front_default || pokemon.sprites.front_default;
-        const shinySprite = pokemon.sprites.versions['generation-v']['black-white'].animated.front_shiny || pokemon.sprites.front_shiny;
+    _createDetailMarkup(pokemon, species, typeEffectiveness, isCatchableInWild, isLoading) {
+        const sprite = pokemon.sprite || pokemon.sprites?.front_default;
+        const shinySprite = pokemon.shinySprite || pokemon.sprites?.front_shiny;
         const isFavorite = favorites.isFavorite(pokemon.id);
         const isCaught = tracker.isCaught(pokemon.id);
         const isSeen = tracker.isSeen(pokemon.id);
@@ -173,40 +176,44 @@ export class UI {
             return `<img src="images/pokedex-assets/types/${typeName}.png" alt="${typeName}" class="type-badge">`;
         }).join('');
 
-        const stats = pokemon.stats.map(statInfo => `
+        const stats = pokemon.stats ? pokemon.stats.map(statInfo => `
             <div class="stat">
                 <span class="stat-name">${statInfo.stat.name}</span>
                 <div class="stat-bar"><div class="stat-bar-inner" style="width: ${statInfo.base_stat / (MAX_STAT_VALUE / 100)}%"></div></div>
                 <span class="stat-value">${statInfo.base_stat}</span>
             </div>
-        `).join('');
+        `).join('') : '<div class="loader-small"></div>';
 
-        const genus = species.genera.find(entry => entry.language.name === LANGUAGE_ENGLISH)?.genus || 'Unknown';
-        const flavorText = species.flavor_text_entries.find(entry => entry.language.name === LANGUAGE_ENGLISH)?.flavor_text || 'No description available.';
+        const genus = species ? species.genera.find(entry => entry.language.name === LANGUAGE_ENGLISH)?.genus || 'Unknown' : '';
+        const flavorText = species ? species.flavor_text_entries.find(entry => entry.language.name === LANGUAGE_ENGLISH)?.flavor_text || 'No description available.' : '<div class="loader-small"></div>';
 
-        const typeEffectivenessMarkup = this._renderTypeEffectiveness(typeEffectiveness);
+        const typeEffectivenessMarkup = typeEffectiveness ? this._renderTypeEffectiveness(typeEffectiveness) : '<div class="loader-small"></div>';
         
-        let catchAndLocationMarkup = '';
-        if (isCatchableInWild) {
-            catchAndLocationMarkup = `
-                <div class="location-encounter-section"><h3>Location/Encounter Rate</h3><div class="location-encounter-content"></div></div>
-                <div class="catch-rates-section"></div>
-            `;
-        } else {
-            const isLegendary = species.is_legendary;
-            const isMythical = species.is_mythical;
-            const evolvesFrom = species.evolves_from_species;
-            let message = '';
-
-            if (isLegendary || isMythical) {
-                message = `<p>${this._formatLocationName(pokemon.name)} is a special Pokémon and is not typically found roaming in the wild.</p>`;
-            } else if (evolvesFrom) {
-                message = `<p>${this._formatLocationName(pokemon.name)} is not found in the wild in the supported games and must be evolved from ${this._formatLocationName(evolvesFrom.name)}.</p>`;
+        let catchAndLocationMarkup = '<div class="loader-small"></div>';
+        if (!isLoading) {
+            if (isCatchableInWild) {
+                catchAndLocationMarkup = `
+                    <div class="location-encounter-section"><h3>Location/Encounter Rate</h3><div class="location-encounter-content"></div></div>
+                    <div class="catch-rates-section"></div>
+                `;
             } else {
-                message = `<p>${this._formatLocationName(pokemon.name)} is not found in the wild in the supported games. It is likely a starter, gift, or event Pokémon.</p>`;
+                const isLegendary = species.is_legendary;
+                const isMythical = species.is_mythical;
+                const evolvesFrom = species.evolves_from_species;
+                let message = '';
+
+                if (isLegendary || isMythical) {
+                    message = `<p>${this._formatLocationName(pokemon.name)} is a special Pokémon and is not typically found roaming in the wild.</p>`;
+                } else if (evolvesFrom) {
+                    message = `<p>${this._formatLocationName(pokemon.name)} is not found in the wild in the supported games and must be evolved from ${this._formatLocationName(evolvesFrom.name)}.</p>`;
+                } else {
+                    message = `<p>${this._formatLocationName(pokemon.name)} is not found in the wild in the supported games. It is likely a starter, gift, or event Pokémon.</p>`;
+                }
+                catchAndLocationMarkup = `<div class="catch-info-section"><h3>Availability</h3>${message}</div>`;
             }
-            catchAndLocationMarkup = `<div class="catch-info-section"><h3>Availability</h3>${message}</div>`;
         }
+
+        const evolutionMarkup = !isLoading ? `<div class="evolution-section"><h3>Evolution</h3><div class="evolution-content"></div></div>` : '<div class="loader-small"></div>';
 
         return `
             <div class="sprite-container">
@@ -232,10 +239,10 @@ export class UI {
                         <h4>${genus}</h4>
                         <p>${flavorText}</p>
                         <div class="info-grid">
-                            <div class="info-item"><h4>Height</h4><p>${pokemon.height / 10} m</p></div>
-                            <div class="info-item"><h4>Weight</h4><p>${pokemon.weight / 10} kg</p></div>
-                            <div class="info-item"><h4>Abilities</h4><p>${pokemon.abilities.map(a => a.ability.name).join(', ')}</p></div>
-                            <div class="info-item"><h4>Base Experience</h4><p>${pokemon.base_experience}</p></div>
+                            <div class="info-item"><h4>Height</h4><p>${pokemon.height ? pokemon.height / 10 + ' m' : '...'}</p></div>
+                            <div class="info-item"><h4>Weight</h4><p>${pokemon.weight ? pokemon.weight / 10 + ' kg' : '...'}</p></div>
+                            <div class="info-item"><h4>Abilities</h4><p>${pokemon.abilities ? pokemon.abilities.map(a => a.ability.name).join(', ') : '...'}</p></div>
+                            <div class="info-item"><h4>Base Experience</h4><p>${pokemon.base_experience || '...'}</p></div>
                             <div class="info-item"><h4>Common Nature</h4><p>${this._getFluffNature(pokemon.id)}</p></div>
                             <div class="info-item"><h4>Favorite Food</h4><p>${this._getFluffFood(pokemon.types)}</p></div>
                         </div>
@@ -243,7 +250,7 @@ export class UI {
                     <div class="stats-container"><h3>Base Stats</h3>${stats}</div>
                     ${typeEffectivenessMarkup}
                     ${catchAndLocationMarkup}
-                    <div class="evolution-section"><h3>Evolution</h3><div class="evolution-content"></div></div>
+                    ${evolutionMarkup}
                 </div>
             </div>
         `;
