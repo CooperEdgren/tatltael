@@ -45,7 +45,7 @@ body {
     background-color: #222222;
     color: #fff;
     overflow-x: hidden;
-    padding-top: calc(65px + env(safe-area-inset-top)); /* To prevent content from being hidden by the fixed header */
+    padding-top: 65px; /* To prevent content from being hidden by the fixed header */
     user-select: none; /* Disable text highlighting */
     -webkit-user-select: none; /* For Safari */
 }
