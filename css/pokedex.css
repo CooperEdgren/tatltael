@@ -65,16 +65,15 @@ body.modal-open #pokedex {
 /* Header */
 header {
     padding: 20px 10px; /* Match pokedex grid padding */
-    padding-top: env(safe-area-inset-top);
     text-transform: capitalize;
     display: flex;
     align-items: center;
     justify-content: center;
     position: fixed;
-    top: 0;
+    top: env(safe-area-inset-top);
     left: 0;
     right: 0;
-    background-color: transparent;
+    background-color: #222222;
     z-index: 1002;
     transition: height 0.3s ease;
 }
