@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pokedex</title>
+    <link rel="stylesheet" href="css/pokedex.css">
+</head>
+<body>
+    <header>
+        <div class="header-main-content">
+            <div class="pokedex-nav">
+                <div class="nav-options-left">
+                    <a href="#" id="nav-trainer-card" class="nav-pill-option" aria-label="Trainer Card">
+                        <img src="images/pokedex-assets/icons/user.svg" alt="Trainer Card">
+                    </a>
+                    <a href="#" id="nav-upload" class="nav-pill-option" aria-label="Upload Save File">
+                        <img src="images/pokedex-assets/icons/upload.svg" alt="Upload Save File">
+                    </a>
+                </div>
+                <div class="header-center">
+                    <div class="pokeball-nav-wrapper">
+                        <img src="images/pokedex-assets/svg/pokeball.svg" alt="Menu" class="header-icon" id="menu-button">
+                    </div>
+                    <h1 id="header-title"><span>Pokedex</span></h1>
+                </div>
+                <div class="nav-options-right">
+                    <a href="#" id="nav-launch-delta" class="nav-pill-option" aria-label="Launch Delta">
+                        <img src="images/pokedex-assets/delta.png" alt="Launch Delta" class="no-invert">
+                    </a>
+                    <a href="index.html" class="nav-pill-option" aria-label="Back to Songbook">
+                        <img src="images/moon.png" alt="Back to Songbook" class="no-invert">
+                    </a>
+                </div>
+            </div>
+            <button id="compare-btn" class="compare-btn" style="display: none;">Compare</button>
+        </div>
+    </header>
+
+    <div id="pokedex-view">
+        <div class="filters">
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <label for="search-bar" class="visually-hidden">Search Pokémon</label>
+                    <input type="text" id="search-bar" placeholder="Search Pokémon...">
+                </div>
+                <button id="shiny-toggle" class="shiny-btn" aria-label="Toggle shiny sprites">✨</button>
+            </div>
+            <div id="generation-filter-container"></div>
+            <div id="type-filter-container"></div>
+            <div id="tracking-filter-container"></div>
+        </div>
+        <div id="pokedex"></div>
+    </div>
+
+    <div id="trainer-card-view" style="display: none;">
+        <main class="trainer-card-container">
+            <div id="trainer-card" class="card-gen-1">
+                <div class="trainer-info">
+                    <div class="trainer-sprite-container">
+                        <img id="trainer-sprite" src="" alt="Trainer Sprite">
+                    </div>
+                    <div class="trainer-details">
+                        <input type="text" id="trainer-name" placeholder="Enter Your Name">
+                        <div class="pokedex-stats">
+                            <div class="stat-box">
+                                <h4>National Dex</h4>
+                                <p>Caught: <span id="national-caught">0</span></p>
+                                <p>Seen: <span id="national-seen">0</span></p>
+                            </div>
+                            <div class="stat-box">
+                                <h4 id="regional-dex-name">Kanto Dex</h4>
+                                <p>Caught: <span id="regional-caught">0</span></p>
+                                <p>Seen: <span id="regional-seen">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trainer-team">
+                    <h3>My Team</h3>
+                    <div id="team-container" class="team-slots">
+                        <!-- Team members will be added here by JS -->
+                    </div>
+                </div>
+                <div class="trainer-badges">
+                    <h3>Badges</h3>
+                    <div id="badge-container" class="badge-grid">
+                        <!-- Badges will be added here by JS -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="generation-selector" class="generation-selector">
+            <!-- Generation buttons will be added here by JS -->
+        </div>
+    </div>
+
+    <div id="loader" class="loader"></div>
+    <div id="error-message" class="error-message"></div>
+    <div id="transition-overlay"></div>
+    <div id="animated-sprite-container"></div>
+    <div id="pokemon-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <div id="modal-body"></div>
+            <audio id="pokemon-cry-audio" preload="auto" style="display:none;"></audio>
+        </div>
+    </div>
+    <div id="pokemon-selector-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <div class="modal-body">
+                <div class="search-container">
+                    <input type="text" id="pokemon-search" placeholder="Search Pokémon...">
+                </div>
+                <div id="pokemon-selector-list" class="pokedex"></div>
+            </div>
+        </div>
+    </div>
+    <div id="upload-save-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <div class="modal-body">
+                <h2>Upload Save File</h2>
+                <p>Upload your save file to automatically update your trainer card and Pokedex.</p>
+                <div class="upload-form">
+                    <div class="form-group">
+                        <label for="game-select">Select Game:</label>
+                        <select id="game-select">
+                            <!-- Options will be populated by JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="save-file-input">Select Save File:</label>
+                        <input type="file" id="save-file-input">
+                    </div>
+                    <button id="upload-button" class="compare-btn">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="scripts/pokedex/pokemon.js"></script>
+    <script type="module" src="scripts/pokedex/ui.js"></script>
+    <script type="module" src="scripts/pokedex/app.js"></script>
+    <script type="module" src="scripts/pokedex/trainer-card.js"></script>
+</body>
+</html>

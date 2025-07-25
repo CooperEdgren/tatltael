@@ -676,7 +676,7 @@
             "description": "A peculiar device of unknown origin, humming with a mysterious energy. Its polished red surface is unlike any material found in Hyrule. One might guess it comes from another world, or perhaps another time. It seems to hold data on many strange creatures.",
             "acquisition": "Its origins are a complete mystery, as if it simply appeared.",
             "search_terms": ["pokemon", "pokedex", "pokeball", "pokémon", "pokédex", "pokéball"],
-            "use_action": "pokedexwebapp/pokedex.html"
+            "use_action": "pokedex.html"
         }
     ],
     "Boss Remains": [
