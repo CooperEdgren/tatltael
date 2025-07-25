@@ -12,6 +12,25 @@ export const SUPPORTED_GAMES = [
     'black', 'white', 'black-2', 'white-2'
 ];
 
+export const DELTA_GAMES = [
+    {
+        name: 'Pokémon FireRed',
+        id: 'Pokemon%20-%20FireRed%20Version%20(U).gba'
+    },
+    {
+        name: 'Pokémon Emerald',
+        id: 'Pokemon%20-%20Emerald%20Version%20(U).gba'
+    },
+    {
+        name: 'Pokémon Crystal',
+        id: 'Pokemon%20-%20Crystal%20Version%20(U).gbc'
+    },
+    {
+        name: 'Pokémon Platinum',
+        id: 'Pokemon%20-%20Platinum%20Version%20(U).nds'
+    }
+];
+
 export const POKEBALLS = [
     {
         name: 'Poke Ball',

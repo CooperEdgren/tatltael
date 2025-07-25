@@ -39,6 +39,11 @@
 }
 
 /* General Styles */
+html.modal-open,
+body.modal-open {
+    overflow: hidden;
+}
+
 body {
     font-family: 'Westmount', sans-serif;
     font-weight: 400;
@@ -48,11 +53,6 @@ body {
     padding-top: calc(65px + env(safe-area-inset-top)); /* To prevent content from being hidden by the fixed header */
     user-select: none; /* Disable text highlighting */
     -webkit-user-select: none; /* For Safari */
-}
-
-html.modal-open,
-body.modal-open {
-    overflow: hidden;
 }
 
 /* Hide main content when modal is open */
@@ -79,8 +79,6 @@ header {
     transition: height 0.3s ease;
 }
 
-
-
 .header-main-content {
     display: flex;
     align-items: center;
@@ -101,7 +99,6 @@ header {
     transition: top 0.3s ease;
 }
 
-
 .header-center {
     display: flex;
     align-items: center;
@@ -121,8 +118,6 @@ header {
     clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); /* Flipped Trapezoid shape */
     z-index: -1;
 }
-
-
 
 .pokeball-nav-wrapper {
     position: relative;
@@ -2003,109 +1998,32 @@ header {
     padding: 10px 25px;
 }
 
-#pokemon-selector-modal .pokemon-card {
-    cursor: pointer;
-}
-
-
-@media (min-width: 768px) {
-    .trainer-info {
-        flex-direction: row;
-    }
-
-    #trainer-name {
-        text-align: left;
-    }
-
-    .trainer-team h3, .trainer-badges h3 {
-        text-align: left;
-    }
-
-    .team-slots {
-        grid-template-columns: repeat(6, 1fr);
-    }
-
-    .badge-grid {
-        grid-template-columns: repeat(8, 1fr);
-    }
-}
-
-.team-controls {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-
-#set-from-favorites {
-    background-color: #4a7cd4;
-    border: none;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 15px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: background-color 0.2s;
-}
-
-#set-from-favorites:hover {
-    background-color: #6a8ee7;
-}
-
-.team-slot img {
-    pointer-events: none; /* Prevents image from being dragged instead of the slot */
-}
-
-#team-analysis {
-    margin-top: 20px;
-    background-color: rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-#team-analysis h3 {
+.delta-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
     text-align: center;
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
 }
 
-.analysis-grids {
+.delta-games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-.type-grid-container h4 {
-    margin-top: 0;
-    margin-bottom: 10px;
+.delta-game-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     font-size: 1.1em;
-    color: #aaa;
+    font-weight: 700;
 }
 
-.type-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-    gap: 8px;
-}
-
-.type-analysis-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.type-analysis-item img {
-    width: 32px;
-    height: 32px;
-}
-
-.type-analysis-item span {
-    font-size: 0.9em;
-    font-weight: bold;
-    font-family: 'Tatami', sans-serif;
-    background-color: rgba(0,0,0,0.3);
-    padding: 2px 6px;
-    border-radius: 5px;
+.delta-game-btn:hover {
+    background-color: #555;
 }

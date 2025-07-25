@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launching Delta...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1c1c1e;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        a {
+            color: #0a84ff;
+        }
+    </style>
+</head>
+<body>
+    <h2>Launching game in Delta...</h2>
+    <p>If Delta does not open automatically, please ensure it is installed on your device.</p>
+    <p><a href="#" id="retry-link">Click here to try again</a></p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('game');
+            const retryLink = document.getElementById('retry-link');
+
+            if (gameId) {
+                const deltaUrl = `delta://game/${gameId}`;
+                retryLink.href = deltaUrl;
+                window.location.href = deltaUrl;
+
+                // Close the helper tab after a short delay
+                setTimeout(() => {
+                    window.close();
+                }, 2000);
+            } else {
+                document.body.innerHTML = '<h2>Error: No game specified.</h2>';
+            }
+        });
+    </script>
+</body>
+</html>

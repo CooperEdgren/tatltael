@@ -1,4 +1,4 @@
-import { POKEMON_LIMIT, SUPPORTED_GAMES } from './constants.js';
+import { POKEMON_LIMIT, SUPPORTED_GAMES, DELTA_GAMES } from './constants.js';
 import PokemonService from './pokemon.js';
 import { UI } from './ui.js';
 import * as favorites from './favorites.js';
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const compareBtn = document.getElementById('compare-btn');
     const pokedexView = document.getElementById('pokedex-view');
     const trainerCardView = document.getElementById('trainer-card-view');
+    const deltaView = document.getElementById('delta-view');
     const uploadModal = document.getElementById('upload-save-modal');
 
     // Services and UI
@@ -55,58 +56,61 @@ document.addEventListener('DOMContentLoaded', () => {
             switchToPokedex: () => switchToView('pokedex'),
             switchToTrainerCard: () => switchToView('trainerCard'),
             switchToUploadModal: () => switchToView('uploadModal'),
-            launchDelta: () => {
-                // TODO: Implement deep link to Delta emulator (delta://)
-                alert('Launch Delta functionality to be implemented.');
-            }
+            switchToDelta: () => switchToView('delta')
         },
         updateNav() {
             const leftContainer = document.querySelector('.nav-options-left');
-            if (this.elements.pokedex) this.elements.pokedex.style.display = 'none';
-            this.elements.trainerCard.style.display = 'none';
-            
+            const rightContainer = document.querySelector('.nav-options-right');
+
+            // Ensure dynamic pokedex button exists
+            if (!this.elements.pokedex) {
+                this.elements.pokedex = this.elements.trainerCard.cloneNode(true);
+                this.elements.pokedex.id = 'nav-pokedex';
+                this.elements.pokedex.querySelector('img').src = 'images/pokedex-assets/pokedex.png';
+                this.elements.pokedex.ariaLabel = 'Pokedex';
+                this.elements.pokedex.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.actions.switchToPokedex();
+                    ui.toggleNavPill();
+                    menuButton.classList.remove('active');
+                });
+            }
+
+            // Detach all pills to re-append them in the correct order
+            [this.elements.trainerCard, this.elements.upload, this.elements.delta, this.elements.pokedex].forEach(el => el?.remove());
+
+            // Re-attach based on state
             switch(this.currentState) {
                 case 'pokedex':
-                    this.elements.trainerCard.style.display = 'flex';
-                    this.elements.upload.style.display = 'flex';
+                    leftContainer.appendChild(this.elements.trainerCard);
+                    leftContainer.appendChild(this.elements.upload);
+                    rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
                     break;
                 case 'trainerCard':
-                    if (!this.elements.pokedex) {
-                        this.elements.pokedex = this.elements.trainerCard.cloneNode(true);
-                        this.elements.pokedex.id = 'nav-pokedex';
-                        this.elements.pokedex.querySelector('img').src = 'images/pokedex-assets/pokedex.png';
-                        this.elements.pokedex.ariaLabel = 'Pokedex';
-                        this.elements.pokedex.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            this.actions.switchToPokedex();
-                            ui.toggleNavPill();
-                            menuButton.classList.remove('active');
-                        });
-                        leftContainer.prepend(this.elements.pokedex);
-                    }
-                    this.elements.pokedex.style.display = 'flex';
-                    this.elements.upload.style.display = 'flex';
+                    leftContainer.appendChild(this.elements.pokedex);
+                    leftContainer.appendChild(this.elements.upload);
+                    rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                    break;
+                case 'delta':
+                    leftContainer.appendChild(this.elements.trainerCard);
+                    leftContainer.appendChild(this.elements.upload);
+                    rightContainer.insertBefore(this.elements.pokedex, this.elements.backToSongbook);
                     break;
                 case 'uploadModal':
-                     if (this.previousState === 'trainerCard') {
-                        if (!this.elements.pokedex) {
-                             this.elements.pokedex = this.elements.trainerCard.cloneNode(true);
-                             this.elements.pokedex.id = 'nav-pokedex';
-                             this.elements.pokedex.querySelector('img').src = 'images/pokedex-assets/pokedex.png';
-                             this.elements.pokedex.ariaLabel = 'Pokedex';
-                             leftContainer.prepend(this.elements.pokedex);
-                             this.elements.pokedex.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                this.actions.switchToPokedex();
-                                ui.toggleNavPill();
-                                menuButton.classList.remove('active');
-                            });
-                        }
-                        this.elements.pokedex.style.display = 'flex';
-                     } else {
-                        this.elements.trainerCard.style.display = 'flex';
-                     }
-                     this.elements.upload.style.display = 'flex';
+                    // Logic for upload modal depends on previous state
+                    if (this.previousState === 'trainerCard') {
+                        leftContainer.appendChild(this.elements.pokedex);
+                        leftContainer.appendChild(this.elements.upload);
+                        rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                    } else if (this.previousState === 'delta') {
+                        leftContainer.appendChild(this.elements.trainerCard);
+                        leftContainer.appendChild(this.elements.upload);
+                        rightContainer.insertBefore(this.elements.pokedex, this.elements.backToSongbook);
+                    } else { // Default to pokedex view's nav
+                        leftContainer.appendChild(this.elements.trainerCard);
+                        leftContainer.appendChild(this.elements.upload);
+                        rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                    }
                     break;
             }
         }
@@ -117,16 +121,22 @@ document.addEventListener('DOMContentLoaded', () => {
             uploadModal.style.display = 'none';
         }
 
+        pokedexView.style.display = 'none';
+        trainerCardView.style.display = 'none';
+        deltaView.style.display = 'none';
+
         if (view === 'pokedex') {
-            trainerCardView.style.display = 'none';
             pokedexView.style.display = 'block';
             ui.setHeaderTitle(originalHeaderText);
             navManager.currentState = 'pokedex';
         } else if (view === 'trainerCard') {
-            pokedexView.style.display = 'none';
             trainerCardView.style.display = 'block';
             ui.setHeaderTitle('Trainer Card');
             navManager.currentState = 'trainerCard';
+        } else if (view === 'delta') {
+            deltaView.style.display = 'block';
+            ui.setHeaderTitle('Delta');
+            navManager.currentState = 'delta';
         } else if (view === 'uploadModal') {
             navManager.previousState = navManager.currentState;
             navManager.currentState = 'uploadModal';
@@ -348,11 +358,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup Nav Actions
     navManager.elements.trainerCard.addEventListener('click', (e) => { e.preventDefault(); navManager.actions.switchToTrainerCard(); ui.toggleNavPill(); menuButton.classList.remove('active'); });
     navManager.elements.upload.addEventListener('click', (e) => { e.preventDefault(); navManager.actions.switchToUploadModal(); ui.toggleNavPill(); menuButton.classList.remove('active'); });
-    navManager.elements.delta.addEventListener('click', (e) => { e.preventDefault(); navManager.actions.launchDelta(); });
+    navManager.elements.delta.addEventListener('click', (e) => { e.preventDefault(); navManager.actions.switchToDelta(); ui.toggleNavPill(); menuButton.classList.remove('active'); });
+
+    const setupDeltaView = () => {
+        const grid = document.getElementById('delta-games-grid');
+        grid.innerHTML = DELTA_GAMES.map(game => `
+            <button class="delta-game-btn" data-game-id="${game.id}">${game.name}</button>
+        `).join('');
+
+        grid.addEventListener('click', (e) => {
+            const button = e.target.closest('.delta-game-btn');
+            if (button) {
+                const gameId = button.dataset.gameId;
+                window.open(`delta-launcher.html?game=${gameId}`, '_blank');
+            }
+        });
+    };
 
     initModal(originalHeaderText, ui, pokemonService);
     displayPokemon();
     setupFilters(generationFilterContainer, typeFilterContainer, trackingFilterContainer, applyFilters);
     switchToView('pokedex'); // Initial view setup
     setupUploadModal();
+    setupDeltaView();
 });
