@@ -294,8 +294,15 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBar.addEventListener('input', applyFilters);
 
     menuButton.addEventListener('click', () => {
-        menuButton.classList.toggle('active');
-        ui.toggleNavPill();
+        const modal = document.getElementById('pokemon-modal');
+        if (modal.classList.contains('compare-modal')) {
+            ui.closeCompareModal();
+            ui.showMenuButton();
+            ui.setHeaderTitle(originalHeaderText);
+        } else {
+            menuButton.classList.toggle('active');
+            ui.toggleNavPill();
+        }
     });
 
     shinyToggleBtn.addEventListener('click', () => {
@@ -311,21 +318,49 @@ document.addEventListener('DOMContentLoaded', () => {
         if (comparisonList.length === 2) {
             ui.showLoader();
             try {
-                const [data1, data2] = await Promise.all([comparisonDataCache[comparisonList[0]], comparisonDataCache[comparisonList[1]]]);
+                const [data1, data2] = await Promise.all([
+                    comparisonDataCache[comparisonList[0]],
+                    comparisonDataCache[comparisonList[1]]
+                ]);
+
                 const { details: p1Details, effectiveness: e1 } = data1;
                 const { details: p2Details, effectiveness: e2 } = data2;
+
+                // Stat comparison logic
+                let p1Score = 0;
+                let p2Score = 0;
+                const statComparisons = p1Details.stats.map((p1Stat, index) => {
+                    const p2Stat = p2Details.stats[index];
+                    if (p1Stat.base_stat > p2Stat.base_stat) {
+                        p1Score++;
+                        return 'higher';
+                    } else if (p1Stat.base_stat < p2Stat.base_stat) {
+                        p2Score++;
+                        return 'lower';
+                    }
+                    return 'equal';
+                });
+
+                const p1Overall = p1Score > p2Score ? 'winner' : (p1Score < p2Score ? 'loser' : 'tie');
+                const p2Overall = p2Score > p1Score ? 'winner' : (p2Score < p1Score ? 'loser' : 'tie');
+
+                // Type advantage logic
                 const p1Types = p1Details.types.map(t => t.type.name);
                 const p2Types = p2Details.types.map(t => t.type.name);
                 const p1HasAdvantage = p1Types.some(t => e2.weaknesses.includes(t));
                 const p2HasAdvantage = p2Types.some(t => e1.weaknesses.includes(t));
+                
                 let p1State = 'neutral', p2State = 'neutral';
                 if (p1HasAdvantage && !p2HasAdvantage) { p1State = 'advantage'; p2State = 'disadvantage'; }
                 else if (p2HasAdvantage && !p1HasAdvantage) { p2State = 'advantage'; p1State = 'disadvantage'; }
-                
+
                 ui.setHeaderTitle('');
                 await sleep(100);
-                ui.renderCompareModal(p1Details, p2Details, e1, e2, p1State, p2State);
-                compareBtn.style.display = 'none';
+                ui.renderCompareModal(
+                    { ...p1Details, overall: p1Overall, statComparisons, advantage: p1State },
+                    { ...p2Details, overall: p2Overall, statComparisons: statComparisons.map(c => c === 'higher' ? 'lower' : (c === 'lower' ? 'higher' : 'equal')), advantage: p2State },
+                    e1, e2
+                );
                 document.body.classList.add('modal-open');
             } catch (error) {
                 console.error('Error fetching Pokémon for comparison:', error);

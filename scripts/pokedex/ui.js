@@ -258,9 +258,11 @@ export class UI {
         `;
     }
 
-    _styleDetailsPane(types) {
-        const detailsPane = this.modalBody.querySelector('.details-content-pane');
-        detailsPane.className = 'details-content-pane'; // Reset classes
+    _styleDetailsPane(types, element) {
+        const detailsPane = element || this.modalBody.querySelector('.details-content-pane');
+        if (!detailsPane) return;
+        
+        detailsPane.className = 'details-content-pane show-content'; // Reset classes
         detailsPane.style.background = '';
 
         const typeNames = types.map(typeInfo => typeInfo.type.name);
@@ -616,58 +618,69 @@ export class UI {
         `;
     }
 
-    renderCompareModal(pokemon1, pokemon2, effectiveness1, effectiveness2, p1State, p2State) {
+    renderCompareModal(pokemon1, pokemon2, effectiveness1, effectiveness2) {
         this.modalBody.innerHTML = `
             <div class="compare-container">
-                ${this._createCompareColumn(pokemon1, effectiveness1, p1State)}
-                ${this._createCompareColumn(pokemon2, effectiveness2, p2State)}
+                ${this._createCompareColumn(pokemon1, effectiveness1)}
+                ${this._createCompareColumn(pokemon2, effectiveness2)}
             </div>
         `;
         const modal = document.getElementById('pokemon-modal');
         modal.classList.add('compare-modal');
         modal.style.display = 'block';
+
+        // Apply type-based gradients to columns
+        const columns = this.modalBody.querySelectorAll('.compare-column .details-content-pane');
+        if (columns.length === 2) {
+            this._styleDetailsPane(pokemon1.types, columns[0]);
+            this._styleDetailsPane(pokemon2.types, columns[1]);
+        }
     }
 
-    _createCompareColumn(pokemon, effectiveness, advantageState) {
+    _createCompareColumn(pokemon, effectiveness) {
         const animatedSprite = pokemon.sprites?.versions?.['generation-v']?.['black-white']?.animated?.front_default || pokemon.sprites.front_default;
-        const primaryType = pokemon.types && pokemon.types.length > 0 ? pokemon.types[0].type.name : 'normal';
-        const types = pokemon.types.map(t => `<span class="type-badge type-${t.type.name}">${t.type.name}</span>`).join(' ');
-        const stats = pokemon.stats.map(s => `
+        
+        const types = pokemon.types.map(t => `<img src="images/pokedex-assets/types/${t.type.name}.png" alt="${t.type.name}" class="type-badge">`).join(' ');
+
+        const stats = pokemon.stats.map((s, index) => `
             <div class="stat">
                 <span class="stat-name">${s.stat.name}</span>
-                <div class="stat-bar"><div class="stat-bar-inner" style="width: ${s.base_stat / (MAX_STAT_VALUE / 100)}%"></div></div>
+                <div class="stat-bar"><div class="stat-bar-inner ${pokemon.statComparisons[index]}" style="width: ${s.base_stat / (MAX_STAT_VALUE / 100)}%"></div></div>
                 <span class="stat-value">${s.base_stat}</span>
             </div>
         `).join('');
 
-        const typeEffectivenessMarkup = this._renderTypeEffectiveness(effectiveness);
+        const abilities = pokemon.abilities.map(a => a.ability.name).join(', ');
 
-        let advantageClass = '';
-        if (advantageState === 'advantage') {
-            advantageClass = 'sprite-advantage';
-        } else if (advantageState === 'disadvantage') {
-            advantageClass = 'sprite-disadvantage';
-        }
-
-        const idleClass = advantageState === 'neutral' ? 'idle-animation-sprite' : '';
+        const winnerBadge = pokemon.overall === 'winner' ? '<span class="winner-badge">Higher Stats</span>' : '';
+        const advantageLabel = pokemon.advantage === 'advantage' ? '<span class="advantage-label">Super-effective!</span>' : '';
 
         return `
             <div class="compare-column" data-pokemon-id="${pokemon.id}">
                 <div class="compare-header">
+                    ${winnerBadge}
+                    ${advantageLabel}
                     <h2 class="pokemon-name-compare">${pokemon.name}</h2>
+                    <p class="pokemon-id-display">#${pokemon.id.toString().padStart(3, '0')}</p>
                 </div>
                 <div class="sprite-container">
-                    <img src="${animatedSprite}" alt="${pokemon.name}" class="modal-sprite ${idleClass} ${advantageClass}" data-pokemon-name="${pokemon.name}">
+                    <img src="${animatedSprite}" alt="${pokemon.name}" class="modal-sprite idle-animation-sprite" data-pokemon-name="${pokemon.name}">
                 </div>
-                <div class="details-content-pane show-content type-${primaryType}">
+                <div class="details-content-pane show-content">
                      <div class="details-inner-content">
-                        <p class="pokemon-id-display">#${pokemon.id.toString().padStart(3, '0')}</p>
                         <div class="types-container">${types}</div>
+                        <div class="info-container">
+                            <div class="info-grid">
+                                <div class="info-item"><h4>Height</h4><p>${pokemon.height / 10} m</p></div>
+                                <div class="info-item"><h4>Weight</h4><p>${pokemon.weight / 10} kg</p></div>
+                            </div>
+                            <div class="info-item"><h4>Abilities</h4><p>${abilities}</p></div>
+                        </div>
                         <div class="stats-container">
                             <h3>Base Stats</h3>
                             ${stats}
                         </div>
-                        ${typeEffectivenessMarkup}
+                        ${this._renderTypeEffectiveness(effectiveness)}
                     </div>
                 </div>
             </div>
