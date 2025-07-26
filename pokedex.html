@@ -44,7 +44,9 @@
                     <label for="search-bar" class="visually-hidden">Search Pokémon</label>
                     <input type="text" id="search-bar" placeholder="Search Pokémon...">
                 </div>
-                <button id="shiny-toggle" class="shiny-btn" aria-label="Toggle shiny sprites">✨</button>
+                <button id="shiny-toggle" class="shiny-btn" aria-label="Toggle shiny sprites">
+                    <img src="images/pokedex-assets/png/shiny-symbol.png" alt="Shiny">
+                </button>
             </div>
             <div id="generation-filter-container"></div>
             <div id="type-filter-container"></div>
@@ -97,10 +99,19 @@
 
     <div id="delta-view" style="display: none;">
         <main class="delta-container">
-            <h2>Open in Delta</h2>
+            <div class="delta-header">
+                <h2>Open in Delta</h2>
+                <button id="delta-info-btn">?</button>
+            </div>
             <p>Select a game to launch it in the Delta emulator.</p>
             <div id="delta-games-grid" class="delta-games-grid">
                 <!-- Game buttons will be added here by JS -->
+            </div>
+            <div id="delta-info-popup" class="info-popup" style="display: none;">
+                <div class="info-popup-content">
+                    <p>The games listed are not a part of the TatlTael or PokeDex app. This app merely runs a command to open Delta and auto-launch the games if they are on the user's device. No emulation or distribution of ROMs is happening here.</p>
+                    <button id="delta-info-close-btn">Close</button>
+                </div>
             </div>
         </main>
     </div>

@@ -438,15 +438,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const setupDeltaView = () => {
         const grid = document.getElementById('delta-games-grid');
+        const infoBtn = document.getElementById('delta-info-btn');
+        const infoPopup = document.getElementById('delta-info-popup');
+        const infoPopupContent = infoPopup.querySelector('.info-popup-content');
+        const closeBtn = document.getElementById('delta-info-close-btn');
+
         grid.innerHTML = DELTA_GAMES.map(game => `
-            <button class="delta-game-btn" data-game-url="${game.url}">${game.name}</button>
+            <div class="delta-game-container">
+                <button class="delta-game-btn" data-game-name="${game.name}">${game.name}</button>
+                <div class="deep-link-container">
+                    <span>No Deep Link Set</span>
+                    <input type="text" class="deep-link-input" placeholder="delta://game/...">
+                    <button class="deep-link-confirm">✓</button>
+                </div>
+            </div>
         `).join('');
 
         grid.addEventListener('click', (e) => {
             const button = e.target.closest('.delta-game-btn');
             if (button) {
-                const gameUrl = button.dataset.gameUrl;
-                window.open(`delta-launcher.html?game=${encodeURIComponent(gameUrl)}`, '_blank');
+                const gameName = button.dataset.gameName;
+                const savedLink = localStorage.getItem(`delta-link-${gameName}`);
+                if (savedLink) {
+                    window.open(`delta-launcher.html?game=${encodeURIComponent(savedLink)}`, '_blank');
+                } else {
+                    const container = button.nextElementSibling;
+                    container.style.display = 'flex';
+                }
+            }
+
+            const confirmBtn = e.target.closest('.deep-link-confirm');
+            if (confirmBtn) {
+                const container = confirmBtn.parentElement;
+                const input = container.querySelector('.deep-link-input');
+                const gameName = container.parentElement.querySelector('.delta-game-btn').dataset.gameName;
+                if (input.value) {
+                    localStorage.setItem(`delta-link-${gameName}`, input.value);
+                    window.open(`delta-launcher.html?game=${encodeURIComponent(input.value)}`, '_blank');
+                    container.style.display = 'none';
+                }
+            }
+        });
+
+        infoBtn.addEventListener('click', () => {
+            const btnRect = infoBtn.getBoundingClientRect();
+            const popupRect = infoPopupContent.getBoundingClientRect();
+
+            const scaleX = btnRect.width / popupRect.width;
+            const scaleY = btnRect.height / popupRect.height;
+            const translateX = btnRect.left - popupRect.left + (btnRect.width - popupRect.width) / 2;
+            const translateY = btnRect.top - popupRect.top + (btnRect.height - popupRect.height) / 2;
+
+            infoPopupContent.style.transformOrigin = 'center center';
+            infoPopupContent.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+            
+            infoPopup.style.display = 'flex';
+            requestAnimationFrame(() => {
+                infoPopup.classList.add('visible');
+                infoPopupContent.style.transform = 'translate(0, 0) scale(1)';
+            });
+        });
+
+        const closePopup = () => {
+            const btnRect = infoBtn.getBoundingClientRect();
+            const popupRect = infoPopupContent.getBoundingClientRect();
+
+            const scaleX = btnRect.width / popupRect.width;
+            const scaleY = btnRect.height / popupRect.height;
+            const translateX = btnRect.left - popupRect.left + (btnRect.width - popupRect.width) / 2;
+            const translateY = btnRect.top - popupRect.top + (btnRect.height - popupRect.height) / 2;
+
+            infoPopup.classList.remove('visible');
+            infoPopupContent.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+
+            setTimeout(() => {
+                infoPopup.style.display = 'none';
+            }, 300); // Match transition duration
+        };
+
+        closeBtn.addEventListener('click', closePopup);
+        infoPopup.addEventListener('click', (e) => {
+            if (e.target === infoPopup) {
+                closePopup();
             }
         });
     };
