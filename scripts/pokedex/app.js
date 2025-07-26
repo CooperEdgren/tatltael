@@ -165,25 +165,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleCardSelection = (card) => {
         const pokemonId = parseInt(card.dataset.id);
         const index = comparisonList.indexOf(pokemonId);
+
         if (index > -1) {
             comparisonList.splice(index, 1);
             delete comparisonDataCache[pokemonId];
-            card.classList.remove('selected-for-compare');
+            card.classList.remove('selected-for-compare', 'loading-compare');
         } else {
             if (comparisonList.length < 2) {
                 comparisonList.push(pokemonId);
-                card.classList.add('selected-for-compare');
-                comparisonDataCache[pokemonId] = pokemonService.getPokemonDetails(pokemonId)
-                    .then(details => pokemonService.getPokemonTypeEffectiveness(details).then(effectiveness => ({ details, effectiveness })));
+                card.classList.add('selected-for-compare', 'loading-compare');
+
+                const promise = pokemonService.getPokemonDetails(pokemonId)
+                    .then(details => pokemonService.getPokemonTypeEffectiveness(details)
+                        .then(effectiveness => ({ details, effectiveness })));
+
+                comparisonDataCache[pokemonId] = promise;
+
+                promise.then(() => {
+                    card.classList.remove('loading-compare');
+                    updateCompareButton();
+                }).catch(error => {
+                    console.error('Failed to fetch comparison data for', pokemonId, error);
+                    card.classList.remove('loading-compare');
+                    // Maybe add an error state to the card here
+                });
             }
         }
         updateCompareButton();
     };
 
     const updateCompareButton = () => {
-        compareBtn.style.display = comparisonList.length > 0 ? 'block' : 'none';
+        if (comparisonList.length > 0) {
+            compareBtn.classList.add('visible');
+        } else {
+            compareBtn.classList.remove('visible');
+        }
         compareBtn.textContent = `Compare (${comparisonList.length}/2)`;
-        compareBtn.disabled = comparisonList.length !== 2;
+
+        const dataLoaded = comparisonList.every(id => comparisonDataCache[id] && typeof comparisonDataCache[id].then === 'function');
+        
+        if (comparisonList.length === 2 && dataLoaded) {
+            Promise.all(comparisonList.map(id => comparisonDataCache[id])).then(() => {
+                compareBtn.disabled = false;
+            });
+        } else {
+            compareBtn.disabled = true;
+        }
     };
 
     const clearComparison = () => {

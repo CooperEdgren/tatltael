@@ -247,15 +247,28 @@ header {
 }
 
 .compare-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
     background-color: #333;
     color: #fff;
     border: none;
     border-radius: 20px;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     font-size: 1em;
     font-weight: 700;
+    z-index: 1001;
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.compare-btn.visible {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .compare-btn:hover {
@@ -526,6 +539,29 @@ header {
 
 .pokemon-card:hover.pressed {
     transform: scale(0.95);
+}
+
+.pokemon-card .card-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none; /* Hidden by default */
+    z-index: 12;
+}
+
+.pokemon-card.loading-compare .card-loader {
+    display: block;
+}
+
+.pokemon-card.loading-compare .pokemon-card-main-content {
+    opacity: 0.3;
 }
 
 .pokemon-card img {
