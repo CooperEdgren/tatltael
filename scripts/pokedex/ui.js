@@ -116,14 +116,18 @@ export class UI {
         const isFavorite = favorites.isFavorite(pokemonId);
         const isCaught = tracker.isCaught(pokemonId);
         const isSeen = tracker.isSeen(pokemonId);
-        const sprite = isShiny ? pokemon.shinySprite : pokemon.sprite;
+        let sprite = isShiny ? pokemon.shinySprite : pokemon.sprite;
+        if (isShiny) {
+            sprite = pokemon.animatedShinySprite || pokemon.shinySprite;
+        } else {
+            sprite = pokemon.animatedSprite || pokemon.sprite;
+        }
     
         const pokemonCard = document.createElement('div');
         pokemonCard.classList.add('pokemon-card');
         pokemonCard.dataset.id = pokemonId;
     
-        const typeClass = `type-${pokemon.primaryType}`;
-        pokemonCard.classList.add(typeClass);
+        this._styleDetailsPane(pokemon.types, pokemonCard);
     
         pokemonCard.innerHTML = `
             <div class="card-loader"></div>
@@ -262,18 +266,26 @@ export class UI {
     }
 
     _styleDetailsPane(types, element) {
-        const detailsPane = element || this.modalBody.querySelector('.details-content-pane');
-        if (!detailsPane) return;
+        const targetElement = element || this.modalBody.querySelector('.details-content-pane');
+        if (!targetElement) return;
         
-        detailsPane.className = 'details-content-pane show-content'; // Reset classes
-        detailsPane.style.background = '';
+        // Clear existing type classes
+        const classList = targetElement.className.split(' ');
+        const filteredClasses = classList.filter(c => !c.startsWith('type-'));
+        targetElement.className = filteredClasses.join(' ');
+
+        targetElement.style.background = '';
 
         const typeNames = types.map(typeInfo => typeInfo.type.name);
         if (typeNames.length > 1) {
             const typeColors = typeNames.map(typeName => this._getTypeColor(typeName));
-            detailsPane.style.background = `linear-gradient(to bottom right, ${typeColors.join(', ')})`;
+            targetElement.style.background = `linear-gradient(to bottom right, ${typeColors.join(', ')})`;
         } else {
-            detailsPane.classList.add(`type-${typeNames[0]}`);
+            targetElement.classList.add(`type-${typeNames[0]}`);
+        }
+
+        if (!element) {
+            targetElement.classList.add('show-content');
         }
     }
 

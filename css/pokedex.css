@@ -564,8 +564,8 @@ header {
 }
 
 .pokemon-card img {
-    width: 96px;
-    height: 96px;
+    width: 150px;
+    height: 150px;
     margin-bottom: 10px;
     image-rendering: pixelated;
 }
@@ -904,7 +904,7 @@ header {
 }
 
 .type-badge-small {
-    height: 12px;
+    height: 15px;
     width: auto;
     margin: 2px;
 }

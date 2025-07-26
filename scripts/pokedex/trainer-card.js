@@ -158,6 +158,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     `<img src="images/pokedex-assets/icons/${typeInfo.type.name}.svg" alt="${typeInfo.type.name}" class="type-badge-small">`
                 ).join('');
 
+                pokemon.types.forEach(typeInfo => {
+                    slot.classList.add(`type-${typeInfo.type.name}`);
+                });
+
                 slot.innerHTML = `
                     <img src="${team[i].sprite}" alt="${team[i].name}" class="idle-animation-sprite">
                     <div class="team-pokemon-info">

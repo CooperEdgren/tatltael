@@ -94,19 +94,15 @@ export async function openPokemonSelector(team, currentGeneration, onConfirm) {
         if (!card) return;
         
         const pokemonId = parseInt(card.dataset.id);
-        const pokemon = allPokemon.find(p => p.id === pokemonId);
         const index = selectedPokemonIds.indexOf(pokemonId);
-        const img = card.querySelector('.pokemon-card-main-content img');
 
         if (index > -1) {
             selectedPokemonIds.splice(index, 1);
             card.classList.remove('selected-for-compare');
-            img.src = pokemon.sprite;
         } else {
             if (selectedPokemonIds.length < maxSelection) {
                 selectedPokemonIds.push(pokemonId);
                 card.classList.add('selected-for-compare');
-                img.src = pokemon.animatedSprite || pokemon.sprite;
             }
         }
         updateCounter();
