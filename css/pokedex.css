@@ -904,7 +904,7 @@ header {
 }
 
 .type-badge-small {
-    height: 24px;
+    height: 12px;
     width: auto;
     margin: 2px;
 }
@@ -1213,19 +1213,6 @@ header {
     margin-top: 5px;
     font-size: 0.9em;
     text-transform: capitalize;
-}
-
-@keyframes idle-float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-.idle-animation-sprite {
-    animation: idle-float 3s ease-in-out infinite;
 }
 
 @keyframes lunge {
@@ -2479,6 +2466,9 @@ header {
 .team-pokemon-name {
     font-weight: bold;
     text-transform: capitalize;
+    font-family: 'Venus Rising Rg', sans-serif;
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    white-space: nowrap;
 }
 
 .team-pokemon-types {
@@ -2495,4 +2485,47 @@ header {
     cursor: pointer;
     font-size: 1.5em;
     color: #999;
+}
+
+#team-analysis-modal .modal-content {
+    max-width: 90vw;
+    width: 1000px;
+    max-height: 80vh;
+}
+
+.team-analysis-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.team-analysis-table th, .team-analysis-table td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+}
+
+.team-analysis-table th {
+    background-color: #333;
+}
+
+.team-analysis-sprite {
+    width: 48px;
+    height: 48px;
+}
+
+.team-analysis-table .type-badge-small {
+    height: 24px;
+}
+
+.team-analysis-table td.weak {
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+.team-analysis-table td.resist {
+    background-color: rgba(0, 255, 0, 0.3);
+}
+
+.team-analysis-table td.immune {
+    background-color: rgba(0, 0, 0, 0.5);
 }

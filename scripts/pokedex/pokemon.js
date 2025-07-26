@@ -54,6 +54,8 @@ export default class PokemonService {
             const species = await this.getPokemonSpecies(details.id);
             const generationUrl = species.generation.url;
             const generationId = parseInt(generationUrl.split('/').slice(-2, -1)[0]);
+            const animatedSprite = details.sprites.versions['generation-v']['black-white'].animated.front_default;
+            const animatedShinySprite = details.sprites.versions['generation-v']['black-white'].animated.front_shiny;
             return {
                 id: details.id,
                 name: details.name,
@@ -62,6 +64,8 @@ export default class PokemonService {
                 generation: generationId,
                 sprite: details.sprites.front_default,
                 shinySprite: details.sprites.front_shiny,
+                animatedSprite: animatedSprite,
+                animatedShinySprite: animatedShinySprite,
                 url: p.url
             };
         });

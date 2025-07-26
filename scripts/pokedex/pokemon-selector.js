@@ -16,6 +16,7 @@ export function closeTeamBuilderModal() {
 
 export async function openPokemonSelector(team, currentGeneration, onConfirm) {
     const modal = document.getElementById('pokemon-selector-modal');
+    document.body.classList.add('modal-open');
     const maxSelection = 6 - team.filter(p => p).length;
     
     if (!modal.dataset.initialized) {
@@ -93,18 +94,19 @@ export async function openPokemonSelector(team, currentGeneration, onConfirm) {
         if (!card) return;
         
         const pokemonId = parseInt(card.dataset.id);
+        const pokemon = allPokemon.find(p => p.id === pokemonId);
         const index = selectedPokemonIds.indexOf(pokemonId);
-        const img = card.querySelector('img');
+        const img = card.querySelector('.pokemon-card-main-content img');
 
         if (index > -1) {
             selectedPokemonIds.splice(index, 1);
             card.classList.remove('selected-for-compare');
-            img.classList.remove('idle-animation-sprite');
+            img.src = pokemon.sprite;
         } else {
             if (selectedPokemonIds.length < maxSelection) {
                 selectedPokemonIds.push(pokemonId);
                 card.classList.add('selected-for-compare');
-                img.classList.add('idle-animation-sprite');
+                img.src = pokemon.animatedSprite || pokemon.sprite;
             }
         }
         updateCounter();
@@ -121,6 +123,7 @@ export async function openPokemonSelector(team, currentGeneration, onConfirm) {
 
     const closeModal = () => {
         modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
         confirmBtn.classList.remove('visible');
         
         allSelectorCards.forEach(card => card.classList.remove('selected-for-compare'));

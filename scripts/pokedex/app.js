@@ -164,16 +164,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleCardSelection = (card) => {
         const pokemonId = parseInt(card.dataset.id);
+        const pokemon = allPokemon.find(p => p.id === pokemonId);
         const index = comparisonList.indexOf(pokemonId);
+        const img = card.querySelector('.pokemon-card-main-content img');
 
         if (index > -1) {
             comparisonList.splice(index, 1);
             delete comparisonDataCache[pokemonId];
             card.classList.remove('selected-for-compare', 'loading-compare');
+            img.src = isShinyView ? pokemon.shinySprite : pokemon.sprite;
         } else {
             if (comparisonList.length < 2) {
                 comparisonList.push(pokemonId);
                 card.classList.add('selected-for-compare', 'loading-compare');
+                img.src = isShinyView ? pokemon.animatedShinySprite || pokemon.shinySprite : pokemon.animatedSprite || pokemon.sprite;
 
                 const promise = pokemonService.getPokemonDetails(pokemonId)
                     .then(details => pokemonService.getPokemonTypeEffectiveness(details)
@@ -187,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).catch(error => {
                     console.error('Failed to fetch comparison data for', pokemonId, error);
                     card.classList.remove('loading-compare');
-                    // Maybe add an error state to the card here
                 });
             }
         }
@@ -219,6 +222,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.pokemon-card.selected-for-compare').forEach(card => card.classList.remove('selected-for-compare'));
         updateCompareButton();
     };
+
+    document.addEventListener('click', (event) => {
+        const modalShinyToggle = event.target.closest('#modal-shiny-toggle');
+        if (modalShinyToggle) {
+            const modalSprite = document.querySelector('.modal-sprite');
+            if (modalSprite) {
+                modalSprite.classList.toggle('is-shiny');
+                const isShiny = modalSprite.classList.contains('is-shiny');
+                modalSprite.src = isShiny ? modalSprite.dataset.shinyIdle : modalSprite.dataset.idle;
+            }
+        }
+    });
 
     pokedexContainer.addEventListener('mousedown', (e) => {
         const card = e.target.closest('.pokemon-card');

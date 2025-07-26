@@ -163,10 +163,18 @@
             </div>
         </div>
     </div>
+    <div id="team-analysis-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Close">&times;</button>
+            <div class="modal-body" id="team-analysis-content">
+                </div>
+        </div>
+    </div>
     <script type="module" src="scripts/pokedex/pokemon.js"></script>
     <script type="module" src="scripts/pokedex/ui.js"></script>
     <script type="module" src="scripts/pokedex/app.js"></script>
     <script type="module" src="scripts/pokedex/trainer-card.js"></script>
+    <script type="module" src="scripts/pokedex/team-analysis-modal.js"></script>
 </body>
 </html>
 
@@ -191,7 +199,9 @@
                     <button class="favorite-btn-modal" aria-label="Favorite">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
-                    <button id="modal-shiny-toggle" class="shiny-btn" aria-label="Toggle shiny sprite">✨</button>
+                    <button id="modal-shiny-toggle" class="shiny-btn" aria-label="Toggle shiny sprite">
+                        <img src="images/pokedex-assets/png/shiny-symbol.png" alt="Shiny">
+                    </button>
                 </div>
                 <div class="info-container">
                     <p class="pokemon-flavor-text"></p>

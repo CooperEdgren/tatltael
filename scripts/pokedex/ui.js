@@ -225,7 +225,9 @@ export class UI {
                 <div class="details-inner-content">
                     <h2 class="pokemon-name">${pokemon.name}</h2>
                     <div class="details-header">
-                        <button id="modal-shiny-toggle" class="card-icon-btn shiny-btn" aria-label="Toggle shiny sprite">✨</button>
+                        <button id="modal-shiny-toggle" class="card-icon-btn shiny-btn" aria-label="Toggle shiny sprite">
+                            <img src="images/pokedex-assets/png/shiny-symbol.png" alt="Shiny">
+                        </button>
                         <button class="card-icon-btn seen-btn ${isSeen ? 'is-seen' : ''}" data-id="${pokemon.id}" aria-label="Mark as Seen">
                             <img src="images/pokedex-assets/icons/eye.svg" alt="Seen">
                         </button>
@@ -297,11 +299,15 @@ export class UI {
             modalSprite.src = introSprite;
             setTimeout(() => {
                 modalSprite.src = modalSprite.classList.contains('is-shiny') ? shinyIdleSprite : idleSprite;
-                modalSprite.classList.add('idle-animation-sprite');
+                if (!modalSprite.classList.contains('idle-animation-sprite')) {
+                    modalSprite.classList.add('idle-animation-sprite');
+                }
             }, 1000);
         } else {
             modalSprite.src = idleSprite;
-            modalSprite.classList.add('idle-animation-sprite');
+            if (!modalSprite.classList.contains('idle-animation-sprite')) {
+                modalSprite.classList.add('idle-animation-sprite');
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import { allPokemon } from './state.js';
 import { analyzeTeam } from './team-analyzer.js';
 import * as badgeService from './badges.js';
 import { openPokemonSelector, closeTeamBuilderModal } from './pokemon-selector.js';
+import { openTeamAnalysisModal } from './team-analysis-modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const trainerNameInput = document.getElementById('trainer-name');
@@ -154,11 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (team[i]) {
                 const pokemon = allPokemon.find(p => p.id === team[i].id);
                 const typesHtml = pokemon.types.map(typeInfo => 
-                    `<img src="images/pokedex-assets/types/${typeInfo.type.name}.png" alt="${typeInfo.type.name}" class="type-badge-small">`
+                    `<img src="images/pokedex-assets/icons/${typeInfo.type.name}.svg" alt="${typeInfo.type.name}" class="type-badge-small">`
                 ).join('');
 
                 slot.innerHTML = `
-                    <img src="${team[i].sprite}" alt="${team[i].name}">
+                    <img src="${team[i].sprite}" alt="${team[i].name}" class="idle-animation-sprite">
                     <div class="team-pokemon-info">
                         <span class="team-pokemon-name">${team[i].name}</span>
                         <div class="team-pokemon-types">${typesHtml}</div>
@@ -227,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         controlsContainer.innerHTML = `
             <button id="set-from-save" style="display:none;">Set from Save</button>
             <button id="set-from-favorites">Set from Favorites</button>
+            <button id="team-analysis-btn">Team Analysis</button>
         `;
         
         const analysisContainer = document.createElement('div');
@@ -235,6 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const teamSection = teamContainer.parentElement;
         teamSection.insertBefore(controlsContainer, teamContainer);
         teamSection.appendChild(analysisContainer);
+
+        document.getElementById('team-analysis-btn').addEventListener('click', () => {
+            openTeamAnalysisModal(team);
+        });
 
         document.getElementById('set-from-favorites').addEventListener('click', () => {
             const favoriteIds = favorites.getFavorites();
