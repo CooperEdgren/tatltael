@@ -218,6 +218,7 @@ export class UI {
         return `
             <div class="sprite-container">
                 <img src="${sprite}" alt="${pokemon.name}" class="modal-sprite" data-pokemon-name="${pokemon.name}" data-sprite="${sprite}" data-shiny-sprite="${shinySprite}">
+                <button class="close-button" aria-label="Close">&times;</button>
             </div>
             <div class="details-content-pane">
                 <div class="details-inner-content">

@@ -111,7 +111,6 @@
     <div id="animated-sprite-container"></div>
     <div id="pokemon-modal" class="modal">
         <div class="modal-content">
-            <button class="close-button" aria-label="Close">&times;</button>
             <div id="modal-body"></div>
             <audio id="pokemon-cry-audio" preload="auto" style="display:none;"></audio>
         </div>
@@ -155,3 +154,76 @@
     <script type="module" src="scripts/pokedex/trainer-card.js"></script>
 </body>
 </html>
+
+<template id="pokemon-details-template">
+    <div class="details-container">
+        <div class="sprite-container">
+            <img class="modal-sprite" src="" alt="Pokemon sprite">
+            <button class="close-button" aria-label="Close">&times;</button>
+        </div>
+        <div class="details-content-pane">
+            <div class="details-inner-content">
+                <h2 class="pokemon-name"></h2>
+                <p class="pokemon-id-display"></p>
+                <div class="types-container"></div>
+                <div class="details-header">
+                    <button class="card-icon-btn seen-btn" aria-label="Mark as Seen">
+                        <img src="images/pokedex-assets/icons/eye.svg" alt="Seen">
+                    </button>
+                    <button class="card-icon-btn caught-btn" aria-label="Mark as Caught">
+                        <img src="images/pokedex-assets/svg/pokeball.svg" alt="Caught">
+                    </button>
+                    <button class="favorite-btn-modal" aria-label="Favorite">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </button>
+                    <button id="modal-shiny-toggle" class="shiny-btn" aria-label="Toggle shiny sprite">✨</button>
+                </div>
+                <div class="info-container">
+                    <p class="pokemon-flavor-text"></p>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <h4>Height</h4>
+                            <p class="pokemon-height"></p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Weight</h4>
+                            <p class="pokemon-weight"></p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Abilities</h4>
+                            <p class="pokemon-abilities"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-container"></div>
+                <div class="type-effectiveness-container"></div>
+                <div class="evolution-section">
+                    <h3>Evolutions</h3>
+                    <div class="evolution-content"></div>
+                </div>
+                <div class="location-encounter-section">
+                    <h3>Locations & Encounters</h3>
+                    <select class="game-version-select"></select>
+                    <div class="location-encounter-content"></div>
+                </div>
+                <div class="catch-rates-section">
+                    <h3>Catch Rate Calculator</h3>
+                    <div class="catch-conditions">
+                        <div class="hp-slider-container">
+                            <label for="hp-slider">HP:</label>
+                            <input type="range" id="hp-slider" min="0" max="100" value="100">
+                            <span id="hp-value">100%</span>
+                        </div>
+                        <div class="status-buttons-container"></div>
+                    </div>
+                    <div class="pokeball-buttons-container"></div>
+                    <div class="pokeball-description-box"></div>
+                    <div class="catch-info-section">
+                        <h3>Catch Probability</h3>
+                        <p>Select a Poké Ball to see catch probability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
