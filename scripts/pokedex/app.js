@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const leftContainer = document.querySelector('.nav-options-left');
             const rightContainer = document.querySelector('.nav-options-right');
 
-            // Ensure dynamic pokedex button exists
+            // Ensure dynamic pokedex button exists and is in the DOM
             if (!this.elements.pokedex) {
                 this.elements.pokedex = this.elements.trainerCard.cloneNode(true);
                 this.elements.pokedex.id = 'nav-pokedex';
@@ -74,44 +74,57 @@ document.addEventListener('DOMContentLoaded', () => {
                     ui.toggleNavPill();
                     menuButton.classList.remove('active');
                 });
+                // Add it to a container to ensure it's part of the DOM tree
+                leftContainer.appendChild(this.elements.pokedex);
             }
 
-            // Detach all pills to re-append them in the correct order
-            [this.elements.trainerCard, this.elements.upload, this.elements.delta, this.elements.pokedex].forEach(el => el?.remove());
+            // Hide all pills initially
+            this.elements.trainerCard.style.display = 'none';
+            this.elements.upload.style.display = 'none';
+            this.elements.delta.style.display = 'none';
+            this.elements.pokedex.style.display = 'none';
 
-            // Re-attach based on state
+            // Show the correct pills based on the current state
             switch(this.currentState) {
                 case 'pokedex':
-                    leftContainer.appendChild(this.elements.trainerCard);
-                    leftContainer.appendChild(this.elements.upload);
-                    rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                    this.elements.trainerCard.style.display = 'flex';
+                    this.elements.upload.style.display = 'flex';
+                    this.elements.delta.style.display = 'flex';
                     break;
                 case 'trainerCard':
-                    leftContainer.appendChild(this.elements.pokedex);
-                    leftContainer.appendChild(this.elements.upload);
-                    rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                    this.elements.pokedex.style.display = 'flex';
+                    this.elements.upload.style.display = 'flex';
+                    this.elements.delta.style.display = 'flex';
                     break;
                 case 'delta':
-                    leftContainer.appendChild(this.elements.trainerCard);
-                    leftContainer.appendChild(this.elements.upload);
+                    this.elements.trainerCard.style.display = 'flex';
+                    this.elements.upload.style.display = 'flex';
+                    this.elements.pokedex.style.display = 'flex';
+                    // Move pokedex pill to the right container
                     rightContainer.insertBefore(this.elements.pokedex, this.elements.backToSongbook);
                     break;
                 case 'uploadModal':
                     // Logic for upload modal depends on previous state
                     if (this.previousState === 'trainerCard') {
-                        leftContainer.appendChild(this.elements.pokedex);
-                        leftContainer.appendChild(this.elements.upload);
-                        rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                        this.elements.pokedex.style.display = 'flex';
+                        this.elements.upload.style.display = 'flex';
+                        this.elements.delta.style.display = 'flex';
                     } else if (this.previousState === 'delta') {
-                        leftContainer.appendChild(this.elements.trainerCard);
-                        leftContainer.appendChild(this.elements.upload);
+                        this.elements.trainerCard.style.display = 'flex';
+                        this.elements.upload.style.display = 'flex';
+                        this.elements.pokedex.style.display = 'flex';
                         rightContainer.insertBefore(this.elements.pokedex, this.elements.backToSongbook);
                     } else { // Default to pokedex view's nav
-                        leftContainer.appendChild(this.elements.trainerCard);
-                        leftContainer.appendChild(this.elements.upload);
-                        rightContainer.insertBefore(this.elements.delta, this.elements.backToSongbook);
+                        this.elements.trainerCard.style.display = 'flex';
+                        this.elements.upload.style.display = 'flex';
+                        this.elements.delta.style.display = 'flex';
                     }
                     break;
+            }
+
+            // Ensure pokedex pill is in the correct container for non-delta views
+            if (this.currentState !== 'delta' && this.currentState !== 'uploadModal' && this.previousState !== 'delta') {
+                 leftContainer.insertBefore(this.elements.pokedex, this.elements.upload);
             }
         }
     };

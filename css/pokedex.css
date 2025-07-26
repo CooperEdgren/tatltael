@@ -1997,6 +1997,81 @@ header {
 #selector-confirm-btn {
     padding: 10px 25px;
 }
+.team-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.team-controls button {
+    background-color: #444;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: 700;
+    font-family: 'Westmount', sans-serif;
+}
+
+.team-controls button:hover {
+    background-color: #555;
+}
+
+#team-analysis {
+    margin-top: 20px;
+    background-color: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#team-analysis h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.analysis-grids {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.type-grid-container h4 {
+    margin: 0 0 10px;
+    text-align: center;
+    font-weight: 300;
+    color: #aaa;
+}
+
+.type-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.type-analysis-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255,255,255,0.05);
+    padding: 5px;
+    border-radius: 8px;
+    min-width: 50px;
+}
+
+.type-analysis-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.type-analysis-item span {
+    font-size: 0.8em;
+    margin-top: 4px;
+    font-family: 'Tatami', sans-serif;
+}
 
 .delta-container {
     max-width: 800px;
