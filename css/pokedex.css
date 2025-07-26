@@ -2441,3 +2441,58 @@ header {
 .delta-game-btn:hover {
     background-color: #555;
 }
+.type-analysis-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.pokemon-name-list {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 4px;
+}
+.team-slot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 120px;
+}
+
+.team-slot img {
+    width: 72px;
+    height: 72px;
+    image-rendering: pixelated;
+}
+
+.team-pokemon-info {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.team-pokemon-name {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.team-pokemon-types {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.remove-pokemon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #999;
+}

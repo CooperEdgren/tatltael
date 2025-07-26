@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const renderTypeGrid = (title, types) => {
             const filteredTypes = Object.entries(types)
-                .filter(([, count]) => count > 0)
-                .sort(([, a], [, b]) => b - a);
+                .filter(([, pokemonNames]) => pokemonNames.length > 0)
+                .sort(([, a], [, b]) => b.length - a.length);
 
             if (filteredTypes.length === 0) return '';
 
@@ -121,10 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="type-grid-container">
                     <h4>${title}</h4>
                     <div class="type-grid">
-                        ${filteredTypes.map(([type, count]) => `
+                        ${filteredTypes.map(([type, pokemonNames]) => `
                             <div class="type-analysis-item">
                                 <img src="images/pokedex-assets/icons/${type}.svg" alt="${type}">
-                                <span>x${count}</span>
+                                <span>x${pokemonNames.length}</span>
+                                <div class="pokemon-name-list">${pokemonNames.join(', ')}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -151,7 +152,19 @@ document.addEventListener('DOMContentLoaded', () => {
             slot.draggable = true;
 
             if (team[i]) {
-                slot.innerHTML = `<img src="${team[i].sprite}" alt="${team[i].name}"><span class="remove-pokemon">&times;</span>`;
+                const pokemon = allPokemon.find(p => p.id === team[i].id);
+                const typesHtml = pokemon.types.map(typeInfo => 
+                    `<img src="images/pokedex-assets/types/${typeInfo.type.name}.png" alt="${typeInfo.type.name}" class="type-badge-small">`
+                ).join('');
+
+                slot.innerHTML = `
+                    <img src="${team[i].sprite}" alt="${team[i].name}">
+                    <div class="team-pokemon-info">
+                        <span class="team-pokemon-name">${team[i].name}</span>
+                        <div class="team-pokemon-types">${typesHtml}</div>
+                    </div>
+                    <span class="remove-pokemon">&times;</span>
+                `;
                 slot.querySelector('.remove-pokemon').addEventListener('click', (e) => {
                     e.stopPropagation();
                     team.splice(i, 1);
@@ -206,30 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTeamAnalysis();
     }
 
-    if (document.getElementById('selector-confirm-btn')) {
-        document.getElementById('selector-confirm-btn').addEventListener('click', () => {
-            const selectorList = document.getElementById('pokemon-selector-list');
-            const selectedPokemonNodes = selectorList.querySelectorAll('.pokemon-card.selected-for-compare');
-            const selectedPokemon = Array.from(selectedPokemonNodes).map(node => {
-                const id = parseInt(node.dataset.id);
-                const pokemonData = allPokemon.find(p => p.id === id);
-                return {
-                    id: id,
-                    name: pokemonData.name,
-                    sprite: pokemonData.sprite
-                };
-            });
-
-            for (let i = 0; i < 6 && selectedPokemon.length > 0; i++) {
-                if (!team[i]) {
-                    team.push(selectedPokemon.shift());
-                }
-            }
-            saveTeam();
-            renderTeam();
-            closeTeamBuilderModal();
-        });
-    }
+    
 
     function createTeamControls() {
         const controlsContainer = document.createElement('div');

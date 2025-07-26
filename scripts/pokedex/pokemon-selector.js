@@ -50,6 +50,8 @@ export async function openPokemonSelector(team, currentGeneration, onConfirm) {
     const confirmBtn = document.getElementById('selector-confirm-btn');
     const closeModalBtn = modal.querySelector('.close-button');
 
+    confirmBtn.classList.add('visible');
+
     let selectedPokemonIds = [];
     let allSelectorCards = [];
 
@@ -119,6 +121,7 @@ export async function openPokemonSelector(team, currentGeneration, onConfirm) {
 
     const closeModal = () => {
         modal.style.display = 'none';
+        confirmBtn.classList.remove('visible');
         
         allSelectorCards.forEach(card => card.classList.remove('selected-for-compare'));
         selectedPokemonIds = [];
