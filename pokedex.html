@@ -119,10 +119,14 @@
         <div class="modal-content">
             <button class="close-button" aria-label="Close">&times;</button>
             <div class="modal-body">
-                <div class="search-container">
-                    <input type="text" id="pokemon-search" placeholder="Search Pokémon...">
-                </div>
                 <div id="pokemon-selector-list" class="pokedex"></div>
+                <div class="selector-footer">
+                    <span id="selector-counter">Selected: 0/6</span>
+                    <button id="selector-confirm-btn" disabled>Add to Team</button>
+                    <div class="search-container">
+                        <input type="text" id="pokemon-search" placeholder="Search Pokémon...">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

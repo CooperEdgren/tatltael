@@ -25,13 +25,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const gameId = urlParams.get('game');
+            const gameUrl = urlParams.get('game');
             const retryLink = document.getElementById('retry-link');
 
-            if (gameId) {
-                const deltaUrl = `delta://game/${gameId}`;
-                retryLink.href = deltaUrl;
-                window.location.href = deltaUrl;
+            if (gameUrl) {
+                retryLink.href = gameUrl;
+                window.location.href = gameUrl;
 
                 // Close the helper tab after a short delay
                 setTimeout(() => {

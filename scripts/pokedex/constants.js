@@ -13,22 +13,15 @@ export const SUPPORTED_GAMES = [
 ];
 
 export const DELTA_GAMES = [
-    {
-        name: 'Pokémon FireRed',
-        id: 'Pokemon%20-%20FireRed%20Version%20(U).gba'
-    },
-    {
-        name: 'Pokémon Emerald',
-        id: 'Pokemon%20-%20Emerald%20Version%20(U).gba'
-    },
-    {
-        name: 'Pokémon Crystal',
-        id: 'Pokemon%20-%20Crystal%20Version%20(U).gbc'
-    },
-    {
-        name: 'Pokémon Platinum',
-        id: 'Pokemon%20-%20Platinum%20Version%20(U).nds'
-    }
+    { name: 'Pokémon Red', url: 'delta://game/ea9bcae617fdf159b045185467ae58b2e4a48b9a' },
+    { name: 'Pokémon Yellow', url: 'delta://game/cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1' },
+    { name: 'Pokémon Crystal', url: 'delta://game/f2f52230b536214ef7c9924f483392993e226cfb' },
+    { name: 'Pokémon FireRed', url: 'delta://game/dd5945db9b930750cb39d00c84da8571feebf417' },
+    { name: 'Pokémon Ruby', url: 'delta://game/5b64eacf892920518db4ec664e62a086dd5f5bc8' },
+    { name: 'Pokémon Platinum', url: 'delta://game/0862ec35b24de5c7e2dcb88c9eea0873110d755c' },
+    { name: 'Pokémon SoulSilver', url: 'delta://game/ef7564d8e15c40a0b9a3a7e96cb02f53e8a9700b' },
+    { name: 'Pokémon Black', url: 'delta://game/a68b3bedf5c1e53556e41e59cdf396c20b331896' },
+    { name: 'Pokémon Black 2', url: 'delta://game/42f7a3daf0601064c9067a6a2903a83ec081442b' }
 ];
 
 export const POKEBALLS = [

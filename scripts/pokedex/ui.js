@@ -223,6 +223,7 @@ export class UI {
             </div>
             <div class="details-content-pane">
                 <div class="details-inner-content">
+                    <h2 class="pokemon-name">${pokemon.name}</h2>
                     <div class="details-header">
                         <button id="modal-shiny-toggle" class="card-icon-btn shiny-btn" aria-label="Toggle shiny sprite">✨</button>
                         <button class="card-icon-btn seen-btn ${isSeen ? 'is-seen' : ''}" data-id="${pokemon.id}" aria-label="Mark as Seen">

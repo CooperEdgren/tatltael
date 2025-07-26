@@ -206,6 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTeamAnalysis();
     }
 
+    if (document.getElementById('selector-confirm-btn')) {
+        document.getElementById('selector-confirm-btn').addEventListener('click', () => {
+            const selectorList = document.getElementById('pokemon-selector-list');
+            const selectedPokemonNodes = selectorList.querySelectorAll('.pokemon-card.selected-for-compare');
+            const selectedPokemon = Array.from(selectedPokemonNodes).map(node => {
+                const id = parseInt(node.dataset.id);
+                const pokemonData = allPokemon.find(p => p.id === id);
+                return {
+                    id: id,
+                    name: pokemonData.name,
+                    sprite: pokemonData.sprite
+                };
+            });
+
+            for (let i = 0; i < 6 && selectedPokemon.length > 0; i++) {
+                if (!team[i]) {
+                    team.push(selectedPokemon.shift());
+                }
+            }
+            saveTeam();
+            renderTeam();
+            closeTeamBuilderModal();
+        });
+    }
+
     function createTeamControls() {
         const controlsContainer = document.createElement('div');
         controlsContainer.classList.add('team-controls');

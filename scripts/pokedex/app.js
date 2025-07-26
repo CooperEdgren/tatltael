@@ -439,14 +439,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const setupDeltaView = () => {
         const grid = document.getElementById('delta-games-grid');
         grid.innerHTML = DELTA_GAMES.map(game => `
-            <button class="delta-game-btn" data-game-id="${game.id}">${game.name}</button>
+            <button class="delta-game-btn" data-game-url="${game.url}">${game.name}</button>
         `).join('');
 
         grid.addEventListener('click', (e) => {
             const button = e.target.closest('.delta-game-btn');
             if (button) {
-                const gameId = button.dataset.gameId;
-                window.open(`delta-launcher.html?game=${gameId}`, '_blank');
+                const gameUrl = button.dataset.gameUrl;
+                window.open(`delta-launcher.html?game=${encodeURIComponent(gameUrl)}`, '_blank');
             }
         });
     };
