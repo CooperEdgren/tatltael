@@ -361,6 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     { ...p2Details, overall: p2Overall, statComparisons: statComparisons.map(c => c === 'higher' ? 'lower' : (c === 'lower' ? 'higher' : 'equal')), advantage: p2State },
                     e1, e2
                 );
+                compareBtn.classList.remove('visible');
                 document.body.classList.add('modal-open');
             } catch (error) {
                 console.error('Error fetching Pokémon for comparison:', error);

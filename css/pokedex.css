@@ -1411,7 +1411,6 @@ header {
 /* Compare Modal */
 .compare-modal .modal-content {
     background-color: transparent;
-    overflow: hidden;
 }
 
 .compare-modal .compare-container {
@@ -1580,7 +1579,7 @@ header {
 
 .winner-badge, .advantage-label {
     position: absolute;
-    top: 10px;
+    bottom: 10px;
     left: 10px;
     background-color: #ffc107;
     color: #222;
@@ -1594,7 +1593,7 @@ header {
 .advantage-label {
     background-color: #4caf50;
     color: #fff;
-    top: 40px;
+    bottom: 45px;
 }
 
 .compare-header {
