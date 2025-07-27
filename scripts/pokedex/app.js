@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pokemonFromList = allPokemon.find(p => p.id === pokemonId);
             
             // Open modal immediately with basic info
-            openModal(pokemonId, pokemonFromList, card);
+            openModal({ pokemon: pokemonFromList }, card);
 
             // Fetch complete data in the background
             try {
@@ -572,17 +572,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (decodedText.startsWith('https://pokeapi.co/api/v2/pokemon/')) {
                         const parts = decodedText.split('/').filter(part => part);
                         const pokemonId = parts[parts.length - 1];
-                        qrScanner.stop();
-                        scannerView.style.display = 'none';
                         
-                        pokemonService.getPokemonComplete(pokemonId).then(pokemonData => {
-                            const { pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild } = pokemonData;
-                            openModal(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild);
-                        }).catch(err => {
-                            console.error(`Failed to fetch complete data for Pokémon ${pokemonId}`, err);
-                        });
+                        qrScanner.stop();
+                        
+                        // 1. Fade out scanner
+                        scannerView.classList.add('closing');
+                        
+                        // 2. Show loader while fetching
+                        ui.showLoader();
+
+                        setTimeout(() => {
+                            scannerView.style.display = 'none';
+                            scannerView.classList.remove('closing');
+
+                            // 3. Fetch data and open modal
+                            pokemonService.getPokemonComplete(pokemonId).then(pokemonData => {
+                                ui.hideLoader();
+                                openModal(pokemonData);
+                            }).catch(err => {
+                                ui.hideLoader();
+                                console.error(`Failed to fetch complete data for Pokémon ${pokemonId}`, err);
+                                ui.showError(`Could not load data for Pokémon ID: ${pokemonId}`);
+                            });
+                        }, 300); // Match animation duration
                     } else {
                         console.log("Scanned QR code is not a valid PokeAPI URL.");
+                        // Optionally, show feedback to the user for invalid codes
                     }
                 },
                 (errorMessage) => {

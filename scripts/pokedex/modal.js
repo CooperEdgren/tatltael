@@ -46,10 +46,12 @@ function animateElements(originCard, reverse = false) {
     });
 }
 
-export async function openModal(pokemonId, basicPokemonInfo, card) {
+export async function openModal(data, card = null) {
     if (isAnimating) return;
     isAnimating = true;
-    currentModalPokemonId = pokemonId;
+    
+    const pokemon = data.pokemon || data;
+    currentModalPokemonId = pokemon.id;
 
     const modal = document.getElementById('pokemon-modal');
     const body = document.body;
@@ -68,8 +70,7 @@ export async function openModal(pokemonId, basicPokemonInfo, card) {
         const cardImage = card.querySelector('img');
         const cardImageRect = cardImage.getBoundingClientRect();
 
-        // Render the initial modal with only basic info and loading placeholders
-        ui.renderPokemonDetail(basicPokemonInfo, null, null, null, null, false, true);
+        ui.renderPokemonDetail(pokemon, null, null, null, null, false, true);
         modal.style.display = 'block';
         modal.style.visibility = 'hidden';
 
@@ -83,7 +84,6 @@ export async function openModal(pokemonId, basicPokemonInfo, card) {
         const detailsPaneBgColor = detailsPaneStyle.backgroundColor;
         const detailsPaneRadius = detailsPaneStyle.borderRadius;
 
-        // Animate the sprite from the card to the modal.
         const animatedSprite = cardImage.cloneNode(true);
         animatedSpriteContainer.innerHTML = '';
         animatedSpriteContainer.appendChild(animatedSprite);
@@ -92,7 +92,6 @@ export async function openModal(pokemonId, basicPokemonInfo, card) {
         animatedSpriteContainer.style.width = `${cardImageRect.width}px`;
         animatedSpriteContainer.style.height = `${cardImageRect.height}px`;
 
-        // Animate the background color from the card to the modal.
         transitionOverlay.style.backgroundColor = cardBgColor;
         transitionOverlay.style.top = `${cardRect.top}px`;
         transitionOverlay.style.left = `${cardRect.left}px`;
@@ -123,16 +122,17 @@ export async function openModal(pokemonId, basicPokemonInfo, card) {
         detailsPane.classList.add('show-content');
         document.documentElement.classList.add('modal-open');
         body.classList.add('modal-open');
-        ui.setHeaderTitle(basicPokemonInfo.name);
+        ui.setHeaderTitle(pokemon.name);
         animatedSpriteContainer.innerHTML = '';
         transitionOverlay.style.opacity = '0';
     } else {
-        // This case is for when we don't have a card to animate from, e.g., evolution click
-        ui.renderPokemonDetail(basicPokemonInfo, null, null, null, null, false, true);
-        ui.setHeaderTitle(basicPokemonInfo.name);
+        const { pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild } = data;
+        ui.renderPokemonDetail(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild, false);
+        ui.setHeaderTitle(pokemon.name);
+        
         const detailsPane = document.querySelector('.details-content-pane');
-        detailsPane.classList.add('show-content');
         modal.style.display = 'block';
+        if(detailsPane) detailsPane.classList.add('show-content');
         document.documentElement.classList.add('modal-open');
         body.classList.add('modal-open');
     }
