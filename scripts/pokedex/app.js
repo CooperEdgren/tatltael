@@ -569,18 +569,20 @@ document.addEventListener('DOMContentLoaded', () => {
             qrScanner = new QRScanner(
                 'qr-reader',
                 (decodedText, decodedResult) => {
-                    console.log(`Scan result: ${decodedText}`, decodedResult);
                     if (decodedText.startsWith('https://pokeapi.co/api/v2/pokemon/')) {
-                        const parts = decodedText.split('/');
-                        const pokemonId = parts[parts.length - 2];
+                        const parts = decodedText.split('/').filter(part => part);
+                        const pokemonId = parts[parts.length - 1];
                         qrScanner.stop();
                         scannerView.style.display = 'none';
-                        pokemonService.getPokemon(pokemonId).then(pokemon => {
-                            openModal(pokemon);
+                        
+                        pokemonService.getPokemonComplete(pokemonId).then(pokemonData => {
+                            const { pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild } = pokemonData;
+                            openModal(pokemon, species, encounters, evolutionChain, typeEffectiveness, isCatchableInWild);
+                        }).catch(err => {
+                            console.error(`Failed to fetch complete data for Pokémon ${pokemonId}`, err);
                         });
                     } else {
                         console.log("Scanned QR code is not a valid PokeAPI URL.");
-                        // Optionally, provide user feedback here
                     }
                 },
                 (errorMessage) => {
