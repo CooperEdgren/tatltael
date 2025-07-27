@@ -3,7 +3,15 @@ const SEEN_KEY = 'seenPokemon';
 
 function getFromStorage(key) {
     const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : [];
+    if (!stored || stored === 'undefined') {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error(`Error parsing JSON from localStorage for key "${key}":`, e);
+        return [];
+    }
 }
 
 function saveToStorage(key, data) {

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Pokedex</title>
     <link rel="stylesheet" href="css/pokedex.css">
+    <link rel="stylesheet" href="css/scanner.css">
 </head>
 <body>
     <header>
@@ -49,6 +50,7 @@
                 </button>
             </div>
             <button id="filters-toggle-btn">Filters</button>
+            <button id="nav-scan" class="filters-btn">Scan</button>
             <div id="filters-box">
                 <button id="filters-close-btn">&times;</button>
                 <div id="generation-filter-container"></div>
@@ -162,11 +164,30 @@
                         <label for="save-file-input">Select Save File:</label>
                         <input type="file" id="save-file-input">
                     </div>
-                    <button id="upload-button" class="compare-btn">Upload</button>
+                    <button id="upload-button">Upload</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- QR Scanner and Catching Game Views -->
+    <div id="scanner-view" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button id="scanner-close-btn" class="close-button">&times;</button>
+            <h2>Scan QR Code</h2>
+            <div id="qr-reader"></div>
+        </div>
+    </div>
+
+    <div id="catching-game-view" style="display: none;">
+        <div class="wild-pokemon-container">
+            <!-- Wild Pokemon sprite will be added here by JS -->
+        </div>
+        <div class="pokeball-throw-area">
+            <div id="pokeball-sprite"></div>
+        </div>
+    </div>
+
     <div id="team-analysis-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <button class="close-button" aria-label="Close">&times;</button>
@@ -174,11 +195,15 @@
                 </div>
         </div>
     </div>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script type="module" src="scripts/pokedex/pokemon.js"></script>
     <script type="module" src="scripts/pokedex/ui.js"></script>
+    <script type="module" src="scripts/pokedex/scanner.js"></script>
+    <script type="module" src="scripts/pokedex/catching-game.js"></script>
     <script type="module" src="scripts/pokedex/app.js"></script>
     <script type="module" src="scripts/pokedex/trainer-card.js"></script>
     <script type="module" src="scripts/pokedex/team-analysis-modal.js"></script>
+    <script src="SaveParser.Wasm/bin/Debug/net7.0/wwwroot/_framework/blazor.webassembly.js" autostart="false"></script>
 </body>
 </html>
 

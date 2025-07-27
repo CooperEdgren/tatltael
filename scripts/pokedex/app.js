@@ -3,11 +3,12 @@ import PokemonService from './pokemon.js';
 import { UI } from './ui.js';
 import * as favorites from './favorites.js';
 import * as tracker from './tracker.js';
-import { allPokemon, setAllPokemon } from './state.js';
+import appState, { allPokemon, setAllPokemon } from './state.js';
 import { applyFilters as applyFiltersFromModule } from './filter.js';
-import { parseSaveFile } from './save-parser.js';
+import { parseSaveFile, initializeWasm } from './save-parser.js';
 import { initModal, openModal } from './modal.js';
 import { setupFilters } from './filter-manager.js';
+import { QRScanner } from './scanner.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
@@ -28,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const trainerCardView = document.getElementById('trainer-card-view');
     const deltaView = document.getElementById('delta-view');
     const uploadModal = document.getElementById('upload-save-modal');
+    const scannerView = document.getElementById('scanner-view');
+    const scannerCloseBtn = document.getElementById('scanner-close-btn');
+    const scanBtn = document.getElementById('nav-scan');
+    let qrScanner;
 
     // Services and UI
     const pokemonService = new PokemonService();
@@ -426,12 +431,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         uploadButton.addEventListener('click', async () => {
             if (!fileInput.files[0]) { ui.showError('Please select a save file.'); return; }
+            
+            // Clear previous success messages
+            const existingMsg = uploadModal.querySelector('.success-message');
+            if (existingMsg) existingMsg.remove();
+
             ui.showLoader();
             try {
                 parsedSaveData = await parseSaveFile(fileInput.files[0], gameSelect.value);
                 const genData = { 'firered': 1, 'leafgreen': 1, 'ruby': 3, 'sapphire': 3, 'emerald': 3, 'diamond': 4, 'pearl': 4, 'platinum': 4, 'heartgold': 2, 'soulsilver': 2, 'black': 5, 'white': 5, 'black-2': 5, 'white-2': 5, 'red': 1, 'blue': 1, 'yellow': 1, 'gold': 2, 'silver': 2, 'crystal': 2 };
                 parsedSaveData.generation = genData[gameSelect.value];
-                uploadModal.style.display = 'none';
+                
+                // Show success message
+                const successMsg = document.createElement('p');
+                successMsg.textContent = 'Save uploaded successfully!';
+                successMsg.className = 'success-message';
+                uploadButton.parentElement.insertBefore(successMsg, uploadButton.nextSibling);
+
                 document.dispatchEvent(new CustomEvent('saveDataParsed', { detail: parsedSaveData }));
             } catch (error) {
                 console.error('Error parsing save file:', error);
@@ -547,10 +563,46 @@ document.addEventListener('DOMContentLoaded', () => {
         filtersBox.classList.remove('open');
     });
 
+    scanBtn.addEventListener('click', () => {
+        scannerView.style.display = 'block';
+        if (!qrScanner) {
+            qrScanner = new QRScanner(
+                'qr-reader',
+                (decodedText, decodedResult) => {
+                    console.log(`Scan result: ${decodedText}`, decodedResult);
+                    if (decodedText.startsWith('https://pokeapi.co/api/v2/pokemon/')) {
+                        const parts = decodedText.split('/');
+                        const pokemonId = parts[parts.length - 2];
+                        qrScanner.stop();
+                        scannerView.style.display = 'none';
+                        pokemonService.getPokemon(pokemonId).then(pokemon => {
+                            openModal(pokemon);
+                        });
+                    } else {
+                        console.log("Scanned QR code is not a valid PokeAPI URL.");
+                        // Optionally, provide user feedback here
+                    }
+                },
+                (errorMessage) => {
+                    // console.error(errorMessage);
+                }
+            );
+        }
+        qrScanner.start();
+    });
+
+    scannerCloseBtn.addEventListener('click', () => {
+        if (qrScanner) {
+            qrScanner.stop();
+        }
+        scannerView.style.display = 'none';
+    });
+
     initModal(originalHeaderText, ui, pokemonService);
     displayPokemon();
     setupFilters(generationFilterContainer, typeFilterContainer, trackingFilterContainer, applyFilters);
     switchToView('pokedex'); // Initial view setup
     setupUploadModal();
     setupDeltaView();
+    initializeWasm();
 });

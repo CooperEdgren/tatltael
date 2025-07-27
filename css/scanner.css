@@ -1,0 +1,77 @@
+/* scanner.css */
+
+/* Scan Button */
+.scan-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 10px;
+}
+
+.scan-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Scanner View */
+#scanner-view .modal-content {
+    padding: 20px;
+}
+
+#qr-reader {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Catching Game View */
+#catching-game-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1001;
+}
+
+.wild-pokemon-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wild-pokemon-container img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.pokeball-throw-area {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#pokeball-sprite {
+    width: 64px;  /* Adjust based on actual sprite size */
+    height: 64px; /* Adjust based on actual sprite size */
+    background-image: url('../images/pokedex-assets/png/pokeballs_sprites.png');
+    background-repeat: no-repeat;
+    cursor: grab;
+    /* Start on the first frame of the first column */
+    background-position: 0 0; 
+}
+
+/* Add animation for the pokeball throw later */

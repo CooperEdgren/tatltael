@@ -68,71 +68,44 @@ This plan provides a comprehensive roadmap for implementing the new scanning and
 
 # Feature Plan: Advanced Save File Parsing
 
-## 1. Introduction & Goal
+## 1. Current Architecture & Goal
 
-The current save file parser is functional but limited. It relies on hardcoded memory offsets, extracts only basic data, and is difficult to extend. The goal of this development effort is to re-engineer the parser into a robust, scalable, and comprehensive tool.
+The save file parsing system is built on a modern technical stack designed for performance and accuracy.
 
-This will be achieved by studying the provided reference projects (`PKHeX`, `HTML5PokemonSaveReader`, `PKMDS-Blazor`) and adopting a modern, structure-based parsing approach, likely using **WebAssembly (WASM)** for maximum performance and accuracy.
+-   **Core Engine:** It uses the industry-standard `PKHeX.Core` C# library, which is the most comprehensive and accurate Pokémon save file parsing engine available.
+-   **Technology:** The C# logic is compiled to WebAssembly (WASM) using Blazor, allowing the powerful C# code to run directly in the browser.
+-   **Wrapper Model:** The `SaveParser.Wasm` C# project acts as a thin wrapper. Its sole purpose is to receive a save file from the JavaScript front-end and hand it off to `PKHeX.Core`. The `scripts/pokedex/save-parser.js` file handles the browser-side file reading.
 
-The final product should be able to extract rich data from save files, including:
--   Full Trainer Info (Name, ID, Money, etc.)
--   Detailed Party Pokémon (Stats, Moves, IVs, EVs, Nature, etc.)
--   PC Box Contents
--   Item Inventory (PC and Bag)
--   Full Pokédex Status (Seen, Caught, Forms, etc.)
+The goal is to create a seamless experience where a user can upload any valid Pokémon save file (including common emulator formats like `.dsv`) and have it parsed correctly.
 
-## 2. Phase 1: Research & Analysis
+## 2. Current Roadblock
 
-The first step is to thoroughly analyze the provided reference projects to understand the underlying logic of Pokémon save files.
+The system is currently non-functional due to a critical issue in the communication layer between the JavaScript front-end and the C# WASM back-end.
 
--   **`PKHeX` (The "Source of Truth"):**
-    -   **Objective:** Understand the data structures.
-    -   **Action:** Do not focus on the UI code. Instead, analyze the core C# library. Identify the key classes and structs that define save file layouts (`SAV`), Pokémon data (`PKM`), and inventory blocks for each game generation. This is the blueprint for how data is organized.
+-   **The Problem:** When the JavaScript `parseSaveFile` function calls the C# `ParseSaveFile` method via Blazor's JS Interop (`DotNet.invokeMethodAsync`), the call fails.
+-   **The Error:** The browser console shows a `System.Text.Json.JsonException: Unexpected JSON Property...` error. This indicates that the way Blazor is serializing the arguments (specifically the large `Uint8Array` of the save file) in JavaScript is not compatible with what the C# method expects on the other side. The data is becoming corrupted or malformed during the serialization process.
 
--   **`HTML5PokemonSaveReader` (The JavaScript Approach):**
-    -   **Objective:** Understand in-browser file handling.
-    -   **Action:** Analyze its implementation. How does it use `FileReader` to handle the file upload? How does it use `DataView` and `ArrayBuffer` to read the binary data? Assess which parts of its parsing logic can be reused or adapted, and identify its limitations.
+This is not a `PKHeX.Core` issue. The C# code is correct, but it never gets a chance to execute because the data transfer fails before the method is invoked.
 
--   **`PKMDS-Blazor` (The WebAssembly Path):**
-    -   **Objective:** Understand the C# to WASM pipeline.
-    -   **Action:** Investigate how this project compiles C# code to a WASM module that can run in the browser. This serves as the primary architectural model for our new parser.
+## 3. Path Forward: Recommended Next Steps
 
-## 3. Phase 2: Architectural Decision
+The next developer must focus exclusively on solving the Blazor JS Interop serialization issue.
 
-Based on the research, the following architecture is recommended:
+1.  **Investigate Blazor Serialization:**
+    -   **Action:** Research the specific mechanisms Blazor uses to serialize complex JavaScript objects (especially those containing `Uint8Array`) into JSON for C# consumption.
+    -   **Focus:** Look for required C# attributes (like `[JsonPropertyName("...")]` in the `FileInput` class) or specific JavaScript object structures that Blazor's serializer expects. The mismatch is likely due to a subtle, undocumented requirement, possibly related to case sensitivity or property ordering.
 
--   **WebAssembly (WASM) is the clear path forward.**
-    -   **Why:** Pokémon save files are complex and have many variations. Re-implementing all of this logic in JavaScript would be extremely time-consuming and error-prone. A C# library, compiled to WASM, allows us to leverage the strongly-typed, high-performance nature of C# for the heavy lifting, while using JavaScript for the user interface. This is the approach used by modern tools like `PKMDS-Blazor` and is the most robust solution.
+2.  **Explore Alternative Data Transfer Methods:**
+    -   If direct object passing remains problematic, consider a more primitive but robust transfer method as a fallback.
+    -   **Action:** Modify the JavaScript to convert the `Uint8Array` into a Base64 string before sending it. Modify the C# method to accept this string and then decode it back into a `byte[]` array.
+    -   **Trade-offs:** This method is less efficient due to the overhead of Base64 encoding/decoding, but it is highly likely to bypass the complex object serialization issue entirely, as it only involves passing a simple string.
 
-## 4. Phase 3: Implementation Plan
+3.  **Verify Blazor Configuration and Version:**
+    -   **Action:** Review the project's Blazor and .NET version (`net8.0`). Check for any known JS Interop bugs or breaking changes in that specific version.
+    -   **Focus:** Ensure all NuGet packages are correctly restored and that the project configuration (`SaveParser.Wasm.csproj`) is sound.
 
-### 4.1. Set Up the WASM Project
--   **Action:** Create a new .NET class library project. This library will contain the core parsing logic, adapted from the principles learned from `PKHeX`. Configure the project to compile to WebAssembly.
+By tackling the JS-to-C# data transfer issue directly, the existing, powerful `PKHeX.Core` implementation can be unlocked, making the save file parser fully functional.
 
-### 4.2. Implement the Core C# Parser
--   **Action:**
-    -   Define C# classes that mirror the data structures from `PKHeX` (e.g., `SAV8`, `PK8` for Generation 8).
-    -   Write a main parser class in C# with a public method that accepts a byte array (the save file) and returns a JSON-serialized string of the parsed data. This keeps the interop with JavaScript simple and clean.
-
-### 4.3. Integrate WASM with the Frontend
--   **Action:**
-    -   In `save-parser.js`, load the compiled WASM module.
-    -   Modify the `parseSaveFile` function:
-        1.  Read the uploaded file into an `ArrayBuffer`.
-        2.  Pass the resulting `Uint8Array` to the C# WASM function.
-        3.  Receive the JSON string back from WASM.
-        4.  Use `JSON.parse()` to convert the string into a JavaScript object.
-        5.  Return this object.
-
-### 4.4. Expand the UI
--   **Action:**
-    -   The Trainer Card view (`trainer-card.js` and `pokedex.html`) needs to be significantly expanded.
-    -   Add new sections to the Trainer Card to display the player's full team, with details like level, stats, and moves.
-    -   Consider adding a new view to show the PC boxes and the player's item inventory.
-
-## 5. Conclusion
-
-By leveraging the power of WebAssembly and the proven data structures from projects like `PKHeX`, we can transform the save file parser from a simple tool into a powerful, modern feature. This approach is scalable, maintainable, and will provide a much richer experience for the user.
 
 ---
 

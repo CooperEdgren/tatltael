@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/SaveParser.Wasm.props" />
+</Project>

@@ -16,6 +16,18 @@ export class UI {
         this.errorMessageElement = document.getElementById('error-message');
     }
 
+    createScanButton() {
+        const filtersToggleBtn = document.getElementById('filters-toggle-btn');
+        if (!filtersToggleBtn) return;
+
+        const scanBtn = document.createElement('button');
+        scanBtn.id = 'scan-qr-btn';
+        scanBtn.className = 'scan-btn';
+        scanBtn.textContent = 'Scan';
+        
+        filtersToggleBtn.parentNode.insertBefore(scanBtn, filtersToggleBtn.nextSibling);
+    }
+
     showLoader() {
         this.loader.style.display = 'block';
         this.hideError();
