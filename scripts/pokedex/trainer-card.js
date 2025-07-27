@@ -154,22 +154,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (team[i]) {
                 const pokemon = allPokemon.find(p => p.id === team[i].id);
-                const typesHtml = pokemon.types.map(typeInfo => 
-                    `<img src="images/pokedex-assets/icons/${typeInfo.type.name}.svg" alt="${typeInfo.type.name}" class="type-badge-small">`
-                ).join('');
+                if (pokemon && pokemon.types) {
+                    const typesHtml = pokemon.types.map(typeInfo => 
+                        `<img src="images/pokedex-assets/icons/${typeInfo.type.name}.svg" alt="${typeInfo.type.name}" class="type-badge-small">`
+                    ).join('');
 
-                pokemon.types.forEach(typeInfo => {
-                    slot.classList.add(`type-${typeInfo.type.name}`);
-                });
+                    pokemon.types.forEach(typeInfo => {
+                        slot.classList.add(`type-${typeInfo.type.name}`);
+                    });
 
-                slot.innerHTML = `
-                    <img src="${team[i].sprite}" alt="${team[i].name}" class="idle-animation-sprite">
-                    <div class="team-pokemon-info">
-                        <span class="team-pokemon-name">${team[i].name}</span>
-                        <div class="team-pokemon-types">${typesHtml}</div>
-                    </div>
-                    <span class="remove-pokemon">&times;</span>
-                `;
+                    slot.innerHTML = `
+                        <img src="${team[i].sprite}" alt="${team[i].name}" class="idle-animation-sprite">
+                        <div class="team-pokemon-info">
+                            <span class="team-pokemon-name">${team[i].name}</span>
+                            <div class="team-pokemon-types">${typesHtml}</div>
+                        </div>
+                        <span class="remove-pokemon">&times;</span>
+                    `;
+                } else {
+                    slot.innerHTML = `
+                        <img src="${team[i].sprite}" alt="${team[i].name}" class="idle-animation-sprite">
+                        <div class="team-pokemon-info">
+                            <span class="team-pokemon-name">${team[i].name}</span>
+                            <div class="team-pokemon-types"></div>
+                        </div>
+                        <span class="remove-pokemon">&times;</span>
+                    `;
+                }
+
                 slot.querySelector('.remove-pokemon').addEventListener('click', (e) => {
                     e.stopPropagation();
                     team.splice(i, 1);
@@ -357,6 +369,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (setFromSaveBtn) {
             setFromSaveBtn.style.display = 'inline-block';
         }
+    });
+
+    document.addEventListener('pokemonDataLoaded', () => {
+        renderTeam();
     });
 
     window.closeTeamBuilderModal = closeTeamBuilderModal;

@@ -535,6 +535,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const filtersToggleBtn = document.getElementById('filters-toggle-btn');
+    const filtersBox = document.getElementById('filters-box');
+    const filtersCloseBtn = document.getElementById('filters-close-btn');
+
+    filtersToggleBtn.addEventListener('click', () => {
+        filtersBox.classList.toggle('open');
+    });
+
+    filtersCloseBtn.addEventListener('click', () => {
+        filtersBox.classList.remove('open');
+    });
+
     initModal(originalHeaderText, ui, pokemonService);
     displayPokemon();
     setupFilters(generationFilterContainer, typeFilterContainer, trackingFilterContainer, applyFilters);

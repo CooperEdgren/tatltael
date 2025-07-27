@@ -485,48 +485,52 @@ export class UI {
 
     _renderEvolutionSection(pokemon, evolutionChain) {
         const evolutionSection = this.modalBody.querySelector('.evolution-section');
-        if (!evolutionChain) {
+
+        if (!evolutionChain || !Array.isArray(evolutionChain) || evolutionChain.length === 0 || (evolutionChain.length === 1 && evolutionChain[0].length < 2)) {
             evolutionSection.style.display = 'none';
             return;
         }
 
         const evolutionContent = evolutionSection.querySelector('.evolution-content');
         let html = '';
-        const chain = evolutionChain.chain;
 
-        const getEvolutions = (evolution) => {
-            const evolutions = [];
-            evolutions.push(evolution.species);
-            evolution.evolves_to.forEach(evo => {
-                evolutions.push(...getEvolutions(evo));
-            });
-            return evolutions;
-        };
+        evolutionChain.forEach(path => {
+            html += '<div class="evolution-path">';
+            for (let i = 0; i < path.length; i++) {
+                const stage = path[i];
+                const evoId = stage.species_id;
+                const evoName = stage.species_name.replace(/-/g, ' ');
+                const evoSprite = `${SPRITE_BASE_URL}${evoId}.png`;
 
-        const allEvolutions = getEvolutions(chain).filter(evoSpecies => evoSpecies.name !== pokemon.name);
+                if (i > 0) {
+                    const triggerText = stage.trigger;
+                    html += `
+                        <div class="evolution-arrow">
+                            <p class="evolution-trigger">${triggerText || ''}</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    `;
+                }
 
-        if (allEvolutions.length === 0) {
-            evolutionSection.style.display = 'none';
-            return;
-        }
-
-        allEvolutions.forEach(evoSpecies => {
-            const evoId = evoSpecies.url.split('/').slice(-2, -1)[0];
-            const evoName = evoSpecies.name;
-            const evoSprite = `${SPRITE_BASE_URL}${evoId}.png`;
-
-            html += `
-                <button class="evolution-button" data-id="${evoId}">
-                    <img src="${evoSprite}" alt="${evoName}" class="idle-animation-sprite">
-                    <p>${evoName}</p>
-                </button>
-            `;
+                html += `
+                    <button class="evolution-button" data-id="${evoId}">
+                        <img src="${evoSprite}" alt="${evoName}" class="idle-animation-sprite">
+                        <p>${evoName}</p>
+                    </button>
+                `;
+            }
+            html += '</div>';
         });
+
         evolutionContent.innerHTML = html;
 
         evolutionContent.querySelectorAll('.evolution-button').forEach(button => {
             button.addEventListener('click', (event) => {
                 const pokemonId = event.currentTarget.dataset.id;
+                if (pokemonId === String(pokemon.id)) return;
                 const customEvent = new CustomEvent('evolution-click', { detail: pokemonId });
                 document.dispatchEvent(customEvent);
             });

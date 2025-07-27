@@ -73,8 +73,13 @@ export default class PokemonService {
     }
 
     async getPokemonComplete(id) {
-        const cachedData = await dbCache.get(id);
+        let cachedData = await dbCache.get(id);
         if (cachedData) {
+            // Check if the cached evolutionChain is in the old, incorrect format
+            if (cachedData.evolutionChain && cachedData.evolutionChain.chain) {
+                cachedData.evolutionChain = this.parseEvolutionChain(cachedData.evolutionChain.chain);
+                await dbCache.set(id, cachedData); // Update the cache
+            }
             return cachedData;
         }
 
@@ -176,7 +181,69 @@ export default class PokemonService {
     }
 
     async getEvolutionChain(evolutionChainUrl) {
-        return this._fetch(evolutionChainUrl);
+        const evolutionData = await this._fetch(evolutionChainUrl);
+        return this.parseEvolutionChain(evolutionData.chain);
+    }
+
+    parseEvolutionChain(chain) {
+        const paths = [];
+        
+        const traverse = (node, path) => {
+            const speciesUrl = node.species.url;
+            const speciesId = speciesUrl.split('/').slice(-2, -1)[0];
+            const currentPath = [...path];
+
+            if (node.evolution_details.length > 0) {
+                currentPath.push({
+                    species_name: node.species.name,
+                    species_id: speciesId,
+                    trigger: this.formatEvolutionTrigger(node.evolution_details[0])
+                });
+            } else {
+                // Base form
+                currentPath.push({
+                    species_name: node.species.name,
+                    species_id: speciesId,
+                    trigger: null
+                });
+            }
+
+            if (node.evolves_to.length === 0) {
+                paths.push(currentPath);
+            } else {
+                node.evolves_to.forEach(nextNode => traverse(nextNode, currentPath));
+            }
+        };
+
+        traverse(chain, []);
+        return paths;
+    }
+
+    formatEvolutionTrigger(details) {
+        if (!details) return null;
+    
+        const trigger = details.trigger.name.replace('-', ' ');
+        let condition = '';
+    
+        switch (trigger) {
+            case 'level up':
+                condition = `Lvl ${details.min_level || '?'}`;
+                if (details.min_happiness) condition += ` (happy)`;
+                if (details.known_move) condition += ` (knows ${details.known_move.name})`;
+                if (details.time_of_day) condition += ` (${details.time_of_day})`;
+                break;
+            case 'trade':
+                condition = 'Trade';
+                if (details.held_item) condition += ` w/ ${details.held_item.name.replace('-', ' ')}`;
+                break;
+            case 'use item':
+                condition = `Use ${details.item.name.replace('-', ' ')}`;
+                break;
+            default:
+                condition = trigger;
+        }
+    
+        return condition;
     }
 
     async getTypeDetails(typeName) {
