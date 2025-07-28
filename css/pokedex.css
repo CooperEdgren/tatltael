@@ -481,6 +481,9 @@ header {
 
 .pokemon-card h3 {
     font-family: 'Venus Rising Rg', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .pokemon-card .pokemon-id {

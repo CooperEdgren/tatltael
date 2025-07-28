@@ -1,4 +1,5 @@
 import { POKEMON_LIMIT, SUPPORTED_GAMES, DELTA_GAMES } from './constants.js';
+import { adjustFontSizes } from './utils.js';
 import PokemonService from './pokemon.js';
 import { UI } from './ui.js';
 import * as favorites from './favorites.js';
@@ -306,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyFilters = () => {
         const filteredPokemon = applyFiltersFromModule(allPokemon, searchBar, generationFilterContainer, typeFilterContainer, trackingFilterContainer);
         ui.renderPokemonList(filteredPokemon, isShinyView);
+        adjustFontSizes('.pokemon-card h3');
     };
 
     searchBar.addEventListener('input', applyFilters);
@@ -395,6 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pokemonData = await pokemonService.getPokemon(POKEMON_LIMIT);
             setAllPokemon(pokemonData);
             ui.renderPokemonList(allPokemon, isShinyView);
+            adjustFontSizes('.pokemon-card h3');
             document.dispatchEvent(new Event('pokemonDataLoaded'));
             // Start pre-fetching in the background
             prefetchAllPokemonData();
