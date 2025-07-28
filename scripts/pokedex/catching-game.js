@@ -225,8 +225,12 @@ export class CatchingGame {
             this.pokeballSprite.style.top = `${pos.y - this.pokeballSprite.offsetHeight / 2}px`;
             this.pokeballSprite.style.transform = `rotate(${this.pokeballBody.angle}rad)`;
 
-            // Check if the pokeball is off-screen
-            if (pos.y > window.innerHeight + 200) { // 200px buffer
+            // Check if the pokeball is off-screen on any side
+            const buffer = 200;
+            if (pos.y > window.innerHeight + buffer || 
+                pos.y < -buffer || 
+                pos.x > window.innerWidth + buffer || 
+                pos.x < -buffer) {
                 this.respawnPokeball();
             }
 
