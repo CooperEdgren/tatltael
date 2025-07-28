@@ -62,11 +62,18 @@ export class CatchingGame {
         this.boundaryWalls = [topWall, leftWall, rightWall];
 
         // Create the larger "safe zone" sensor
-        const safeZone = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, spriteRect.width, spriteRect.height, {
-            isStatic: true,
-            isSensor: true,
-            label: 'pokemon-safe-zone'
-        });
+        const extraHeight = 50; // Extend the bottom of the safe zone
+        const safeZone = Matter.Bodies.rectangle(
+            spriteRect.left + spriteRect.width / 2, 
+            (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), 
+            spriteRect.width, 
+            spriteRect.height + extraHeight, 
+            {
+                isStatic: true,
+                isSensor: true,
+                label: 'pokemon-safe-zone'
+            }
+        );
 
         Matter.World.add(this.world, [this.pokemonBody, ...this.boundaryWalls, safeZone]);
     }
@@ -153,8 +160,11 @@ export class CatchingGame {
                             this.boundaryWalls.forEach(wall => wall.isSensor = true);
                             break;
                         case 'pokemon-boundary':
-                            console.log('Pokeball collided with the pokemon boundary.');
-                            this.isThrown = false; // Stop animation on bounce
+                            // Only log and act on the collision if the wall is solid
+                            if (!otherBody.isSensor) {
+                                console.log('Pokeball collided with the pokemon boundary.');
+                                this.isThrown = false; // Stop animation on bounce
+                            }
                             break;
                         case 'ground':
                         case 'pokemon':
