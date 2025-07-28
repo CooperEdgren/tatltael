@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let longPressTimer;
     let isLongPress = false;
     let parsedSaveData = null;
+    let currentPokemonIndex = 0;
+    const batchSize = 100;
+    let isLoading = false;
+    let isPrefetching = false;
 
     const navManager = {
         currentState: 'pokedex',
@@ -305,6 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('clearComparison', clearComparison);
 
     const applyFilters = () => {
+        // This is a temporary solution. A full implementation would require
+        // re-fetching and paginating the filtered results.
         const filteredPokemon = applyFiltersFromModule(allPokemon, searchBar, generationFilterContainer, typeFilterContainer, trackingFilterContainer);
         ui.renderPokemonList(filteredPokemon, isShinyView);
         adjustFontSizes('.pokemon-card h3');
@@ -392,33 +398,67 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const displayPokemon = async () => {
+        if (isLoading) return;
+        isLoading = true;
         ui.showLoader();
         try {
-            const pokemonData = await pokemonService.getPokemon(POKEMON_LIMIT);
-            setAllPokemon(pokemonData);
-            ui.renderPokemonList(allPokemon, isShinyView);
+            const pokemonData = await pokemonService.getPokemon(batchSize, currentPokemonIndex);
+            if (currentPokemonIndex === 0) {
+                setAllPokemon(pokemonData);
+                ui.renderPokemonList(allPokemon, isShinyView);
+            } else {
+                allPokemon.push(...pokemonData);
+                ui.appendPokemonList(pokemonData, isShinyView);
+            }
+            currentPokemonIndex += batchSize;
             adjustFontSizes('.pokemon-card h3');
-            document.dispatchEvent(new Event('pokemonDataLoaded'));
-            // Start pre-fetching in the background
-            prefetchAllPokemonData();
+            if (currentPokemonIndex === batchSize) {
+                document.dispatchEvent(new Event('pokemonDataLoaded'));
+                prefetchNextBatch();
+            }
         } catch (error) {
             console.error('Error in displayPokemon:', error);
             ui.showError('Failed to load Pokémon. Please try again later.');
         } finally {
+            isLoading = false;
             ui.hideLoader();
         }
     };
 
-    const prefetchAllPokemonData = async () => {
-        console.log('Starting Pokémon data pre-fetch...');
-        for (const pokemon of allPokemon) {
-            // A small delay to prevent overwhelming the network
-            await sleep(50); 
-            // The getPokemonComplete function will fetch and cache if not already present
-            await pokemonService.getPokemonComplete(pokemon.id);
+    const prefetchNextBatch = async () => {
+        if (isPrefetching || currentPokemonIndex >= POKEMON_LIMIT) return;
+        isPrefetching = true;
+
+        try {
+            console.log(`Pre-fetching details for Pokémon from ${currentPokemonIndex}...`);
+            const nextPokemonList = await pokemonService.getPokemonList(batchSize, currentPokemonIndex);
+
+            for (const pokemon of nextPokemonList) {
+                await sleep(50);
+                const id = pokemon.url.split('/').slice(-2, -1)[0];
+                await pokemonService.getPokemonComplete(id);
+            }
+            console.log('Next batch pre-fetch complete.');
+        } catch (error) {
+            console.error('Failed to prefetch next batch', error);
+        } finally {
+            isPrefetching = false;
         }
-        console.log('Pokémon data pre-fetch complete.');
     };
+
+    window.addEventListener('scroll', () => {
+        if (isLoading) return;
+
+        // Trigger when the user is 1200px from the bottom to give plenty of buffer
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1200) {
+            if (currentPokemonIndex < POKEMON_LIMIT) {
+                displayPokemon().then(() => {
+                    // After displaying a batch, immediately start pre-fetching the next one.
+                    prefetchNextBatch();
+                });
+            }
+        }
+    });
 
     const setupUploadModal = () => {
         const closeButton = uploadModal.querySelector('.close-button');

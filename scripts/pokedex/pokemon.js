@@ -47,8 +47,8 @@ export default class PokemonService {
         }
     }
 
-    async getPokemon(limit) {
-        const data = await this._fetch(`pokemon?limit=${limit}`);
+    async getPokemon(limit, offset = 0) {
+        const data = await this._fetch(`pokemon?limit=${limit}&offset=${offset}`);
         const pokemonDetailsPromises = data.results.map(async (p) => {
             const details = await this.getPokemonDetails(p.name);
             const species = await this.getPokemonSpecies(details.id);
@@ -70,6 +70,11 @@ export default class PokemonService {
             };
         });
         return Promise.all(pokemonDetailsPromises);
+    }
+
+    async getPokemonList(limit, offset = 0) {
+        const data = await this._fetch(`pokemon?limit=${limit}&offset=${offset}`);
+        return data.results;
     }
 
     async getPokemonComplete(id) {

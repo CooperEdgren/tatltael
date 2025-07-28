@@ -129,14 +129,16 @@ export class UI {
 
     renderPokemonList(pokemonList, isShiny = false) {
         this.hideError();
-    
+        this.pokedexContainer.innerHTML = ''; // Clear existing content
+        this.appendPokemonList(pokemonList, isShiny);
+    }
+
+    appendPokemonList(pokemonList, isShiny = false) {
         const fragment = document.createDocumentFragment();
         pokemonList.forEach(pokemon => {
             const pokemonCard = this.createPokemonCard(pokemon, isShiny);
             fragment.appendChild(pokemonCard);
         });
-    
-        this.pokedexContainer.innerHTML = '';
         this.pokedexContainer.appendChild(fragment);
     }
 
