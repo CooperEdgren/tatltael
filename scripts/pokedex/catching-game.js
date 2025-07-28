@@ -51,6 +51,7 @@ export class CatchingGame {
         this.pokeballSprite = document.getElementById('pokeball-sprite');
         const startX = window.innerWidth / 2;
         const startY = window.innerHeight - 80; // 80px from the bottom
+        this.pokeballStartPosition = { x: startX, y: startY };
         
         this.pokeballBody = Matter.Bodies.circle(startX, startY, 32, { // 32 is radius for 64px sprite
             restitution: 0.5,
@@ -60,6 +61,27 @@ export class CatchingGame {
             isStatic: true // Start as static
         });
         Matter.World.add(this.world, this.pokeballBody);
+    }
+
+    respawnPokeball() {
+        // Reset physics properties
+        Matter.Body.setStatic(this.pokeballBody, true);
+        Matter.Body.setPosition(this.pokeballBody, this.pokeballStartPosition);
+        Matter.Body.setVelocity(this.pokeballBody, { x: 0, y: 0 });
+        Matter.Body.setAngularVelocity(this.pokeballBody, 0);
+
+        // Reset state and appearance
+        this.isThrown = false;
+        this.pokeballSprite.style.transform = 'rotate(0rad)';
+        this.pokeballSprite.style.left = `${this.pokeballStartPosition.x - this.pokeballSprite.offsetWidth / 2}px`;
+        this.pokeballSprite.style.top = `${this.pokeballStartPosition.y - this.pokeballSprite.offsetHeight / 2}px`;
+        this.pokeballSprite.style.backgroundPosition = '0px 0px'; // Reset to frame 0
+
+        // Trigger respawn animation
+        this.pokeballSprite.classList.add('pokeball-respawn');
+        setTimeout(() => {
+            this.pokeballSprite.classList.remove('pokeball-respawn');
+        }, 300); // Duration of the animation
     }
 
     setupMouseConstraint() {
@@ -136,6 +158,11 @@ export class CatchingGame {
             this.pokeballSprite.style.left = `${pos.x - this.pokeballSprite.offsetWidth / 2}px`;
             this.pokeballSprite.style.top = `${pos.y - this.pokeballSprite.offsetHeight / 2}px`;
             this.pokeballSprite.style.transform = `rotate(${this.pokeballBody.angle}rad)`;
+
+            // Check if the pokeball is off-screen
+            if (pos.y > window.innerHeight + 200) { // 200px buffer
+                this.respawnPokeball();
+            }
 
             this.animationFrameId = requestAnimationFrame(gameLoop);
         };

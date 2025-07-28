@@ -1274,6 +1274,21 @@ header {
     cursor: grabbing;
 }
 
+@keyframes pokeball-respawn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) rotate(0rad);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(0rad);
+    }
+}
+
+.pokeball-respawn {
+    animation: pokeball-respawn 0.3s ease-out;
+}
+
 
 body.catching-game-active header {
     display: none;
