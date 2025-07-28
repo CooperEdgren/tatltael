@@ -1,6 +1,5 @@
 // A unique name for the cache, incremented to force an update.
-// Incrementing this version (e.g., to v3) forces the service worker to update and re-cache all files.
-const CACHE_NAME = 'tatltael-cache-v10';
+const CACHE_NAME = 'tatltael-cache-v13';
 
 // The list of all files to be cached for offline access.
 const urlsToCache = [
@@ -40,7 +39,7 @@ const urlsToCache = [
 
   // Pokedex App Files
   'pokedex.html',
-  'css/pokedex.css',
+  'css/pokedex.css?v=1.2',
   'scripts/pokedex/app.js',
   'scripts/pokedex/badges.js',
   'scripts/pokedex/cache.js',
@@ -164,80 +163,42 @@ const urlsToCache = [
   'fonts/pokedex-assets/Westmount Thin.otf'
 ];
 
-// Event listener for the 'install' event
 self.addEventListener('install', event => {
+  self.skipWaiting(); // Force the waiting service worker to become the active service worker.
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache and caching app shell');
-        // Use addAll to ensure all assets are cached together.
-        // If one fails, the entire cache operation fails.
         return cache.addAll(urlsToCache).catch(error => {
           console.error('Failed to cache one or more URLs:', error);
-          // Log the URLs to see which one might be causing the issue
-          console.log('URLs to cache:', urlsToCache);
         });
       })
   );
 });
 
-// Event listener for the 'activate' event
-// This is where we clean up old, unused caches.
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          // If the cache name is not in our whitelist, delete it.
           if (cacheWhitelist.indexOf(cacheName) === -1) {
             return caches.delete(cacheName);
           }
         })
-      ).catch(error => {
-        console.error('Error deleting old cache:', error);
-      });
-    })
+      );
+    }).then(() => self.clients.claim()) // Take control of all open clients.
   );
 });
 
-
-// Event listener for the 'fetch' event
-// This intercepts network requests and serves cached files if available (cache-first strategy).
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Cache hit - return the cached response
         if (response) {
           return response;
         }
-
-        // If not in cache, fetch from the network
-        return fetch(event.request).then(
-          response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // IMPORTANT: Clone the response. A response is a stream
-            // and because we want the browser to consume the response
-            // as well as the cache consuming the response, we need
-            // to clone it so we have two streams.
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                // We only cache GET requests.
-                if(event.request.method === 'GET') {
-                    cache.put(event.request, responseToCache);
-                }
-              });
-
-            return response;
-          }
-        );
+        return fetch(event.request);
       })
     );
 });

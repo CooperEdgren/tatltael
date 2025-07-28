@@ -1255,7 +1255,25 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 100;
+    overflow: hidden; /* Prevent scrollbars from physics bodies going off-screen */
 }
+
+#pokeball-sprite {
+    position: absolute; /* Let Matter.js control the position */
+    width: 64px;
+    height: 64px;
+    background-image: url('../images/pokedex-assets/png/pokeballs-sprites.png');
+    background-repeat: no-repeat;
+    background-size: 1600px 1088px; /* This is the "zoom" effect */
+    background-position: 0 0;
+    cursor: grab;
+    z-index: 110; /* Ensure it's above the background */
+}
+
+#pokeball-sprite:active {
+    cursor: grabbing;
+}
+
 
 body.catching-game-active header {
     display: none;
@@ -1274,24 +1292,6 @@ body.catching-game-active header {
     image-rendering: pixelated;
 }
 
-.pokeball-throw-area {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#pokeball-sprite {
-    width: 64px;
-    height: 64px;
-    background: url('../images/pokedex-assets/png/pokeballs-sprites.png') no-repeat;
-    background-position: 0 0; /* Default to first frame */
-    cursor: pointer;
-}
 
 .encounter-prompt {
     position: fixed;

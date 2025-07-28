@@ -9,6 +9,7 @@ import { parseSaveFile, initializeWasm } from './save-parser.js';
 import { initModal, openModal } from './modal.js';
 import { setupFilters } from './filter-manager.js';
 import { QRScanner } from './scanner.js';
+import { CatchingGame } from './catching-game.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
@@ -597,6 +598,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                         wildPokemonContainer.innerHTML = `<img src="${animatedSprite}" alt="${pokemonData.pokemon.name}" class="wild-pokemon-sprite idle-animation-sprite">`;
                                         body.classList.add('catching-game-active');
                                         catchingGameView.style.display = 'block';
+
+                                        const game = new CatchingGame(catchingGameView, pokemonData.pokemon);
+                                        game.run();
                                     },
                                     () => {
                                         // "View Details" chosen

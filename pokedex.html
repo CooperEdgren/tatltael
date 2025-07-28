@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Pokedex</title>
-    <link rel="stylesheet" href="css/pokedex.css">
+    <link rel="stylesheet" href="css/pokedex.css?v=1.2">
     <link rel="stylesheet" href="css/scanner.css">
 </head>
 <body>
@@ -183,9 +183,7 @@
         <div class="wild-pokemon-container">
             <!-- Wild Pokemon sprite will be added here by JS -->
         </div>
-        <div class="pokeball-throw-area">
-            <div id="pokeball-sprite"></div>
-        </div>
+        <div id="pokeball-sprite"></div>
     </div>
 
     <div id="team-analysis-modal" class="modal" style="display: none;">
@@ -195,6 +193,7 @@
                 </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script type="module" src="scripts/pokedex/pokemon.js"></script>
     <script type="module" src="scripts/pokedex/ui.js"></script>
