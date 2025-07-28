@@ -1354,7 +1354,7 @@ header {
     background-image: url('../images/pokedex-assets/png/pokeballs_sprites.png');
     background-size: 1600px 1088px;
     z-index: 130;
-    transition: all 0.3s ease-out;
+    transition: left 0.3s ease-out, top 0.3s ease-out, transform 0.3s ease-out;
 }
 
 #catching-game-view {
