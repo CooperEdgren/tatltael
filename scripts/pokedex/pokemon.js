@@ -93,6 +93,7 @@ export default class PokemonService {
         const species = await this.getPokemonSpecies(id);
         const rawEncounters = await this.getPokemonEncounters(id);
         const encounters = this.processEncounters(rawEncounters);
+        const moves = this.processMoves(pokemon.moves);
         const evolutionChain = await this.getEvolutionChain(species.evolution_chain.url);
         const typeEffectiveness = await this.getPokemonTypeEffectiveness(pokemon);
 
@@ -100,6 +101,7 @@ export default class PokemonService {
             pokemon,
             species,
             encounters,
+            moves,
             evolutionChain,
             typeEffectiveness,
             isCatchableInWild: rawEncounters && rawEncounters.length > 0
@@ -184,6 +186,56 @@ export default class PokemonService {
         }
 
         return processedEncounters;
+    }
+
+    processMoves(moves) {
+        const processedMoves = {};
+    
+        moves.forEach(moveData => {
+            const moveName = moveData.move.name.replace(/-/g, ' ');
+            moveData.version_group_details.forEach(groupDetail => {
+                const versionName = groupDetail.version_group.name;
+                
+                // We only care about supported games, but we need to map them from version_group
+                // This is a simplified mapping. A more accurate one might be needed.
+                const gameName = versionName.split('-').slice(0, 1).join('');
+                if (!SUPPORTED_GAMES.includes(gameName) && !SUPPORTED_GAMES.includes(versionName)) {
+                    return;
+                }
+
+                if (!processedMoves[versionName]) {
+                    processedMoves[versionName] = {
+                        'level-up': [],
+                        'machine': [],
+                        'tutor': [],
+                        'egg': []
+                    };
+                }
+    
+                const learnMethod = groupDetail.move_learn_method.name;
+                const moveInfo = {
+                    name: moveName,
+                    level: learnMethod === 'level-up' ? groupDetail.level_learned_at : null
+                };
+    
+                if (learnMethod === 'level-up') {
+                    processedMoves[versionName]['level-up'].push(moveInfo);
+                } else if (learnMethod === 'machine') {
+                    processedMoves[versionName]['machine'].push(moveInfo);
+                } else if (learnMethod === 'tutor') {
+                    processedMoves[versionName]['tutor'].push(moveInfo);
+                } else if (learnMethod === 'egg') {
+                    processedMoves[versionName]['egg'].push(moveInfo);
+                }
+            });
+        });
+
+        // Sort level-up moves
+        for (const version in processedMoves) {
+            processedMoves[version]['level-up'].sort((a, b) => a.level - b.level);
+        }
+    
+        return processedMoves;
     }
 
     async getEvolutionChain(evolutionChainUrl) {

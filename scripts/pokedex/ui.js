@@ -213,6 +213,7 @@ export class UI {
                 this._renderCatchRateSection(pokemon, species);
             }
             this._renderEvolutionSection(pokemon, evolutionChain);
+            this._renderMovesSection(pokemon.moves);
         }
     }
 
@@ -594,6 +595,90 @@ export class UI {
                 document.dispatchEvent(customEvent);
             });
         });
+    }
+
+    _renderMovesSection(moves) {
+        const container = this.modalBody.querySelector('.moves-content');
+        if (!container || !moves) return;
+        container.innerHTML = '';
+    
+        const versions = Object.keys(moves).filter(version => 
+            moves[version]['level-up'].length > 0 || 
+            moves[version]['machine'].length > 0 ||
+            moves[version]['tutor'].length > 0 ||
+            moves[version]['egg'].length > 0
+        );
+    
+        if (versions.length === 0) {
+            container.innerHTML = '<p>No move data available for supported games.</p>';
+            return;
+        }
+    
+        const select = document.createElement('select');
+        select.className = 'game-version-select';
+        versions.forEach(version => {
+            const option = document.createElement('option');
+            option.value = version;
+            option.textContent = this._formatLocationName(version);
+            select.appendChild(option);
+        });
+    
+        const movesContainer = document.createElement('div');
+        movesContainer.className = 'moves-list-container';
+    
+        container.appendChild(select);
+        container.appendChild(movesContainer);
+    
+        const renderMovesForVersion = (version) => {
+            const versionMoves = moves[version];
+            movesContainer.innerHTML = ''; // Clear previous moves
+    
+            const createMoveTable = (moveList, isLevelUp = false) => {
+                if (moveList.length === 0) return '';
+                let tableHTML = '<table class="moves-table">';
+                if (isLevelUp) {
+                    tableHTML += '<thead><tr><th>Lvl</th><th>Move</th></tr></thead>';
+                } else {
+                    tableHTML += '<thead><tr><th>Move</th></tr></thead>';
+                }
+                tableHTML += '<tbody>';
+                moveList.forEach(move => {
+                    tableHTML += '<tr>';
+                    if (isLevelUp) {
+                        tableHTML += `<td>${move.level}</td>`;
+                    }
+                    tableHTML += `<td>${move.name}</td></tr>`;
+                });
+                tableHTML += '</tbody></table>';
+                return tableHTML;
+            };
+    
+            const learnMethods = [
+                { title: 'Level Up', key: 'level-up', isLevelUp: true },
+                { title: 'TM / HM', key: 'machine', isLevelUp: false },
+                { title: 'Tutor', key: 'tutor', isLevelUp: false },
+                { title: 'Egg Moves', key: 'egg', isLevelUp: false }
+            ];
+    
+            learnMethods.forEach(method => {
+                if (versionMoves[method.key].length > 0) {
+                    const details = document.createElement('details');
+                    details.className = 'moves-category';
+                    const summary = document.createElement('summary');
+                    summary.textContent = method.title;
+                    details.appendChild(summary);
+                    details.innerHTML += createMoveTable(versionMoves[method.key], method.isLevelUp);
+                    movesContainer.appendChild(details);
+                }
+            });
+        };
+    
+        select.addEventListener('change', (e) => renderMovesForVersion(e.target.value));
+        
+        // Initial render for the first version in the list
+        if (versions.length > 0) {
+            renderMovesForVersion(versions[0]);
+        }
     }
 
     renderTypeFilters(types, container) {
