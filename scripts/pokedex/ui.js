@@ -1,6 +1,22 @@
-import { SPRITE_BASE_URL, LANGUAGE_ENGLISH, POKEBALLS, MAX_GENERATION, MAX_STAT_VALUE } from './constants.js';
+import { SPRITE_BASE_URL, LANGUAGE_ENGLISH, POKEBALLS, MAX_GENERATION, MAX_STAT_VALUE, POKEMON_TYPES } from './constants.js';
 import * as favorites from './favorites.js';
 import * as tracker from './tracker.js';
+
+const typeColorMap = new Map();
+
+export function cacheTypeColors() {
+    const tempDiv = document.createElement('div');
+    tempDiv.style.display = 'none';
+    document.body.appendChild(tempDiv);
+
+    POKEMON_TYPES.forEach(type => {
+        tempDiv.className = `type-${type}`;
+        const color = getComputedStyle(tempDiv).backgroundColor;
+        typeColorMap.set(type, color);
+    });
+
+    document.body.removeChild(tempDiv);
+}
 
 export class UI {
     constructor(pokedexContainer, modalBody, loader, generationFilterContainer, typeFilterContainer, navPillContainer, headerTitle, menuButton) {
@@ -321,12 +337,7 @@ export class UI {
     }
 
     _getTypeColor(typeName) {
-        const tempDiv = document.createElement('div');
-        tempDiv.className = `type-${typeName}`;
-        document.body.appendChild(tempDiv);
-        const color = getComputedStyle(tempDiv).backgroundColor;
-        document.body.removeChild(tempDiv);
-        return color;
+        return typeColorMap.get(typeName) || 'var(--default-type-color)';
     }
 
     _animateSprite(sprites) {

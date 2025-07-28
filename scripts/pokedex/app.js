@@ -1,7 +1,7 @@
 import { POKEMON_LIMIT, SUPPORTED_GAMES, DELTA_GAMES } from './constants.js';
 import { adjustFontSizes } from './utils.js';
 import PokemonService from './pokemon.js';
-import { UI } from './ui.js';
+import { UI, cacheTypeColors } from './ui.js';
 import * as favorites from './favorites.js';
 import * as tracker from './tracker.js';
 import appState, { allPokemon, setAllPokemon } from './state.js';
@@ -13,6 +13,7 @@ import { QRScanner } from './scanner.js';
 import { CatchingGame } from './catching-game.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    cacheTypeColors();
     // DOM Elements
     const body = document.body;
     const pokedexContainer = document.getElementById('pokedex');
