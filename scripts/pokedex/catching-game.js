@@ -39,12 +39,27 @@ export class CatchingGame {
     setupPokemon() {
         const pokemonSprite = this.container.querySelector('.wild-pokemon-sprite');
         const spriteRect = pokemonSprite.getBoundingClientRect();
+        const wallThickness = 20; // The thickness of the collision walls
+
+        // The main sensor for successful catches remains
         this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, spriteRect.width * 0.8, spriteRect.height * 0.8, {
             isStatic: true,
             isSensor: true,
             label: 'pokemon'
         });
-        Matter.World.add(this.world, this.pokemonBody);
+
+        // Create the U-shaped barrier
+        const wallOptions = {
+            isStatic: true,
+            isSensor: false, // Make them solid
+            label: 'pokemon-boundary'
+        };
+
+        const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, spriteRect.width, wallThickness, wallOptions);
+        const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
+        const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
+
+        Matter.World.add(this.world, [this.pokemonBody, topWall, leftWall, rightWall]);
     }
 
     setupPokeball() {
@@ -118,6 +133,12 @@ export class CatchingGame {
                 const pair = pairs[i];
                 if (pair.bodyA === this.pokeballBody || pair.bodyB === this.pokeballBody) {
                     const otherBody = pair.bodyA === this.pokeballBody ? pair.bodyB : pair.bodyA;
+                    
+                    if (otherBody.label === 'pokemon-boundary') {
+                        console.log('Pokeball collided with the pokemon boundary.');
+                        this.isThrown = false; // Stop the animation loop on bounce
+                    }
+
                     if (otherBody.label === 'ground' || otherBody.label === 'pokemon') {
                         this.isThrown = false; // Stop the animation loop
                     }
