@@ -585,10 +585,25 @@ document.addEventListener('DOMContentLoaded', () => {
                             scannerView.style.display = 'none';
                             scannerView.classList.remove('closing');
 
-                            // 3. Fetch data and open modal
+                            // 3. Fetch data and show prompt
                             pokemonService.getPokemonComplete(pokemonId).then(pokemonData => {
                                 ui.hideLoader();
-                                openModal(pokemonData);
+                                ui.showEncounterPrompt(pokemonData.pokemon, 
+                                    () => {
+                                        // "Catch" chosen
+                                        const catchingGameView = document.getElementById('catching-game-view');
+                                        const wildPokemonContainer = catchingGameView.querySelector('.wild-pokemon-container');
+                                        const animatedSprite = pokemonData.pokemon.sprites.versions['generation-v']['black-white'].animated.front_default || pokemonData.pokemon.sprites.front_default;
+                                        wildPokemonContainer.innerHTML = `<img src="${animatedSprite}" alt="${pokemonData.pokemon.name}" class="wild-pokemon-sprite idle-animation-sprite">`;
+                                        body.classList.add('catching-game-active');
+                                        catchingGameView.style.display = 'block';
+                                    },
+                                    () => {
+                                        // "View Details" chosen
+                                        body.classList.remove('catching-game-active');
+                                        openModal(pokemonData);
+                                    }
+                                );
                             }).catch(err => {
                                 ui.hideLoader();
                                 console.error(`Failed to fetch complete data for Pokémon ${pokemonId}`, err);

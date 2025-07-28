@@ -672,6 +672,35 @@ export class UI {
         }
     }
 
+    showEncounterPrompt(pokemon, onCatch, onViewDetails) {
+        const promptContainer = document.createElement('div');
+        promptContainer.id = 'encounter-prompt';
+        promptContainer.className = 'encounter-prompt';
+
+        promptContainer.innerHTML = `
+            <div class="prompt-content">
+                <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+                <p>A wild ${pokemon.name} appeared!</p>
+                <div class="prompt-buttons">
+                    <button id="catch-btn">Catch</button>
+                    <button id="view-details-btn">View Details</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(promptContainer);
+
+        document.getElementById('catch-btn').addEventListener('click', () => {
+            onCatch();
+            promptContainer.remove();
+        });
+
+        document.getElementById('view-details-btn').addEventListener('click', () => {
+            onViewDetails();
+            promptContainer.remove();
+        });
+    }
+
     _createCompareColumn(pokemon, effectiveness) {
         const animatedSprite = pokemon.sprites?.versions?.['generation-v']?.['black-white']?.animated?.front_default || pokemon.sprites.front_default;
         
