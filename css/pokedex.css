@@ -1414,8 +1414,8 @@ body.catching-game-active header {
 }
 
 .wild-pokemon-sprite {
-    width: 150px;
-    height: 150px;
+    width: 75px;
+    height: 75px;
     image-rendering: pixelated;
     transition: transform 0.5s ease-in-out, filter 0.3s ease-in-out;
 }

@@ -220,16 +220,20 @@ export class CatchingGame {
         const spriteRect = pokemonSprite.getBoundingClientRect();
         const wallThickness = 20;
 
-        this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, spriteRect.width * 0.8, spriteRect.height * 0.8, {
+        // Use the new 75x75 size for calculations to match the CSS
+        const pokemonWidth = 75;
+        const pokemonHeight = 75;
+
+        this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, pokemonWidth * 0.8, pokemonHeight * 0.8, {
             isStatic: true,
             isSensor: true,
             label: 'pokemon'
         });
 
         const wallOptions = { isStatic: true, isSensor: false, label: 'pokemon-boundary' };
-        const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, spriteRect.width, wallThickness, wallOptions);
-        const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
-        const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
+        const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, pokemonWidth, wallThickness, wallOptions);
+        const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, pokemonHeight, wallOptions);
+        const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, pokemonHeight, wallOptions);
         
         this.boundaryWalls = [topWall, leftWall, rightWall];
 
@@ -237,8 +241,8 @@ export class CatchingGame {
         const safeZone = Matter.Bodies.rectangle(
             spriteRect.left + spriteRect.width / 2, 
             (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), 
-            spriteRect.width, 
-            spriteRect.height + extraHeight, 
+            pokemonWidth, 
+            pokemonHeight + extraHeight, 
             { isStatic: true, isSensor: true, label: 'pokemon-safe-zone' }
         );
 
