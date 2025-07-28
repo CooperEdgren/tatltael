@@ -51,15 +51,24 @@ export class CatchingGame {
         // Create the U-shaped barrier
         const wallOptions = {
             isStatic: true,
-            isSensor: false, // Make them solid
+            isSensor: false, // Make them solid initially
             label: 'pokemon-boundary'
         };
 
         const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, spriteRect.width, wallThickness, wallOptions);
         const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
         const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
+        
+        this.boundaryWalls = [topWall, leftWall, rightWall];
 
-        Matter.World.add(this.world, [this.pokemonBody, topWall, leftWall, rightWall]);
+        // Create the larger "safe zone" sensor
+        const safeZone = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, spriteRect.width, spriteRect.height, {
+            isStatic: true,
+            isSensor: true,
+            label: 'pokemon-safe-zone'
+        });
+
+        Matter.World.add(this.world, [this.pokemonBody, ...this.boundaryWalls, safeZone]);
     }
 
     setupPokeball() {
@@ -131,17 +140,43 @@ export class CatchingGame {
             const pairs = event.pairs;
             for (let i = 0; i < pairs.length; i++) {
                 const pair = pairs[i];
-                if (pair.bodyA === this.pokeballBody || pair.bodyB === this.pokeballBody) {
-                    const otherBody = pair.bodyA === this.pokeballBody ? pair.bodyB : pair.bodyA;
-                    
-                    if (otherBody.label === 'pokemon-boundary') {
-                        console.log('Pokeball collided with the pokemon boundary.');
-                        this.isThrown = false; // Stop the animation loop on bounce
-                    }
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
 
-                    if (otherBody.label === 'ground' || otherBody.label === 'pokemon') {
-                        this.isThrown = false; // Stop the animation loop
+                // Check if the pokeball is involved
+                if (bodyA.label === 'pokeball' || bodyB.label === 'pokeball') {
+                    const otherBody = bodyA.label === 'pokeball' ? bodyB : bodyA;
+
+                    switch (otherBody.label) {
+                        case 'pokemon-safe-zone':
+                            // Ball entered the safe zone, make walls passable
+                            this.boundaryWalls.forEach(wall => wall.isSensor = true);
+                            break;
+                        case 'pokemon-boundary':
+                            console.log('Pokeball collided with the pokemon boundary.');
+                            this.isThrown = false; // Stop animation on bounce
+                            break;
+                        case 'ground':
+                        case 'pokemon':
+                            this.isThrown = false; // Stop animation on ground or successful catch
+                            break;
                     }
+                }
+            }
+        });
+
+        Matter.Events.on(this.engine, 'collisionEnd', (event) => {
+            const pairs = event.pairs;
+            for (let i = 0; i < pairs.length; i++) {
+                const pair = pairs[i];
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
+
+                // Check if the pokeball is leaving the safe zone
+                if ((bodyA.label === 'pokeball' && bodyB.label === 'pokemon-safe-zone') ||
+                    (bodyB.label === 'pokeball' && bodyA.label === 'pokemon-safe-zone')) {
+                    // Ball left the safe zone, make walls solid again
+                    this.boundaryWalls.forEach(wall => wall.isSensor = false);
                 }
             }
         });
