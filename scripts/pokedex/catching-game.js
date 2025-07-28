@@ -1,5 +1,24 @@
 // scripts/pokedex/catching-game.js
 
+const POKEBALLS = [
+    { name: 'Poké Ball', column: 0 },
+    { name: 'Great Ball', column: 1 },
+    { name: 'Safari Ball', column: 2 },
+    { name: 'Ultra Ball', column: 3 },
+    { name: 'Master Ball', column: 4 },
+    { name: 'Net Ball', column: 5 },
+    { name: 'Dive Ball', column: 6 },
+    { name: 'Nest Ball', column: 7 },
+    { name: 'Repeat Ball', column: 8 },
+    { name: 'Timer Ball', column: 9 },
+    { name: 'Luxury Ball', column: 10 },
+    { name: 'Premier Ball', column: 11 },
+    { name: 'Dusk Ball', column: 12 },
+    { name: 'Heal Ball', column: 13 },
+    { name: 'Quick Ball', column: 14 },
+    { name: 'Cherish Ball', column: 15 },
+];
+
 export class CatchingGame {
     constructor(container, pokemon, onCatchSuccess, onCatchFailure) {
         this.container = container;
@@ -9,6 +28,16 @@ export class CatchingGame {
         this.isThrown = false;
         this.catchInProgress = false;
         this.animationFrameId = null;
+
+        this.inventory = POKEBALLS.map(ball => ({ ...ball, count: 5 }));
+        this.currentBallIndex = 0;
+
+        // DOM elements
+        this.inventoryContainer = document.getElementById('inventory-container');
+        this.inventoryButton = document.getElementById('inventory-button');
+        this.prevBallBtn = document.getElementById('prev-ball-btn');
+        this.nextBallBtn = document.getElementById('next-ball-btn');
+        this.closeInventoryBtn = document.getElementById('close-inventory-btn');
 
         // Physics engine setup
         this.engine = Matter.Engine.create();
@@ -20,6 +49,106 @@ export class CatchingGame {
         this.setupPokeball();
         this.setupMouseConstraint();
         this.setupCollisionEvents();
+        this.setupInventoryControls();
+    }
+
+    setupInventoryControls() {
+        const openInventory = () => this.inventoryContainer.classList.add('open');
+        const closeInventory = () => this.inventoryContainer.classList.remove('open');
+
+        this.inventoryButton.addEventListener('click', openInventory);
+        this.inventoryButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            openInventory();
+        });
+
+        this.closeInventoryBtn.addEventListener('click', closeInventory);
+        this.closeInventoryBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            closeInventory();
+        });
+
+        const prevBtnAction = () => this.switchBall(-1);
+        this.prevBallBtn.addEventListener('click', prevBtnAction);
+        this.prevBallBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            prevBtnAction();
+        });
+
+        const nextBtnAction = () => this.switchBall(1);
+        this.nextBallBtn.addEventListener('click', nextBtnAction);
+        this.nextBallBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            nextBtnAction();
+        });
+
+        this.updateInventoryUI();
+    }
+
+    switchBall(direction) {
+        this.currentBallIndex = (this.currentBallIndex + direction + this.inventory.length) % this.inventory.length;
+        this.updateInventoryUI();
+        this.animateBallSwitch(direction);
+    }
+
+    updateInventoryUI() {
+        const prevIndex = (this.currentBallIndex - 1 + this.inventory.length) % this.inventory.length;
+        const nextIndex = (this.currentBallIndex + 1) % this.inventory.length;
+
+        this.updateButton(this.prevBallBtn, this.inventory[prevIndex]);
+        this.updateButton(this.nextBallBtn, this.inventory[nextIndex]);
+    }
+
+    updateButton(button, ball) {
+        const frame = ball.column;
+        const frameY = Math.floor(frame / 25) * 64;
+        const frameX = (frame % 25) * 64;
+        
+        button.style.backgroundPosition = `-${frameX}px -${frameY}px`;
+
+        let countEl = button.querySelector('.ball-count');
+        if (!countEl) {
+            countEl = document.createElement('span');
+            countEl.className = 'ball-count';
+            button.appendChild(countEl);
+        }
+        countEl.textContent = `x${ball.count}`;
+    }
+
+    animateBallSwitch(direction) {
+        const movingBall = document.createElement('div');
+        movingBall.className = 'moving-ball';
+        this.container.appendChild(movingBall);
+
+        const startButton = direction === 1 ? this.nextBallBtn : this.prevBallBtn;
+        const startRect = startButton.getBoundingClientRect();
+        const endRect = this.pokeballSprite.getBoundingClientRect();
+
+        const ballData = this.inventory[this.currentBallIndex];
+        const frame = ballData.column; // Base frame (column 0)
+        const frameY = Math.floor(frame / 25) * 64;
+        const frameX = (frame % 25) * 64;
+        movingBall.style.backgroundImage = `url('../images/pokedex-assets/png/pokeballs_sprites.png')`;
+        movingBall.style.backgroundSize = '1600px 1088px';
+        movingBall.style.backgroundPosition = `-${frameX}px -${frameY}px`;
+
+        Object.assign(movingBall.style, {
+            left: `${startRect.left}px`,
+            top: `${startRect.top}px`,
+        });
+
+        requestAnimationFrame(() => {
+            Object.assign(movingBall.style, {
+                left: `${endRect.left}px`,
+                top: `${endRect.top}px`,
+                transform: 'scale(1)',
+            });
+        });
+
+        setTimeout(() => {
+            this.setPokeballFrame(0); // Set to the base frame of the new ball
+            movingBall.remove();
+        }, 300);
     }
 
     setupBounds() {
@@ -89,16 +218,28 @@ export class CatchingGame {
     }
 
     setPokeballFrame(frameNumber) {
+        const ball = this.inventory[this.currentBallIndex];
         const frameHeight = 64;
-        const frameRow = Math.floor(frameNumber / 25);
+        const frameRow = Math.floor((frameNumber + ball.column) / 25);
+        const frameX = (frameNumber + ball.column) % 25;
         const frameY = frameRow * frameHeight;
-        this.pokeballSprite.style.backgroundPosition = `0px -${frameY}px`;
+        this.pokeballSprite.style.backgroundPosition = `-${frameX * 64}px -${frameY}px`;
     }
 
     startCatchSequence() {
         if (this.catchInProgress) return;
         this.catchInProgress = true;
         this.isThrown = false; // Stop throw animation
+
+        const currentBall = this.inventory[this.currentBallIndex];
+        if (currentBall.count > 0) {
+            currentBall.count--;
+            this.updateInventoryUI();
+        } else {
+            // Handle out of balls case
+            this.onCatchFailure(this.pokemon);
+            return;
+        }
 
         setTimeout(() => {
             // Freeze and rotate
