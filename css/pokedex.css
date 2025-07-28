@@ -1316,68 +1316,141 @@ body.catching-game-active header {
 
 
 
+.filters-main-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    font-family: 'Venus Rising Rg', sans-serif;
+}
+
+.filters-main-btn:hover {
+    background-color: #555;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
 .encounter-prompt {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 110;
+    z-index: 1100;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
 }
 
 .prompt-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
+    background: linear-gradient(145deg, #3a3a3a, #2b2b2b);
+    padding: 30px;
+    border-radius: 20px;
     text-align: center;
-    color: #333;
+    color: #fff;
+    font-family: 'Neuropol', sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-transform: capitalize;
+    animation: fadeInScaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .prompt-content img {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     image-rendering: pixelated;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+}
+
+.prompt-content p {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .prompt-buttons {
-    margin-top: 20px;
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
 }
 
 .prompt-buttons button {
-    padding: 10px 20px;
-    margin: 0 10px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
+    font-weight: 700;
+    font-family: 'Venus Rising Rg', sans-serif;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
 }
 
 #catch-btn {
     background-color: #4CAF50;
     color: white;
+    border-color: #66bb6a;
+}
+
+#catch-btn:hover {
+    background-color: #5cb85c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
 }
 
 #view-details-btn {
     background-color: #008CBA;
     color: white;
+    border-color: #26a69a;
+}
+
+#view-details-btn:hover {
+    background-color: #0097a7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 140, 186, 0.4);
 }
 
 .loader {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
+    width: 80px; /* Adjust size as needed */
+    height: 80px;
+    background-image: url('../images/pokedex-assets/png/pokeLoading.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: pokeball-spin 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045) infinite;
     z-index: 2000;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes pokeball-spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    20% {
+        transform: translate(-50%, -50%) rotate(-25deg);
+    }
+    80%, 100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 @keyframes spin {
