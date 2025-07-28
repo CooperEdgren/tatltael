@@ -512,49 +512,66 @@ export class UI {
         renderTableForVersion(versions[0]);
     }
 
-    _renderEvolutionSection(pokemon, evolutionChain) {
+    _renderEvolutionSection(pokemon, evolutionTree) {
         const evolutionSection = this.modalBody.querySelector('.evolution-section');
-
-        if (!evolutionChain || !Array.isArray(evolutionChain) || evolutionChain.length === 0 || (evolutionChain.length === 1 && evolutionChain[0].length < 2)) {
+        if (!evolutionTree || !evolutionTree.evolves_to || evolutionTree.evolves_to.length === 0) {
             evolutionSection.style.display = 'none';
             return;
         }
+        evolutionSection.style.display = 'block';
 
         const evolutionContent = evolutionSection.querySelector('.evolution-content');
-        let html = '';
+        evolutionContent.innerHTML = ''; // Clear previous content
 
-        evolutionChain.forEach(path => {
-            html += '<div class="evolution-path">';
-            for (let i = 0; i < path.length; i++) {
-                const stage = path[i];
-                const evoId = stage.species_id;
-                const evoName = stage.species_name.replace(/-/g, ' ');
-                const evoSprite = `${SPRITE_BASE_URL}${evoId}.png`;
+        const createPokemonNode = (node) => {
+            const evoName = node.species_name.replace(/-/g, ' ');
+            const evoSprite = `${SPRITE_BASE_URL}${node.species_id}.png`;
+            return `
+                <button class="evolution-button" data-id="${node.species_id}">
+                    <img src="${evoSprite}" alt="${evoName}" class="idle-animation-sprite">
+                    <p>${evoName}</p>
+                </button>
+            `;
+        };
 
-                if (i > 0) {
-                    const triggerText = stage.trigger;
-                    html += `
-                        <div class="evolution-arrow">
-                            <p class="evolution-trigger">${triggerText || ''}</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </div>
-                    `;
-                }
+        const createArrowNode = (trigger) => {
+            return `
+                <div class="evolution-arrow">
+                    <p class="evolution-trigger">${trigger || ''}</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            `;
+        };
 
-                html += `
-                    <button class="evolution-button" data-id="${evoId}">
-                        <img src="${evoSprite}" alt="${evoName}" class="idle-animation-sprite">
-                        <p>${evoName}</p>
-                    </button>
-                `;
+        const buildPathHtml = (node) => {
+            let pathHtml = createPokemonNode(node);
+            if (node.evolves_to.length === 1) {
+                pathHtml += createArrowNode(node.evolves_to[0].trigger);
+                pathHtml += buildPathHtml(node.evolves_to[0]);
+            } else if (node.evolves_to.length > 1) {
+                // This case handles branching from an intermediate evolution (e.g. Kirlia)
+                const branchesHtml = node.evolves_to.map(branch => {
+                    return `<div class="evolution-path">${createArrowNode(branch.trigger)}${buildPathHtml(branch)}</div>`;
+                }).join('');
+                pathHtml += `<div class="evolution-branches">${branchesHtml}</div>`;
             }
-            html += '</div>';
-        });
+            return pathHtml;
+        };
 
-        evolutionContent.innerHTML = html;
+        if (evolutionTree.evolves_to.length > 1) {
+            const baseHtml = `<div class="evolution-base">${createPokemonNode(evolutionTree)}</div>`;
+            const branchesHtml = evolutionTree.evolves_to.map(branch => {
+                return `<div class="evolution-path">${createArrowNode(branch.trigger)}${buildPathHtml(branch)}</div>`;
+            }).join('');
+            
+            evolutionContent.innerHTML = `<div class="evolution-branch-container">${baseHtml}<div class="evolution-branches">${branchesHtml}</div></div>`;
+        } else {
+            const pathHtml = buildPathHtml(evolutionTree);
+            evolutionContent.innerHTML = `<div class="evolution-path">${pathHtml}</div>`;
+        }
 
         evolutionContent.querySelectorAll('.evolution-button').forEach(button => {
             button.addEventListener('click', (event) => {

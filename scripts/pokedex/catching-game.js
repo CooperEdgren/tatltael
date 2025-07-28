@@ -176,19 +176,60 @@ export class CatchingGame {
     setupPokemon() {
         const pokemonSprite = this.container.querySelector('.wild-pokemon-sprite');
         this.pokemonSprite = pokemonSprite;
-        const spriteRect = pokemonSprite.getBoundingClientRect();
-        const wallThickness = 20;
+        
         const pokemonWidth = 75;
         const pokemonHeight = 75;
 
-        this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, pokemonWidth * 0.8, pokemonHeight * 0.8, { isStatic: true, isSensor: true, label: 'pokemon' });
+        // --- Randomized Position Logic ---
+        const ppi = 96; // Standard pixels per inch
+        const topConstraint = ppi * 1; // 1 inch above
+        const bottomConstraint = ppi * 1.5; // 1.5 inches below
+
+        const currentY = window.innerHeight / 2;
+        const minY = currentY - topConstraint;
+        const maxY = currentY + bottomConstraint;
+
+        // Ensure the sprite stays fully on screen vertically
+        const finalMinY = Math.max(pokemonHeight / 2, minY);
+        const finalMaxY = Math.min(window.innerHeight - pokemonHeight / 2, maxY);
+
+        // Ensure the sprite stays fully on screen horizontally
+        const minX = pokemonWidth / 2;
+        const maxX = window.innerWidth - (pokemonWidth / 2);
+
+        const randomX = Math.random() * (maxX - minX) + minX;
+        const randomY = Math.random() * (finalMaxY - finalMinY) + finalMinY;
+
+        const container = this.container.querySelector('.wild-pokemon-container');
+        container.style.left = `${randomX}px`;
+        container.style.top = `${randomY}px`;
+        // --- End Randomized Position Logic ---
+
+        const spriteRect = pokemonSprite.getBoundingClientRect();
+        const wallThickness = 20;
+
+        this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, pokemonWidth * 0.8, pokemonHeight * 0.8, {
+            isStatic: true,
+            isSensor: true,
+            label: 'pokemon'
+        });
+
         const wallOptions = { isStatic: true, isSensor: false, label: 'pokemon-boundary' };
         const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, pokemonWidth, wallThickness, wallOptions);
         const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, pokemonHeight, wallOptions);
         const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, pokemonHeight, wallOptions);
+        
         this.boundaryWalls = [topWall, leftWall, rightWall];
+
         const extraHeight = 50;
-        const safeZone = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), pokemonWidth, pokemonHeight + extraHeight, { isStatic: true, isSensor: true, label: 'pokemon-safe-zone' });
+        const safeZone = Matter.Bodies.rectangle(
+            spriteRect.left + spriteRect.width / 2, 
+            (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), 
+            pokemonWidth, 
+            pokemonHeight + extraHeight, 
+            { isStatic: true, isSensor: true, label: 'pokemon-safe-zone' }
+        );
+
         Matter.World.add(this.world, [this.pokemonBody, ...this.boundaryWalls, safeZone]);
     }
 

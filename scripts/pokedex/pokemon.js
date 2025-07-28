@@ -74,12 +74,13 @@ export default class PokemonService {
 
     async getPokemonComplete(id) {
         let cachedData = await dbCache.get(id);
+        
+        // If the cached evolutionChain is an array, it's the old format. Invalidate and refetch.
+        if (cachedData && Array.isArray(cachedData.evolutionChain)) {
+            cachedData = null; // Force a full refetch
+        }
+
         if (cachedData) {
-            // Check if the cached evolutionChain is in the old, incorrect format
-            if (cachedData.evolutionChain && cachedData.evolutionChain.chain) {
-                cachedData.evolutionChain = this.parseEvolutionChain(cachedData.evolutionChain.chain);
-                await dbCache.set(id, cachedData); // Update the cache
-            }
             return cachedData;
         }
 
@@ -186,64 +187,57 @@ export default class PokemonService {
     }
 
     parseEvolutionChain(chain) {
-        const paths = [];
-        
-        const traverse = (node, path) => {
-            const speciesUrl = node.species.url;
-            const speciesId = speciesUrl.split('/').slice(-2, -1)[0];
-            const currentPath = [...path];
-
-            if (node.evolution_details.length > 0) {
-                currentPath.push({
-                    species_name: node.species.name,
-                    species_id: speciesId,
-                    trigger: this.formatEvolutionTrigger(node.evolution_details[0])
-                });
-            } else {
-                // Base form
-                currentPath.push({
-                    species_name: node.species.name,
-                    species_id: speciesId,
-                    trigger: null
-                });
-            }
-
-            if (node.evolves_to.length === 0) {
-                paths.push(currentPath);
-            } else {
-                node.evolves_to.forEach(nextNode => traverse(nextNode, currentPath));
-            }
+        const traverse = (node) => {
+            if (!node) return null;
+            const speciesId = node.species.url.split('/').slice(-2, -1)[0];
+            
+            return {
+                species_name: node.species.name,
+                species_id: speciesId,
+                trigger: node.evolution_details.length > 0 ? this.formatEvolutionTrigger(node.evolution_details[0]) : null,
+                evolves_to: node.evolves_to.map(nextNode => traverse(nextNode))
+            };
         };
-
-        traverse(chain, []);
-        return paths;
+        
+        const rootId = chain.species.url.split('/').slice(-2, -1)[0];
+        return {
+             species_name: chain.species.name,
+             species_id: rootId,
+             trigger: null,
+             evolves_to: chain.evolves_to.map(node => traverse(node))
+        };
     }
 
     formatEvolutionTrigger(details) {
         if (!details) return null;
     
-        const trigger = details.trigger.name.replace('-', ' ');
-        let condition = '';
+        const triggerName = details.trigger.name.replace(/-/g, ' ');
+        const conditions = [];
     
-        switch (trigger) {
-            case 'level up':
-                condition = `Lvl ${details.min_level || '?'}`;
-                if (details.min_happiness) condition += ` (happy)`;
-                if (details.known_move) condition += ` (knows ${details.known_move.name})`;
-                if (details.time_of_day) condition += ` (${details.time_of_day})`;
-                break;
-            case 'trade':
-                condition = 'Trade';
-                if (details.held_item) condition += ` w/ ${details.held_item.name.replace('-', ' ')}`;
-                break;
-            case 'use item':
-                condition = `Use ${details.item.name.replace('-', ' ')}`;
-                break;
-            default:
-                condition = trigger;
+        let primaryCondition = triggerName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+        if (triggerName === 'level up') {
+            primaryCondition = details.min_level ? `Lvl ${details.min_level}` : 'Level Up';
+        } else if (triggerName === 'use item') {
+            primaryCondition = `Use ${details.item.name.replace(/-/g, ' ')}`;
+        } else if (triggerName === 'trade') {
+            primaryCondition = details.trade_species ? `Trade for ${details.trade_species.name.replace(/-/g, ' ')}` : 'Trade';
         }
+        
+        if (details.min_happiness) conditions.push(`High Friendship`);
+        if (details.time_of_day) conditions.push(details.time_of_day);
+        if (details.held_item) conditions.push(`w/ ${details.held_item.name.replace(/-/g, ' ')}`);
+        if (details.known_move) conditions.push(`knows ${details.known_move.name.replace(/-/g, ' ')}`);
+        if (details.location) conditions.push(`at ${details.location.name.replace(/-/g, ' ')}`);
+        if (details.gender === 1) conditions.push('Female');
+        else if (details.gender === 2) conditions.push('Male');
+        if (details.needs_overworld_rain) conditions.push('in rain');
     
-        return condition;
+        if (conditions.length > 0) {
+            return `${primaryCondition} ${conditions.join(', ')}`;
+        }
+        
+        return primaryCondition;
     }
 
     async getTypeDetails(typeName) {
