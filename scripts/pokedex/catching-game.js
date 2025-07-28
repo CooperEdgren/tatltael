@@ -86,9 +86,16 @@ export class CatchingGame {
     }
 
     switchBall(direction) {
+        const oldBallIndex = this.currentBallIndex;
         this.currentBallIndex = (this.currentBallIndex + direction + this.inventory.length) % this.inventory.length;
-        this.updateInventoryUI();
-        this.animateBallSwitch(direction);
+        
+        this.animateIncomingBall(direction);
+        this.animateOutgoingBall(oldBallIndex, direction);
+
+        // Update the UI on the buttons after a short delay to let animations start
+        setTimeout(() => {
+            this.updateInventoryUI();
+        }, 50);
     }
 
     updateInventoryUI() {
@@ -115,7 +122,7 @@ export class CatchingGame {
         countEl.textContent = `x${ball.count}`;
     }
 
-    animateBallSwitch(direction) {
+    animateIncomingBall(direction) {
         const movingBall = document.createElement('div');
         movingBall.className = 'moving-ball';
         this.container.appendChild(movingBall);
@@ -147,6 +154,43 @@ export class CatchingGame {
 
         setTimeout(() => {
             this.setPokeballFrame(0); // Set to the base frame of the new ball
+            movingBall.remove();
+        }, 300);
+    }
+
+    animateOutgoingBall(oldBallIndex, direction) {
+        const movingBall = document.createElement('div');
+        movingBall.className = 'moving-ball';
+        this.container.appendChild(movingBall);
+
+        const startRect = this.pokeballSprite.getBoundingClientRect();
+        // If direction is 1 (next), the old ball goes to the 'prev' button.
+        // If direction is -1 (prev), the old ball goes to the 'next' button.
+        const endButton = direction === 1 ? this.prevBallBtn : this.nextBallBtn;
+        const endRect = endButton.getBoundingClientRect();
+
+        const ballData = this.inventory[oldBallIndex];
+        const frame = ballData.column; // Base frame of the outgoing ball
+        const frameY = Math.floor(frame / 25) * 64;
+        const frameX = (frame % 25) * 64;
+        movingBall.style.backgroundImage = `url('../images/pokedex-assets/png/pokeballs_sprites.png')`;
+        movingBall.style.backgroundSize = '1600px 1088px';
+        movingBall.style.backgroundPosition = `-${frameX}px -${frameY}px`;
+
+        Object.assign(movingBall.style, {
+            left: `${startRect.left}px`,
+            top: `${startRect.top}px`,
+        });
+
+        requestAnimationFrame(() => {
+            Object.assign(movingBall.style, {
+                left: `${endRect.left}px`,
+                top: `${endRect.top}px`,
+                transform: 'scale(1)',
+            });
+        });
+
+        setTimeout(() => {
             movingBall.remove();
         }, 300);
     }
