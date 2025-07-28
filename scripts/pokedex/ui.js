@@ -14,6 +14,23 @@ export class UI {
         this.headerTitle = headerTitle;
         this.menuButton = menuButton;
         this.errorMessageElement = document.getElementById('error-message');
+        this.notificationContainer = document.getElementById('notification-container');
+    }
+
+    showNotification(message, type = 'info', duration = 3000) {
+        if (!this.notificationContainer) return;
+
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+
+        notification.style.animation = `fadeInDown 0.3s forwards, fadeOutUp 0.3s ${duration / 1000 - 0.3}s forwards`;
+
+        this.notificationContainer.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, duration);
     }
 
     createScanButton() {

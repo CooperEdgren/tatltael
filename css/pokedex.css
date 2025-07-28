@@ -1357,6 +1357,64 @@ header {
     transition: left 0.3s ease-out, top 0.3s ease-out, transform 0.3s ease-out;
 }
 
+/* Notification System */
+#notification-container {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2100; /* Above everything */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.notification {
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-family: 'Venus Rising Rg', sans-serif;
+    font-size: 1.1em;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInDown 0.3s forwards, fadeOutUp 0.3s 2.7s forwards;
+}
+
+.notification.success {
+    background: linear-gradient(145deg, #4CAF50, #388E3C);
+}
+
+.notification.failure {
+    background: linear-gradient(145deg, #f44336, #d32f2f);
+}
+
+.notification.info {
+    background: linear-gradient(145deg, #2196F3, #1976D2);
+}
+
+@keyframes fadeInDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
 #catching-game-view {
     position: fixed;
     top: 0;

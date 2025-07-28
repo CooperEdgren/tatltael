@@ -602,20 +602,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                         body.classList.add('catching-game-active');
                                         catchingGameView.style.display = 'block';
 
-                                        const game = new CatchingGame(catchingGameView, pokemonData.pokemon, 
+                                        const game = new CatchingGame(catchingGameView, pokemonData, ui, 
                                             (caughtPokemon) => {
                                                 // On catch success
                                                 tracker.toggleCaught(caughtPokemon.id);
                                                 body.classList.remove('catching-game-active');
                                                 catchingGameView.style.display = 'none';
-                                                alert(`Gotcha! ${caughtPokemon.name} was caught!`);
                                                 applyFilters(); // Refresh the main view
+                                                openModal(pokemonData);
                                             },
                                             (failedPokemon) => {
-                                                // On catch failure
-                                                body.classList.remove('catching-game-active');
-                                                catchingGameView.style.display = 'none';
-                                                alert(`Oh no! ${failedPokemon.name} broke free!`);
+                                                // On catch failure - no longer exits, just for potential logging
                                             }
                                         );
                                         game.run();

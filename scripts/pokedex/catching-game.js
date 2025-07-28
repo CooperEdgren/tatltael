@@ -1,33 +1,38 @@
 // scripts/pokedex/catching-game.js
 
 const POKEBALLS = [
-    { name: 'Poké Ball', column: 0 },
-    { name: 'Great Ball', column: 1 },
-    { name: 'Safari Ball', column: 2 },
-    { name: 'Ultra Ball', column: 3 },
-    { name: 'Master Ball', column: 4 },
-    { name: 'Net Ball', column: 5 },
-    { name: 'Dive Ball', column: 6 },
-    { name: 'Nest Ball', column: 7 },
-    { name: 'Repeat Ball', column: 8 },
-    { name: 'Timer Ball', column: 9 },
-    { name: 'Luxury Ball', column: 10 },
-    { name: 'Premier Ball', column: 11 },
-    { name: 'Dusk Ball', column: 12 },
-    { name: 'Heal Ball', column: 13 },
-    { name: 'Quick Ball', column: 14 },
-    { name: 'Cherish Ball', column: 15 },
+    { name: 'Poké Ball', column: 0, bonus: 1 },
+    { name: 'Great Ball', column: 1, bonus: 1.5 },
+    { name: 'Safari Ball', column: 2, bonus: 1.5 },
+    { name: 'Ultra Ball', column: 3, bonus: 2 },
+    { name: 'Master Ball', column: 4, bonus: 255 },
+    { name: 'Net Ball', column: 5, bonus: 1 }, // Special logic
+    { name: 'Dive Ball', column: 6, bonus: 3.5 }, // Special logic (assume true)
+    { name: 'Nest Ball', column: 7, bonus: 1 }, // Special logic
+    { name: 'Repeat Ball', column: 8, bonus: 1 }, // Special logic
+    { name: 'Timer Ball', column: 9, bonus: 1 }, // Special logic
+    { name: 'Luxury Ball', column: 10, bonus: 1 },
+    { name: 'Premier Ball', column: 11, bonus: 1 },
+    { name: 'Dusk Ball', column: 12, bonus: 3.5 }, // Special logic (assume true)
+    { name: 'Heal Ball', column: 13, bonus: 1 },
+    { name: 'Quick Ball', column: 14, bonus: 1 }, // Special logic
+    { name: 'Cherish Ball', column: 15, bonus: 1 },
 ];
 
 export class CatchingGame {
-    constructor(container, pokemon, onCatchSuccess, onCatchFailure) {
+    constructor(container, pokemonData, ui, onCatchSuccess, onCatchFailure) {
         this.container = container;
-        this.pokemon = pokemon;
+        this.pokemonData = pokemonData;
+        this.pokemon = pokemonData.pokemon;
+        this.pokemon.level = Math.floor(Math.random() * 50) + 1; 
+        this.ui = ui;
         this.onCatchSuccess = onCatchSuccess;
         this.onCatchFailure = onCatchFailure;
         this.isThrown = false;
         this.catchInProgress = false;
         this.animationFrameId = null;
+        this.startTime = Date.now();
+        this.elapsedTime = 0;
 
         this.inventory = POKEBALLS.map(ball => ({ ...ball, count: 5 }));
         this.currentBallIndex = 0;
@@ -57,30 +62,18 @@ export class CatchingGame {
         const closeInventory = () => this.inventoryContainer.classList.remove('open');
 
         this.inventoryButton.addEventListener('click', openInventory);
-        this.inventoryButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            openInventory();
-        });
+        this.inventoryButton.addEventListener('touchstart', (e) => { e.preventDefault(); openInventory(); });
 
         this.closeInventoryBtn.addEventListener('click', closeInventory);
-        this.closeInventoryBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            closeInventory();
-        });
+        this.closeInventoryBtn.addEventListener('touchstart', (e) => { e.preventDefault(); closeInventory(); });
 
         const prevBtnAction = () => this.switchBall(-1);
         this.prevBallBtn.addEventListener('click', prevBtnAction);
-        this.prevBallBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            prevBtnAction();
-        });
+        this.prevBallBtn.addEventListener('touchstart', (e) => { e.preventDefault(); prevBtnAction(); });
 
         const nextBtnAction = () => this.switchBall(1);
         this.nextBallBtn.addEventListener('click', nextBtnAction);
-        this.nextBallBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            nextBtnAction();
-        });
+        this.nextBallBtn.addEventListener('touchstart', (e) => { e.preventDefault(); nextBtnAction(); });
 
         this.updateInventoryUI();
     }
@@ -92,10 +85,7 @@ export class CatchingGame {
         this.animateIncomingBall(direction);
         this.animateOutgoingBall(oldBallIndex, direction);
 
-        // Update the UI on the buttons after a short delay to let animations start
-        setTimeout(() => {
-            this.updateInventoryUI();
-        }, 50);
+        setTimeout(() => this.updateInventoryUI(), 50);
     }
 
     updateInventoryUI() {
@@ -132,28 +122,20 @@ export class CatchingGame {
         const endRect = this.pokeballSprite.getBoundingClientRect();
 
         const ballData = this.inventory[this.currentBallIndex];
-        const frame = ballData.column; // Base frame (column 0)
+        const frame = ballData.column;
         const frameY = Math.floor(frame / 25) * 64;
         const frameX = (frame % 25) * 64;
         movingBall.style.backgroundImage = `url('../images/pokedex-assets/png/pokeballs_sprites.png')`;
         movingBall.style.backgroundSize = '1600px 1088px';
         movingBall.style.backgroundPosition = `-${frameX}px -${frameY}px`;
 
-        Object.assign(movingBall.style, {
-            left: `${startRect.left}px`,
-            top: `${startRect.top}px`,
-        });
-
+        Object.assign(movingBall.style, { left: `${startRect.left}px`, top: `${startRect.top}px` });
         requestAnimationFrame(() => {
-            Object.assign(movingBall.style, {
-                left: `${endRect.left}px`,
-                top: `${endRect.top}px`,
-                transform: 'scale(1)',
-            });
+            Object.assign(movingBall.style, { left: `${endRect.left}px`, top: `${endRect.top}px`, transform: 'scale(1)' });
         });
 
         setTimeout(() => {
-            this.setPokeballFrame(0); // Set to the base frame of the new ball
+            this.setPokeballFrame(0);
             movingBall.remove();
         }, 300);
     }
@@ -164,53 +146,30 @@ export class CatchingGame {
         this.container.appendChild(movingBall);
 
         const startRect = this.pokeballSprite.getBoundingClientRect();
-        // If direction is 1 (next), the old ball goes to the 'prev' button.
-        // If direction is -1 (prev), the old ball goes to the 'next' button.
         const endButton = direction === 1 ? this.prevBallBtn : this.nextBallBtn;
         const endRect = endButton.getBoundingClientRect();
 
         const ballData = this.inventory[oldBallIndex];
-        const frame = ballData.column; // Base frame of the outgoing ball
+        const frame = ballData.column;
         const frameY = Math.floor(frame / 25) * 64;
         const frameX = (frame % 25) * 64;
         movingBall.style.backgroundImage = `url('../images/pokedex-assets/png/pokeballs_sprites.png')`;
         movingBall.style.backgroundSize = '1600px 1088px';
         movingBall.style.backgroundPosition = `-${frameX}px -${frameY}px`;
 
-        Object.assign(movingBall.style, {
-            left: `${startRect.left}px`,
-            top: `${startRect.top}px`,
-        });
-
+        Object.assign(movingBall.style, { left: `${startRect.left}px`, top: `${startRect.top}px` });
         requestAnimationFrame(() => {
-            Object.assign(movingBall.style, {
-                left: `${endRect.left}px`,
-                top: `${endRect.top}px`,
-                transform: 'scale(1)',
-            });
+            Object.assign(movingBall.style, { left: `${endRect.left}px`, top: `${endRect.top}px`, transform: 'scale(1)' });
         });
 
-        setTimeout(() => {
-            movingBall.remove();
-        }, 300);
+        setTimeout(() => movingBall.remove(), 300);
     }
 
     setupBounds() {
         const wallThickness = 50;
-        const ground = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight + wallThickness / 2, window.innerWidth, wallThickness, { 
-            isStatic: true,
-            isSensor: true,
-            label: 'ground'
-        });
-
-        const leftWall = Matter.Bodies.rectangle(-wallThickness / 2, window.innerHeight / 2, wallThickness, window.innerHeight, { 
-            isStatic: true 
-        });
-
-        const rightWall = Matter.Bodies.rectangle(window.innerWidth + wallThickness / 2, window.innerHeight / 2, wallThickness, window.innerHeight, { 
-            isStatic: true 
-        });
-
+        const ground = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight + wallThickness / 2, window.innerWidth, wallThickness, { isStatic: true, isSensor: true, label: 'ground' });
+        const leftWall = Matter.Bodies.rectangle(-wallThickness / 2, window.innerHeight / 2, wallThickness, window.innerHeight, { isStatic: true });
+        const rightWall = Matter.Bodies.rectangle(window.innerWidth + wallThickness / 2, window.innerHeight / 2, wallThickness, window.innerHeight, { isStatic: true });
         Matter.World.add(this.world, [ground, leftWall, rightWall]);
     }
 
@@ -219,33 +178,17 @@ export class CatchingGame {
         this.pokemonSprite = pokemonSprite;
         const spriteRect = pokemonSprite.getBoundingClientRect();
         const wallThickness = 20;
-
-        // Use the new 75x75 size for calculations to match the CSS
         const pokemonWidth = 75;
         const pokemonHeight = 75;
 
-        this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, pokemonWidth * 0.8, pokemonHeight * 0.8, {
-            isStatic: true,
-            isSensor: true,
-            label: 'pokemon'
-        });
-
+        this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, pokemonWidth * 0.8, pokemonHeight * 0.8, { isStatic: true, isSensor: true, label: 'pokemon' });
         const wallOptions = { isStatic: true, isSensor: false, label: 'pokemon-boundary' };
         const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, pokemonWidth, wallThickness, wallOptions);
         const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, pokemonHeight, wallOptions);
         const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, pokemonHeight, wallOptions);
-        
         this.boundaryWalls = [topWall, leftWall, rightWall];
-
         const extraHeight = 50;
-        const safeZone = Matter.Bodies.rectangle(
-            spriteRect.left + spriteRect.width / 2, 
-            (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), 
-            pokemonWidth, 
-            pokemonHeight + extraHeight, 
-            { isStatic: true, isSensor: true, label: 'pokemon-safe-zone' }
-        );
-
+        const safeZone = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), pokemonWidth, pokemonHeight + extraHeight, { isStatic: true, isSensor: true, label: 'pokemon-safe-zone' });
         Matter.World.add(this.world, [this.pokemonBody, ...this.boundaryWalls, safeZone]);
     }
 
@@ -254,14 +197,7 @@ export class CatchingGame {
         const startX = window.innerWidth / 2;
         const startY = window.innerHeight - 80;
         this.pokeballStartPosition = { x: startX, y: startY };
-        
-        this.pokeballBody = Matter.Bodies.circle(startX, startY, 32, {
-            restitution: 0.5,
-            friction: 0.1,
-            density: 0.01,
-            label: 'pokeball',
-            isStatic: true
-        });
+        this.pokeballBody = Matter.Bodies.circle(startX, startY, 32, { restitution: 0.5, friction: 0.1, density: 0.01, label: 'pokeball', isStatic: true });
         Matter.World.add(this.world, this.pokeballBody);
     }
 
@@ -274,122 +210,132 @@ export class CatchingGame {
         this.pokeballSprite.style.backgroundPosition = `-${frameX * 64}px -${frameY}px`;
     }
 
-    startCatchSequence() {
-        if (this.catchInProgress) return;
-        this.catchInProgress = true;
-        this.isThrown = false; // Stop throw animation
+    calculateCatchChance() {
+        const ball = this.inventory[this.currentBallIndex];
+        const hpMax = 100;
+        const hpCurrent = 100;
+        const statusBonus = 1;
+        const baseCaptureRate = this.pokemonData.species.capture_rate;
 
-        const currentBall = this.inventory[this.currentBallIndex];
-        if (currentBall.count > 0) {
-            currentBall.count--;
-            this.updateInventoryUI();
-        } else {
-            // Handle out of balls case
-            this.onCatchFailure(this.pokemon);
-            return;
+        let ballBonus = ball.bonus;
+        const turns = this.elapsedTime / 6000;
+
+        switch (ball.name) {
+            case 'Net Ball':
+                if (this.pokemon.types.some(t => t.type.name === 'water' || t.type.name === 'bug')) ballBonus = 3.5;
+                break;
+            case 'Nest Ball':
+                if (this.pokemon.level >= 1 && this.pokemon.level <= 29) ballBonus = (41 - this.pokemon.level) / 10;
+                break;
+            case 'Timer Ball':
+                ballBonus = Math.min(4, 1 + turns * 0.3);
+                break;
+            case 'Quick Ball':
+                if (turns < 1) ballBonus = 5;
+                break;
         }
 
+        if (ball.name === 'Master Ball') return 1;
+
+        const a = Math.floor(((3 * hpMax - 2 * hpCurrent) * baseCaptureRate * ballBonus) / (3 * hpMax));
+        const b = Math.min(255, a) * statusBonus;
+        return b / 255;
+    }
+
+    startCatchSequence() {
+        if (this.catchInProgress) return;
+        
+        const currentBall = this.inventory[this.currentBallIndex];
+        if (currentBall.count <= 0) {
+            this.ui.showNotification(`Out of ${currentBall.name}s!`, 'info');
+            return;
+        }
+        
+        this.catchInProgress = true;
+        this.isThrown = false;
+        currentBall.count--;
+        this.updateInventoryUI();
+
         setTimeout(() => {
-            // Freeze and rotate
             Matter.Body.setStatic(this.pokeballBody, true);
-            Matter.Body.setAngle(this.pokeballBody, 0); // Correct rotation
+            Matter.Body.setAngle(this.pokeballBody, 0);
             this.pokeballSprite.style.transform = 'rotate(0rad)';
             this.setPokeballFrame(225);
 
             setTimeout(() => {
-                // Open pokeball
                 this.setPokeballFrame(250);
-                
-                // Capture pokemon animation
                 this.pokemonSprite.classList.add('captured');
                 const pokeballRect = this.pokeballSprite.getBoundingClientRect();
                 this.pokemonSprite.style.transformOrigin = `${pokeballRect.left - this.pokemonSprite.getBoundingClientRect().left}px ${pokeballRect.top - this.pokemonSprite.getBoundingClientRect().top}px`;
 
-
                 setTimeout(() => {
-                    // Close pokeball
                     this.setPokeballFrame(0);
-
-                    setTimeout(() => {
-                        // Start shaking
-                        this.startShakingAnimation();
-                    }, 500);
+                    setTimeout(() => this.startShakingAnimation(), 500);
                 }, 200);
             }, 200);
         }, 300);
     }
 
     startShakingAnimation() {
+        const catchProbability = this.calculateCatchChance();
+        const isCaught = Math.random() < catchProbability;
+        
         const shakeSequence = [0, 275, 300, 325, 300, 275, 0, 0, 350, 375, 400, 375, 350, 0, 0, 275, 300, 325];
         let frameIndex = 0;
-        const interval = 1000 / 4; // 4 FPS
-
-        const isCaught = Math.random() < 0.7;
-        // A breakout can happen after the first or second shake.
-        const shakesBeforeBreakout = Math.floor(Math.random() * 2) + 1;
+        const interval = 250;
+        const shakesBeforeBreakout = Math.floor(Math.random() * 3);
         let shakesCompleted = 0;
 
         const shake = () => {
-            if (frameIndex < shakeSequence.length) {
+            if (frameIndex < shakeSequence.length && this.catchInProgress) {
                 this.setPokeballFrame(shakeSequence[frameIndex]);
 
-                // Check for breakout at the end of a full shake cycle
-                if (!isCaught) {
-                    if (frameIndex === 6) { // End of first shake (left)
-                        shakesCompleted = 1;
-                        if (shakesCompleted >= shakesBeforeBreakout) {
-                            setTimeout(() => this.startFailureSequence(), interval);
-                            return;
-                        }
-                    } else if (frameIndex === 13) { // End of second shake (right)
-                        shakesCompleted = 2;
-                        if (shakesCompleted >= shakesBeforeBreakout) {
-                            setTimeout(() => this.startFailureSequence(), interval);
-                            return;
-                        }
+                if (frameIndex === 6 || frameIndex === 13 || frameIndex === 17) {
+                    shakesCompleted++;
+                    if (!isCaught && shakesCompleted > shakesBeforeBreakout) {
+                        setTimeout(() => this.startFailureSequence(), interval);
+                        return;
                     }
                 }
 
                 frameIndex++;
                 setTimeout(shake, interval);
-            } else {
-                // End of sequence, successful catch
-                const successFrames = [350, 375, 400, 0];
-                let successIndex = 0;
-                const successAnimation = () => {
-                    if (successIndex < successFrames.length) {
-                        this.setPokeballFrame(successFrames[successIndex]);
-                        successIndex++;
-                        setTimeout(successAnimation, 100);
-                    } else {
-                        if (this.onCatchSuccess) {
-                            this.onCatchSuccess(this.pokemon);
+            } else if (this.catchInProgress) {
+                if (isCaught) {
+                    this.ui.showNotification(`Gotcha! ${this.pokemon.name} was caught!`, 'success');
+                    const successFrames = [350, 375, 400, 0];
+                    let successIndex = 0;
+                    const successAnimation = () => {
+                        if (successIndex < successFrames.length) {
+                            this.setPokeballFrame(successFrames[successIndex]);
+                            successIndex++;
+                            setTimeout(successAnimation, 100);
+                        } else {
+                            if (this.onCatchSuccess) this.onCatchSuccess(this.pokemon);
                         }
-                    }
-                };
-                successAnimation();
+                    };
+                    successAnimation();
+                } else {
+                     this.startFailureSequence();
+                }
             }
         };
         shake();
     }
 
     startFailureSequence() {
-        // Pokemon breaks free
-        this.setPokeballFrame(250); // Ball opens
-        this.pokemonSprite.classList.remove('captured'); // Pokemon reappears
-        
-        // Make pokeball fall
+        if (!this.catchInProgress) return;
+        this.ui.showNotification(`Oh no! ${this.pokemon.name} broke free!`, 'failure');
+        this.setPokeballFrame(250);
+        this.pokemonSprite.classList.remove('captured');
         Matter.Body.setStatic(this.pokeballBody, false);
-
-        setTimeout(() => {
-            if (this.onCatchFailure) {
-                this.onCatchFailure(this.pokemon);
-            }
-        }, 1000); // Wait a bit before closing the view
+        setTimeout(() => this.respawnPokeball(), 1000);
     }
 
     respawnPokeball() {
-        if (this.catchInProgress) return;
+        if (this.catchInProgress) {
+            this.catchInProgress = false;
+        }
         Matter.Body.setStatic(this.pokeballBody, true);
         Matter.Body.setPosition(this.pokeballBody, this.pokeballStartPosition);
         Matter.Body.setVelocity(this.pokeballBody, { x: 0, y: 0 });
@@ -415,7 +361,12 @@ export class CatchingGame {
 
         Matter.Events.on(this.mouseConstraint, 'mousedown', (event) => {
             if (this.mouseConstraint.body === this.pokeballBody && !this.catchInProgress) {
-                Matter.Body.setStatic(this.pokeballBody, false);
+                const currentBall = this.inventory[this.currentBallIndex];
+                if (currentBall.count > 0) {
+                    Matter.Body.setStatic(this.pokeballBody, false);
+                } else {
+                    this.ui.showNotification(`Out of ${currentBall.name}s!`, 'info');
+                }
             }
         });
 
@@ -439,11 +390,14 @@ export class CatchingGame {
                             this.boundaryWalls.forEach(wall => wall.isSensor = true);
                             break;
                         case 'pokemon-boundary':
-                            if (!otherBody.isSensor) {
-                                this.startCatchSequence();
-                            }
+                            if (!otherBody.isSensor) this.startCatchSequence();
                             break;
                         case 'ground':
+                            this.isThrown = false;
+                            if (!this.catchInProgress) {
+                                this.respawnPokeball();
+                            }
+                            break;
                         case 'pokemon':
                             this.isThrown = false;
                             break;
@@ -484,6 +438,8 @@ export class CatchingGame {
 
     run() {
         const gameLoop = () => {
+            this.elapsedTime = Date.now() - this.startTime;
+
             if (!this.catchInProgress) {
                 Matter.Engine.update(this.engine);
             }
@@ -497,7 +453,9 @@ export class CatchingGame {
 
             const buffer = 200;
             if (pos.y > window.innerHeight + buffer || pos.x > window.innerWidth + buffer || pos.x < -buffer) {
-                this.respawnPokeball();
+                if (!this.catchInProgress) {
+                    this.respawnPokeball();
+                }
             }
 
             this.animationFrameId = requestAnimationFrame(gameLoop);
@@ -509,6 +467,7 @@ export class CatchingGame {
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
         }
+        this.catchInProgress = false;
         Matter.World.clear(this.world);
         Matter.Engine.clear(this.engine);
     }
