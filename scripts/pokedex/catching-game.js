@@ -23,12 +23,22 @@ export class CatchingGame {
     }
 
     setupBounds() {
-        const ground = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight + 25, window.innerWidth, 50, { 
+        const wallThickness = 50;
+        const ground = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight + wallThickness / 2, window.innerWidth, wallThickness, { 
             isStatic: true,
             isSensor: true,
             label: 'ground'
         });
-        Matter.World.add(this.world, ground);
+
+        const leftWall = Matter.Bodies.rectangle(-wallThickness / 2, window.innerHeight / 2, wallThickness, window.innerHeight, { 
+            isStatic: true 
+        });
+
+        const rightWall = Matter.Bodies.rectangle(window.innerWidth + wallThickness / 2, window.innerHeight / 2, wallThickness, window.innerHeight, { 
+            isStatic: true 
+        });
+
+        Matter.World.add(this.world, [ground, leftWall, rightWall]);
     }
 
     setupPokemon() {
@@ -297,7 +307,7 @@ export class CatchingGame {
             }
 
             const buffer = 200;
-            if (pos.y > window.innerHeight + buffer || pos.y < -buffer || pos.x > window.innerWidth + buffer || pos.x < -buffer) {
+            if (pos.y > window.innerHeight + buffer || pos.x > window.innerWidth + buffer || pos.x < -buffer) {
                 this.respawnPokeball();
             }
 
