@@ -1305,7 +1305,15 @@ body.catching-game-active header {
     width: 150px;
     height: 150px;
     image-rendering: pixelated;
+    transition: transform 0.5s ease-in-out, filter 0.3s ease-in-out;
 }
+
+.wild-pokemon-sprite.captured {
+    filter: brightness(3) grayscale(1);
+    transform: scale(0) translate(-50%, -50%);
+    transform-origin: center;
+}
+
 
 
 .encounter-prompt {

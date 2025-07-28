@@ -1,24 +1,19 @@
 // scripts/pokedex/catching-game.js
 
 export class CatchingGame {
-    constructor(container, pokemon) {
+    constructor(container, pokemon, onCatchSuccess, onCatchFailure) {
         this.container = container;
         this.pokemon = pokemon;
+        this.onCatchSuccess = onCatchSuccess;
+        this.onCatchFailure = onCatchFailure;
         this.isThrown = false;
+        this.catchInProgress = false;
         this.animationFrameId = null;
 
         // Physics engine setup
         this.engine = Matter.Engine.create();
         this.world = this.engine.world;
-        this.engine.world.gravity.y = 2; // A bit stronger gravity
-
-        // We won't use the canvas renderer, but it's useful for debugging
-        // const render = Matter.Render.create({
-        //     element: this.container,
-        //     engine: this.engine,
-        //     options: { width: window.innerWidth, height: window.innerHeight, wireframes: true, background: 'transparent' }
-        // });
-        // Matter.Render.run(render);
+        this.engine.world.gravity.y = 2;
 
         this.setupBounds();
         this.setupPokemon();
@@ -30,7 +25,7 @@ export class CatchingGame {
     setupBounds() {
         const ground = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight + 25, window.innerWidth, 50, { 
             isStatic: true,
-            isSensor: true, // It detects collisions but doesn't produce a physical response
+            isSensor: true,
             label: 'ground'
         });
         Matter.World.add(this.world, ground);
@@ -38,41 +33,30 @@ export class CatchingGame {
 
     setupPokemon() {
         const pokemonSprite = this.container.querySelector('.wild-pokemon-sprite');
+        this.pokemonSprite = pokemonSprite;
         const spriteRect = pokemonSprite.getBoundingClientRect();
-        const wallThickness = 20; // The thickness of the collision walls
+        const wallThickness = 20;
 
-        // The main sensor for successful catches remains
         this.pokemonBody = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top + spriteRect.height / 2, spriteRect.width * 0.8, spriteRect.height * 0.8, {
             isStatic: true,
             isSensor: true,
             label: 'pokemon'
         });
 
-        // Create the U-shaped barrier
-        const wallOptions = {
-            isStatic: true,
-            isSensor: false, // Make them solid initially
-            label: 'pokemon-boundary'
-        };
-
+        const wallOptions = { isStatic: true, isSensor: false, label: 'pokemon-boundary' };
         const topWall = Matter.Bodies.rectangle(spriteRect.left + spriteRect.width / 2, spriteRect.top - wallThickness / 2, spriteRect.width, wallThickness, wallOptions);
         const leftWall = Matter.Bodies.rectangle(spriteRect.left - wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
         const rightWall = Matter.Bodies.rectangle(spriteRect.right + wallThickness / 2, spriteRect.top + spriteRect.height / 2, wallThickness, spriteRect.height, wallOptions);
         
         this.boundaryWalls = [topWall, leftWall, rightWall];
 
-        // Create the larger "safe zone" sensor
-        const extraHeight = 50; // Extend the bottom of the safe zone
+        const extraHeight = 50;
         const safeZone = Matter.Bodies.rectangle(
             spriteRect.left + spriteRect.width / 2, 
             (spriteRect.top + spriteRect.height / 2) + (extraHeight / 2), 
             spriteRect.width, 
             spriteRect.height + extraHeight, 
-            {
-                isStatic: true,
-                isSensor: true,
-                label: 'pokemon-safe-zone'
-            }
+            { isStatic: true, isSensor: true, label: 'pokemon-safe-zone' }
         );
 
         Matter.World.add(this.world, [this.pokemonBody, ...this.boundaryWalls, safeZone]);
@@ -81,61 +65,155 @@ export class CatchingGame {
     setupPokeball() {
         this.pokeballSprite = document.getElementById('pokeball-sprite');
         const startX = window.innerWidth / 2;
-        const startY = window.innerHeight - 80; // 80px from the bottom
+        const startY = window.innerHeight - 80;
         this.pokeballStartPosition = { x: startX, y: startY };
         
-        this.pokeballBody = Matter.Bodies.circle(startX, startY, 32, { // 32 is radius for 64px sprite
+        this.pokeballBody = Matter.Bodies.circle(startX, startY, 32, {
             restitution: 0.5,
             friction: 0.1,
             density: 0.01,
             label: 'pokeball',
-            isStatic: true // Start as static
+            isStatic: true
         });
         Matter.World.add(this.world, this.pokeballBody);
     }
 
+    setPokeballFrame(frameNumber) {
+        const frameHeight = 64;
+        const frameRow = Math.floor(frameNumber / 25);
+        const frameY = frameRow * frameHeight;
+        this.pokeballSprite.style.backgroundPosition = `0px -${frameY}px`;
+    }
+
+    startCatchSequence() {
+        if (this.catchInProgress) return;
+        this.catchInProgress = true;
+        this.isThrown = false; // Stop throw animation
+
+        setTimeout(() => {
+            // Freeze and rotate
+            Matter.Body.setStatic(this.pokeballBody, true);
+            Matter.Body.setAngle(this.pokeballBody, 0); // Correct rotation
+            this.pokeballSprite.style.transform = 'rotate(0rad)';
+            this.setPokeballFrame(225);
+
+            setTimeout(() => {
+                // Open pokeball
+                this.setPokeballFrame(250);
+                
+                // Capture pokemon animation
+                this.pokemonSprite.classList.add('captured');
+                const pokeballRect = this.pokeballSprite.getBoundingClientRect();
+                this.pokemonSprite.style.transformOrigin = `${pokeballRect.left - this.pokemonSprite.getBoundingClientRect().left}px ${pokeballRect.top - this.pokemonSprite.getBoundingClientRect().top}px`;
+
+
+                setTimeout(() => {
+                    // Close pokeball
+                    this.setPokeballFrame(0);
+
+                    setTimeout(() => {
+                        // Start shaking
+                        this.startShakingAnimation();
+                    }, 500);
+                }, 200);
+            }, 200);
+        }, 300);
+    }
+
+    startShakingAnimation() {
+        const shakeSequence = [0, 275, 300, 325, 300, 275, 0, 0, 350, 375, 400, 375, 350, 0];
+        let frameIndex = 0;
+        const interval = 1000 / 4; // 4 FPS
+
+        // Simple 70% catch rate for now
+        const isCaught = Math.random() < 0.7;
+        const breakoutShake = Math.floor(Math.random() * 3) + 1; // Fails after 1, 2, or 3 shakes
+        let shakes = 0;
+
+        const shake = () => {
+            if (frameIndex < shakeSequence.length) {
+                this.setPokeballFrame(shakeSequence[frameIndex]);
+                
+                // Check for breakout
+                if (!isCaught && shakeSequence[frameIndex] === 0) {
+                    shakes++;
+                    if (shakes >= breakoutShake) {
+                        setTimeout(() => this.startFailureSequence(), interval);
+                        return;
+                    }
+                }
+
+                frameIndex++;
+                setTimeout(shake, interval);
+            } else {
+                // End of sequence, successful catch
+                const successFrames = [350, 375, 400, 0];
+                let successIndex = 0;
+                const successAnimation = () => {
+                    if (successIndex < successFrames.length) {
+                        this.setPokeballFrame(successFrames[successIndex]);
+                        successIndex++;
+                        setTimeout(successAnimation, 100);
+                    } else {
+                        if (this.onCatchSuccess) {
+                            this.onCatchSuccess(this.pokemon);
+                        }
+                    }
+                };
+                successAnimation();
+            }
+        };
+        shake();
+    }
+
+    startFailureSequence() {
+        // Pokemon breaks free
+        this.setPokeballFrame(250); // Ball opens
+        this.pokemonSprite.classList.remove('captured'); // Pokemon reappears
+        
+        // Make pokeball fall
+        Matter.Body.setStatic(this.pokeballBody, false);
+
+        setTimeout(() => {
+            if (this.onCatchFailure) {
+                this.onCatchFailure(this.pokemon);
+            }
+        }, 1000); // Wait a bit before closing the view
+    }
+
     respawnPokeball() {
-        // Reset physics properties
+        if (this.catchInProgress) return;
         Matter.Body.setStatic(this.pokeballBody, true);
         Matter.Body.setPosition(this.pokeballBody, this.pokeballStartPosition);
         Matter.Body.setVelocity(this.pokeballBody, { x: 0, y: 0 });
         Matter.Body.setAngularVelocity(this.pokeballBody, 0);
 
-        // Reset state and appearance
         this.isThrown = false;
         this.pokeballSprite.style.transform = 'rotate(0rad)';
         this.pokeballSprite.style.left = `${this.pokeballStartPosition.x - this.pokeballSprite.offsetWidth / 2}px`;
         this.pokeballSprite.style.top = `${this.pokeballStartPosition.y - this.pokeballSprite.offsetHeight / 2}px`;
-        this.pokeballSprite.style.backgroundPosition = '0px 0px'; // Reset to frame 0
+        this.setPokeballFrame(0);
 
-        // Trigger respawn animation
         this.pokeballSprite.classList.add('pokeball-respawn');
-        setTimeout(() => {
-            this.pokeballSprite.classList.remove('pokeball-respawn');
-        }, 300); // Duration of the animation
+        setTimeout(() => this.pokeballSprite.classList.remove('pokeball-respawn'), 300);
     }
 
     setupMouseConstraint() {
         this.mouse = Matter.Mouse.create(this.container);
         this.mouseConstraint = Matter.MouseConstraint.create(this.engine, {
             mouse: this.mouse,
-            constraint: {
-                stiffness: 0.2,
-                render: {
-                    visible: false
-                }
-            }
+            constraint: { stiffness: 0.2, render: { visible: false } }
         });
         Matter.World.add(this.world, this.mouseConstraint);
 
         Matter.Events.on(this.mouseConstraint, 'mousedown', (event) => {
-            if (this.mouseConstraint.body === this.pokeballBody) {
+            if (this.mouseConstraint.body === this.pokeballBody && !this.catchInProgress) {
                 Matter.Body.setStatic(this.pokeballBody, false);
             }
         });
 
         Matter.Events.on(this.mouseConstraint, 'enddrag', (event) => {
-            if (event.body === this.pokeballBody) {
+            if (event.body === this.pokeballBody && !this.catchInProgress) {
                 this.isThrown = true;
                 this.throwAnimationLoop();
             }
@@ -147,28 +225,20 @@ export class CatchingGame {
             const pairs = event.pairs;
             for (let i = 0; i < pairs.length; i++) {
                 const pair = pairs[i];
-                const bodyA = pair.bodyA;
-                const bodyB = pair.bodyB;
-
-                // Check if the pokeball is involved
-                if (bodyA.label === 'pokeball' || bodyB.label === 'pokeball') {
-                    const otherBody = bodyA.label === 'pokeball' ? bodyB : bodyA;
-
+                if (pair.bodyA.label === 'pokeball' || pair.bodyB.label === 'pokeball') {
+                    const otherBody = pair.bodyA.label === 'pokeball' ? pair.bodyB : pair.bodyA;
                     switch (otherBody.label) {
                         case 'pokemon-safe-zone':
-                            // Ball entered the safe zone, make walls passable
                             this.boundaryWalls.forEach(wall => wall.isSensor = true);
                             break;
                         case 'pokemon-boundary':
-                            // Only log and act on the collision if the wall is solid
                             if (!otherBody.isSensor) {
-                                console.log('Pokeball collided with the pokemon boundary.');
-                                this.isThrown = false; // Stop animation on bounce
+                                this.startCatchSequence();
                             }
                             break;
                         case 'ground':
                         case 'pokemon':
-                            this.isThrown = false; // Stop animation on ground or successful catch
+                            this.isThrown = false;
                             break;
                     }
                 }
@@ -179,13 +249,8 @@ export class CatchingGame {
             const pairs = event.pairs;
             for (let i = 0; i < pairs.length; i++) {
                 const pair = pairs[i];
-                const bodyA = pair.bodyA;
-                const bodyB = pair.bodyB;
-
-                // Check if the pokeball is leaving the safe zone
-                if ((bodyA.label === 'pokeball' && bodyB.label === 'pokemon-safe-zone') ||
-                    (bodyB.label === 'pokeball' && bodyA.label === 'pokemon-safe-zone')) {
-                    // Ball left the safe zone, make walls solid again
+                if ((pair.bodyA.label === 'pokeball' && pair.bodyB.label === 'pokemon-safe-zone') ||
+                    (pair.bodyB.label === 'pokeball' && pair.bodyA.label === 'pokemon-safe-zone')) {
                     this.boundaryWalls.forEach(wall => wall.isSensor = false);
                 }
             }
@@ -194,43 +259,37 @@ export class CatchingGame {
 
     throwAnimationLoop() {
         if (!this.isThrown) {
-            this.pokeballSprite.style.backgroundPosition = '0px 0px'; // Reset to default frame
+            this.setPokeballFrame(0);
             return;
         }
         
         const frames = [200, 175, 150, 125, 100, 75, 50, 25];
-        const frameHeight = 64; // Each frame is 64px high now
         let currentFrameIndex = 0;
 
         const animate = () => {
             if (!this.isThrown) return;
-            // The vertical position on the sprite sheet is calculated differently now
-            // We need to find the row number and multiply by the new frame height
-            const frameRow = Math.floor(frames[currentFrameIndex] / 25);
-            const frameY = frameRow * frameHeight;
-            this.pokeballSprite.style.backgroundPosition = `0px -${frameY}px`;
+            this.setPokeballFrame(frames[currentFrameIndex]);
             currentFrameIndex = (currentFrameIndex + 1) % frames.length;
-            setTimeout(animate, 50); // Adjust for animation speed
+            setTimeout(animate, 50);
         };
         animate();
     }
 
     run() {
         const gameLoop = () => {
-            Matter.Engine.update(this.engine);
+            if (!this.catchInProgress) {
+                Matter.Engine.update(this.engine);
+            }
 
-            // Sync sprite to physics body
             const pos = this.pokeballBody.position;
             this.pokeballSprite.style.left = `${pos.x - this.pokeballSprite.offsetWidth / 2}px`;
             this.pokeballSprite.style.top = `${pos.y - this.pokeballSprite.offsetHeight / 2}px`;
-            this.pokeballSprite.style.transform = `rotate(${this.pokeballBody.angle}rad)`;
+            if (!this.catchInProgress) {
+                this.pokeballSprite.style.transform = `rotate(${this.pokeballBody.angle}rad)`;
+            }
 
-            // Check if the pokeball is off-screen on any side
             const buffer = 200;
-            if (pos.y > window.innerHeight + buffer || 
-                pos.y < -buffer || 
-                pos.x > window.innerWidth + buffer || 
-                pos.x < -buffer) {
+            if (pos.y > window.innerHeight + buffer || pos.y < -buffer || pos.x > window.innerWidth + buffer || pos.x < -buffer) {
                 this.respawnPokeball();
             }
 
