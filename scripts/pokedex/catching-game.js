@@ -121,25 +121,33 @@ export class CatchingGame {
     }
 
     startShakingAnimation() {
-        const shakeSequence = [0, 275, 300, 325, 300, 275, 0, 0, 350, 375, 400, 375, 350, 0];
+        const shakeSequence = [0, 275, 300, 325, 300, 275, 0, 0, 350, 375, 400, 375, 350, 0, 0, 275, 300, 325];
         let frameIndex = 0;
         const interval = 1000 / 4; // 4 FPS
 
-        // Simple 70% catch rate for now
         const isCaught = Math.random() < 0.7;
-        const breakoutShake = Math.floor(Math.random() * 3) + 1; // Fails after 1, 2, or 3 shakes
-        let shakes = 0;
+        // A breakout can happen after the first or second shake.
+        const shakesBeforeBreakout = Math.floor(Math.random() * 2) + 1;
+        let shakesCompleted = 0;
 
         const shake = () => {
             if (frameIndex < shakeSequence.length) {
                 this.setPokeballFrame(shakeSequence[frameIndex]);
-                
-                // Check for breakout
-                if (!isCaught && shakeSequence[frameIndex] === 0) {
-                    shakes++;
-                    if (shakes >= breakoutShake) {
-                        setTimeout(() => this.startFailureSequence(), interval);
-                        return;
+
+                // Check for breakout at the end of a full shake cycle
+                if (!isCaught) {
+                    if (frameIndex === 6) { // End of first shake (left)
+                        shakesCompleted = 1;
+                        if (shakesCompleted >= shakesBeforeBreakout) {
+                            setTimeout(() => this.startFailureSequence(), interval);
+                            return;
+                        }
+                    } else if (frameIndex === 13) { // End of second shake (right)
+                        shakesCompleted = 2;
+                        if (shakesCompleted >= shakesBeforeBreakout) {
+                            setTimeout(() => this.startFailureSequence(), interval);
+                            return;
+                        }
                     }
                 }
 
